@@ -2,10 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 
 class FloatingBottomNavBar extends StatefulWidget {
-  const FloatingBottomNavBar({super.key});
+  const FloatingBottomNavBar({
+    super.key,
+    required this.indexZeroOnPressed,
+    required this.indexOneOnPressed,
+    required this.addButtonOnPressed,
+    this.addButtonColor,
+    this.addButtonIconColor,
+  });
 
   @override
   State<FloatingBottomNavBar> createState() => _FloatingBottomNavBarState();
+  final void Function()? indexZeroOnPressed;
+  final void Function()? indexOneOnPressed;
+  final void Function()? addButtonOnPressed;
+  final Color? addButtonColor;
+  final Color? addButtonIconColor;
 }
 
 class _FloatingBottomNavBarState extends State<FloatingBottomNavBar> {
@@ -32,6 +44,7 @@ class _FloatingBottomNavBarState extends State<FloatingBottomNavBar> {
                 onPressed: () {
                   selectedIndex = 0;
                   setState(() {});
+                  widget.indexZeroOnPressed?.call();
                 },
                 icon: Icon(
                   Icons.home,
@@ -45,6 +58,7 @@ class _FloatingBottomNavBarState extends State<FloatingBottomNavBar> {
                 onPressed: () {
                   selectedIndex = 1;
                   setState(() {});
+                  widget.indexOneOnPressed?.call();
                 },
                 icon: Icon(
                   Icons.analytics,
@@ -56,7 +70,14 @@ class _FloatingBottomNavBarState extends State<FloatingBottomNavBar> {
               const SizedBox(width: 30),
             ],
           ),
-          const Positioned(bottom: 10, child: AddButton()),
+          Positioned(
+            bottom: 10,
+            child: AddButton(
+              onPressed: widget.addButtonOnPressed,
+              color: widget.addButtonColor,
+              iconColor: widget.addButtonIconColor,
+            ),
+          ),
         ],
       ),
     );
@@ -64,7 +85,15 @@ class _FloatingBottomNavBarState extends State<FloatingBottomNavBar> {
 }
 
 class AddButton extends StatelessWidget {
-  const AddButton({super.key});
+  const AddButton({
+    super.key,
+    required this.onPressed,
+    this.color,
+    this.iconColor,
+  });
+  final void Function()? onPressed;
+  final Color? color;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +102,12 @@ class AddButton extends StatelessWidget {
       height: 52,
       width: 52,
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: color,
         borderRadius: BorderRadius.circular(100),
       ),
       child: IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.add, color: Colors.white),
+        onPressed: onPressed,
+        icon: Icon(Icons.add, color: iconColor),
       ),
     );
   }
