@@ -11,6 +11,9 @@ class CustomTextFormFiled extends StatelessWidget {
     this.padding,
     this.borderColor,
     this.onTap,
+    this.controller,
+    this.icon,
+    this.showPrefixIcon = true,
   });
   final bool isEnabled;
   final String? title;
@@ -19,6 +22,9 @@ class CustomTextFormFiled extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? borderColor;
   final void Function()? onTap;
+  final TextEditingController? controller;
+  final IconData? icon;
+  final bool showPrefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +41,13 @@ class CustomTextFormFiled extends StatelessWidget {
         enabled: isEnabled,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
+          alignLabelWithHint: false,
+          prefixIcon: showPrefixIcon
+              ? Container(padding: EdgeInsets.all(20), child: Icon(icon))
+              : null,
           fillColor: AppColors.secondaryColor,
           filled: true,
-          contentPadding: padding,
+          contentPadding: padding ?? EdgeInsets.symmetric(vertical: 20),
           hintText: hintText,
           hintStyle: TextStyle(
             color: AppColors.black,

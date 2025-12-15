@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_categories.dart';
+import 'package:money_flow/views/add_transaction_view.dart';
 import 'package:money_flow/widgets/transaction_tile.dart';
 
 class CategoryView extends StatelessWidget {
   const CategoryView({super.key});
+  static late String category;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,14 @@ class CategoryView extends StatelessWidget {
         child: ListView.builder(
           itemCount: 10,
           itemBuilder: (context, index) => TransactionTile(
+            onTap: () {
+              category = AppCategories.expenseCategories.keys.toList()[index];
+              AddTransactionView.categoryController.text = category;
+              AddTransactionView.categoryTitle.value = category;
+              AddTransactionView.icon = AppCategories.expenseCategories.values
+                  .toList()[index];
+              Navigator.pop(context);
+            },
             isLastOne: false,
             isCategory: true,
             icon: AppCategories.expenseCategories.values.toList()[index],
