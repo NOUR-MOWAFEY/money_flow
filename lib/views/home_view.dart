@@ -18,6 +18,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: AlignmentGeometry.bottomCenter,
       children: [
         Scaffold(
           backgroundColor: AppColors.primaryColor,
@@ -26,30 +27,26 @@ class _HomeViewState extends State<HomeView> {
             child: isHome ? HomeBody() : AnalyticsBody(),
           ),
         ),
-        Align(
-          alignment: AlignmentDirectional.bottomCenter,
-          child: FloatingBottomNavBar(
-            addButtonIconColor: isHome
-                ? AppColors.white
-                : AppColors.primaryColor,
-            addButtonColor: isHome ? AppColors.primaryColor : AppColors.white,
-            addButtonOnPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddTransactionView()),
-              );
-            },
-            indexOneOnPressed: () {
-              setState(() {
-                isHome = false;
-              });
-            },
-            indexZeroOnPressed: () {
-              setState(() {
-                isHome = true;
-              });
-            },
-          ),
+        CustomFloatingBottomNavBar(
+          indexOneOnPressed: () {
+            setState(() {
+              isHome = false;
+            });
+          },
+          indexZeroOnPressed: () {
+            setState(() {
+              isHome = true;
+            });
+          },
+          bottomPositioned: 37.5,
+          addButtonColor: isHome ? AppColors.primaryColor : AppColors.white,
+          addButtonIconColor: isHome ? AppColors.white : AppColors.primaryColor,
+          addButtonOnPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddTransactionView()),
+            );
+          },
         ),
       ],
     );

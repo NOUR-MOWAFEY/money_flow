@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppCategories {
-  static Map<String, IconData> expenseCategories = const {
+  static final Map<String, IconData> expenseCategories = const {
     'Food': Icons.fastfood,
     'Transport': Icons.directions_car,
     'Shopping': Icons.shopping_bag,
