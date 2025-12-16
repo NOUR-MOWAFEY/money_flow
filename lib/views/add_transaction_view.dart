@@ -1,28 +1,91 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_flow/constants/app_colors.dart';
+import 'package:money_flow/models/transaction_model.dart';
+import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/views/category_view.dart';
 import 'package:money_flow/widgets/custom_button.dart';
 import 'package:money_flow/widgets/custom_text_form_field.dart';
+import 'package:money_flow/widgets/home_view_header.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class AddTransactionView extends StatelessWidget {
   const AddTransactionView({super.key});
   static final categoryController = TextEditingController();
   static final dateController = TextEditingController();
+  static final amountController = TextEditingController();
   static final noteController = TextEditingController();
   static final categoryTitle = ValueNotifier<String>('Category');
   static final ValueNotifier<String> dateTitle = ValueNotifier<String>('Date');
+  static final ValueNotifier<int> transactionType = ValueNotifier<int>(0);
   static IconData? icon;
 
   @override
   Widget build(BuildContext context) {
+    transactionType.value = 0;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: const CustomButton(),
+          child: CustomButton(
+            title: 'Save',
+            onTap: () async {
+              if (amountController.text.isNotEmpty &&
+                  categoryController.text.isNotEmpty &&
+                  dateController.text.isNotEmpty) {
+                var amount = transactionType.value == 1
+                    ? double.parse(amountController.text)
+                    : double.parse('-${amountController.text}');
+                var transaction = TransactionModel(
+                  title: categoryController.text,
+                  amount: amount,
+                  date: DateFormat.yMMMd().parse(dateController.text),
+                  isExpense: transactionType.value == 0,
+                );
+
+                await HiveService().addTransaction(transaction);
+                var transactions = HiveService().getTransactions();
+                log(transactions.toString());
+
+                BalanceController.updateBalance();
+
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Transaction Added Successfully!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  Navigator.pop(context);
+                  await Future.delayed(Duration(seconds: 1));
+                  _clearFields();
+                }
+              } else {
+                toastification.show(
+                  icon: Icon(Icons.warning_rounded, color: AppColors.white),
+                  foregroundColor: AppColors.white,
+                  backgroundColor: Colors.red,
+                  borderSide: BorderSide(color: Colors.red),
+                  context: context, // optional if you use ToastificationWrapper
+                  title: Text(
+                    'Please fill all fields',
+                    style: TextStyle(color: AppColors.white),
+                  ),
+                  autoCloseDuration: const Duration(seconds: 3),
+                );
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     content: Text('Please fill all fields'),
+                //     backgroundColor: Colors.red,
+                //   ),
+                // );
+              }
+            },
+          ),
         ),
       ),
       appBar: AppBar(
@@ -48,7 +111,10 @@ class AddTransactionView extends StatelessWidget {
               initialLabelIndex: 0,
               totalSwitches: 2,
               labels: ['Expenses', 'Income'],
-              onToggle: (index) {},
+              onToggle: (index) {
+                transactionType.value = index!;
+                _clearFields(clearBalance: false);
+              },
             ),
             const SizedBox(height: 32),
             const Expanded(
@@ -74,6 +140,7 @@ class ExpensesBody extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 64),
           child: CustomTextFormFiled(
+            controller: AddTransactionView.amountController,
             showPrefixIcon: false,
             hintText: 'EGP 0',
             border: 80,
@@ -139,9 +206,17 @@ class ExpensesBody extends StatelessWidget {
   }
 }
 
-void _clearFields() {
-  AddTransactionView.categoryController.clear();
-  AddTransactionView.dateController.clear();
-  AddTransactionView.categoryTitle.value = 'Category';
-  AddTransactionView.dateTitle.value = 'Date';
+void _clearFields({bool clearBalance = true}) {
+  if (clearBalance) {
+    AddTransactionView.categoryController.clear();
+    AddTransactionView.dateController.clear();
+    AddTransactionView.amountController.clear();
+    AddTransactionView.categoryTitle.value = 'Category';
+    AddTransactionView.dateTitle.value = 'Date';
+  } else {
+    AddTransactionView.categoryController.clear();
+    AddTransactionView.dateController.clear();
+    AddTransactionView.categoryTitle.value = 'Category';
+    AddTransactionView.dateTitle.value = 'Date';
+  }
 }

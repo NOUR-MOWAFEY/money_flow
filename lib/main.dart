@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/constants/app_theme.dart';
+import 'package:money_flow/models/transaction_model.dart';
 import 'package:money_flow/views/home_view.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TransactionModelAdapter());
+  await Hive.openBox<TransactionModel>('transactions');
   runApp(const MoneyFlowApp());
 }
 

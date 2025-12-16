@@ -4,6 +4,7 @@ import 'package:money_flow/views/add_transaction_view.dart';
 import 'package:money_flow/widgets/analytics_body.dart';
 import 'package:money_flow/widgets/floating_bottom_nav_bar.dart';
 import 'package:money_flow/widgets/home_body.dart';
+import 'package:money_flow/widgets/home_view_header.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -16,6 +17,12 @@ class _HomeViewState extends State<HomeView> {
   bool isHome = true;
 
   @override
+  void initState() {
+    BalanceController.updateBalance();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: AlignmentGeometry.bottomCenter,
@@ -24,7 +31,15 @@ class _HomeViewState extends State<HomeView> {
           backgroundColor: AppColors.primaryColor,
           body: SafeArea(
             bottom: false,
-            child: isHome ? HomeBody() : AnalyticsBody(),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: HomeViewHeader(),
+                ),
+                isHome ? HomeBody() : AnalyticsBody(),
+              ],
+            ),
           ),
         ),
         CustomFloatingBottomNavBar(

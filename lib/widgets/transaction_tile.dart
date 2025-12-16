@@ -8,12 +8,16 @@ class TransactionTile extends StatelessWidget {
     this.isCategory = false,
     required this.icon,
     required this.title,
+    this.amount,
+    this.date,
     this.onTap,
   });
   final bool isLastOne;
   final bool isCategory;
   final IconData icon;
   final String title;
+  final String? amount;
+  final String? date;
   final void Function()? onTap;
 
   @override
@@ -53,11 +57,11 @@ class TransactionTile extends StatelessWidget {
                       ),
                       isCategory
                           ? SizedBox()
-                          : Text('jun 06 2025', style: TextStyle(fontSize: 12)),
+                          : Text(date ?? '', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                   Spacer(),
-                  isCategory ? SizedBox() : Text('-EGP 100'),
+                  isCategory ? SizedBox() : Text(amount ?? ''),
                 ],
               ),
             ),

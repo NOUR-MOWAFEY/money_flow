@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, this.onTap});
+  const CustomButton({super.key, this.onTap, required this.title});
   final void Function()? onTap;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class CustomButton extends StatelessWidget {
         width: double.infinity,
         child: Center(
           child: Text(
-            'Save',
+            title,
             style: TextStyle(
               color: AppColors.white,
               fontWeight: FontWeight.bold,

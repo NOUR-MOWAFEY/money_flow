@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+  const CustomAppBar({super.key, this.onTap});
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,13 @@ class CustomAppBar extends StatelessWidget {
             color: const Color.fromARGB(83, 158, 158, 158),
             borderRadius: BorderRadius.circular(70),
           ),
-          child: const Icon(Icons.settings, color: AppColors.white),
+          child: GestureDetector(
+            onTap: onTap,
+            child: const Icon(
+              Icons.restart_alt_outlined,
+              color: AppColors.white,
+            ),
+          ),
         ),
       ],
     );

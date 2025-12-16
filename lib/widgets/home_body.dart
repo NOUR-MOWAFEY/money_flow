@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_flow/constants/app_categories.dart';
-import 'package:money_flow/constants/app_colors.dart';
-import 'package:money_flow/widgets/custom_app_bar.dart';
+import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/widgets/transaction_tile.dart';
 
 class HomeBody extends StatelessWidget {
@@ -9,60 +9,42 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 16),
-              const CustomAppBar(),
-              const SizedBox(height: 24),
-              const Text(
-                'Available Balance',
-                style: TextStyle(fontSize: 16, color: AppColors.white),
-              ),
-              const Text(
-                'EGP 5100.50',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.white,
-                ),
-              ),
-              const SizedBox(height: 30),
-            ],
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(26),
+            topRight: Radius.circular(26),
           ),
         ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(26),
-                topRight: Radius.circular(26),
-              ),
-            ),
-            child: Container(
-              decoration: BoxDecoration(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) => TransactionTile(
-                    isLastOne: index == 9 ? true : false,
-                    icon: AppCategories.expenseCategories.values
-                        .toList()[index],
-                    title: AppCategories.expenseCategories.keys.toList()[index],
-                  ),
-                  // ),
+        child: ValueListenableBuilder(
+          valueListenable: HiveService().listenable,
+          builder: (context, box, _) {
+            var transactions = box.values.toList().reversed.toList();
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ListView.builder(
+                itemCount: transactions.length,
+                itemBuilder: (context, index) => TransactionTile(
+                  isLastOne: index == transactions.length - 1 ? true : false,
+                  icon: transactions[index].isExpense
+                      ? AppCategories.expenseCategories[transactions[index]
+                                .title] ??
+                            Icons.error
+                      : AppCategories.incomeCategories[transactions[index]
+                                .title] ??
+                            Icons.error,
+                  title: transactions[index].title,
+                  amount:
+                      'EGP ${transactions[index].amount.toStringAsFixed(2)}',
+                  date: DateFormat.yMMMd().format(transactions[index].date),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 }

@@ -31,6 +31,7 @@ class CustomTextFormFiled extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: TextFormField(
+        controller: controller,
         style: TextStyle(
           color: AppColors.black,
           fontSize: 22,
