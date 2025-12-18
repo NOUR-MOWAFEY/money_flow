@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/constants/app_theme.dart';
 import 'package:money_flow/models/transaction_model.dart';
+import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/views/home_view.dart';
+import 'package:money_flow/views/profile_view.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TransactionModelAdapter());
   await Hive.openBox<TransactionModel>('transactions');
+  await Hive.openBox('user');
   runApp(const MoneyFlowApp());
 }
 
@@ -19,7 +22,7 @@ class MoneyFlowApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.mainTheme(),
-      home: const HomeView(),
+      home: HiveService.isFirstTime ? const ProfileView() : const HomeView(),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:money_flow/constants/app_colors.dart';
 class AppTheme {
   static ThemeData mainTheme() {
     return ThemeData(
+      fontFamily: 'Poppins',
       primaryColor: AppColors.primaryColor,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(foregroundColor: AppColors.primaryColor),
@@ -37,6 +38,7 @@ class AppTheme {
         backgroundColor: AppColors.white,
         centerTitle: true,
         titleTextStyle: TextStyle(
+          // fontFamily: 'Poppins',
           fontWeight: FontWeight.bold,
           fontSize: 18,
           color: AppColors.black,

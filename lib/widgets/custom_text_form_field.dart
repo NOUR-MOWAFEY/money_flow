@@ -14,6 +14,10 @@ class CustomTextFormFiled extends StatelessWidget {
     this.controller,
     this.icon,
     this.showPrefixIcon = true,
+    this.centerText = true,
+    this.keyboardType,
+    this.showCursor = false,
+    this.isNormalTextField = false,
   });
   final bool isEnabled;
   final String? title;
@@ -25,22 +29,29 @@ class CustomTextFormFiled extends StatelessWidget {
   final TextEditingController? controller;
   final IconData? icon;
   final bool showPrefixIcon;
+  final bool centerText;
+  final TextInputType? keyboardType;
+  final bool showCursor;
+  final bool isNormalTextField;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: TextFormField(
+        cursorColor: AppColors.primaryColor,
         controller: controller,
-        style: TextStyle(
-          color: AppColors.black,
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-        ),
-        showCursor: false,
-        textAlign: TextAlign.center,
+        style: isNormalTextField
+            ? null
+            : TextStyle(
+                color: AppColors.black,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+        showCursor: showCursor,
+        textAlign: centerText ? TextAlign.center : TextAlign.start,
         enabled: isEnabled,
-        keyboardType: TextInputType.number,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           alignLabelWithHint: false,
           prefixIcon: showPrefixIcon
@@ -50,11 +61,13 @@ class CustomTextFormFiled extends StatelessWidget {
           filled: true,
           contentPadding: padding ?? EdgeInsets.symmetric(vertical: 20),
           hintText: hintText,
-          hintStyle: TextStyle(
-            color: AppColors.black,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
+          hintStyle: isNormalTextField
+              ? TextStyle(
+                  color: AppColors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                )
+              : null,
           label: title == null ? null : Text(title!),
           labelStyle: TextStyle(
             color: AppColors.black,

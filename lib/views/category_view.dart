@@ -19,11 +19,12 @@ class CategoryView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: ListView.builder(
+        child: ListView.separated(
           itemCount: AddTransactionView.transactionType.value == 0
               ? AppCategories.expenseCategories.length
               : AppCategories.incomeCategories.length,
           itemBuilder: (context, index) => TransactionTile(
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             onTap: () {
               category = AddTransactionView.transactionType.value == 0
                   ? AppCategories.expenseCategories.keys.toList()[index]
@@ -45,6 +46,9 @@ class CategoryView extends StatelessWidget {
                 ? AppCategories.expenseCategories.keys.toList()[index]
                 : AppCategories.incomeCategories.keys.toList()[index],
           ),
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(height: 4);
+          },
         ),
       ),
     );

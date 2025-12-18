@@ -34,7 +34,20 @@ class AddTransactionView extends StatelessWidget {
           child: CustomButton(
             title: 'Save',
             onTap: () async {
-              if (amountController.text.isNotEmpty &&
+              if (num.tryParse(amountController.text) == null) {
+                toastification.show(
+                  icon: Icon(Icons.warning_rounded, color: AppColors.white),
+                  foregroundColor: AppColors.white,
+                  backgroundColor: Colors.red,
+                  borderSide: BorderSide(color: Colors.red),
+                  context: context, // optional if you use ToastificationWrapper
+                  title: Text(
+                    'Please enter a valid amount',
+                    style: TextStyle(color: AppColors.white),
+                  ),
+                  autoCloseDuration: const Duration(seconds: 3),
+                );
+              } else if (amountController.text.isNotEmpty &&
                   categoryController.text.isNotEmpty &&
                   dateController.text.isNotEmpty) {
                 var amount = transactionType.value == 1
@@ -54,13 +67,22 @@ class AddTransactionView extends StatelessWidget {
                 BalanceController.updateBalance();
 
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Transaction Added Successfully!'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
                   Navigator.pop(context);
+                  toastification.show(
+                    icon: Icon(
+                      Icons.check_circle_outline,
+                      color: AppColors.white,
+                    ),
+                    foregroundColor: AppColors.white,
+                    backgroundColor: Colors.green,
+                    borderSide: BorderSide(color: Colors.green),
+                    context: context,
+                    title: Text(
+                      'Transaction added successfully',
+                      style: TextStyle(color: AppColors.white),
+                    ),
+                    autoCloseDuration: const Duration(seconds: 3),
+                  );
                   await Future.delayed(Duration(seconds: 1));
                   _clearFields();
                 }
@@ -72,17 +94,11 @@ class AddTransactionView extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.red),
                   context: context, // optional if you use ToastificationWrapper
                   title: Text(
-                    'Please fill all fields',
+                    'Please fill all fields with valid data',
                     style: TextStyle(color: AppColors.white),
                   ),
                   autoCloseDuration: const Duration(seconds: 3),
                 );
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //     content: Text('Please fill all fields'),
-                //     backgroundColor: Colors.red,
-                //   ),
-                // );
               }
             },
           ),
@@ -102,36 +118,41 @@ class AddTransactionView extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            ToggleSwitch(
-              minWidth: double.infinity,
-              initialLabelIndex: 0,
-              totalSwitches: 2,
-              labels: ['Expenses', 'Income'],
-              onToggle: (index) {
-                transactionType.value = index!;
-                _clearFields(clearBalance: false);
-              },
-            ),
-            const SizedBox(height: 32),
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 28),
-                child: ExpensesBody(),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              ToggleSwitch(
+                minWidth: double.infinity,
+                initialLabelIndex: 0,
+                totalSwitches: 2,
+                labels: ['Expenses', 'Income'],
+                onToggle: (index) {
+                  transactionType.value = index!;
+                  _clearFields(clearBalance: false);
+                },
               ),
-            ),
-          ],
+              const SizedBox(height: 32),
+              const Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 28),
+                  child: AddTransactionBody(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class ExpensesBody extends StatelessWidget {
-  const ExpensesBody({super.key});
+class AddTransactionBody extends StatelessWidget {
+  const AddTransactionBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +161,7 @@ class ExpensesBody extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 64),
           child: CustomTextFormFiled(
+            keyboardType: TextInputType.number,
             controller: AddTransactionView.amountController,
             showPrefixIcon: false,
             hintText: 'EGP 0',
@@ -160,10 +182,13 @@ class ExpensesBody extends StatelessWidget {
                   ? 'Category'
                   : AddTransactionView.categoryController.text,
               isEnabled: false,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CategoryView()),
-              ),
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CategoryView()),
+                );
+              },
             );
           },
         ),
@@ -180,6 +205,7 @@ class ExpensesBody extends StatelessWidget {
                   : AddTransactionView.dateController.text,
               isEnabled: false,
               onTap: () async {
+                FocusManager.instance.primaryFocus?.unfocus();
                 DateTime? date;
                 String formattedDate;
 
@@ -213,10 +239,12 @@ void _clearFields({bool clearBalance = true}) {
     AddTransactionView.amountController.clear();
     AddTransactionView.categoryTitle.value = 'Category';
     AddTransactionView.dateTitle.value = 'Date';
+    AddTransactionView.icon = Icons.category_rounded;
   } else {
     AddTransactionView.categoryController.clear();
     AddTransactionView.dateController.clear();
     AddTransactionView.categoryTitle.value = 'Category';
     AddTransactionView.dateTitle.value = 'Date';
+    AddTransactionView.icon = Icons.category_rounded;
   }
 }

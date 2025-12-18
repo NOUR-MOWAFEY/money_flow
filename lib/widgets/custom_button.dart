@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, this.onTap, required this.title});
+  const CustomButton({
+    super.key,
+    this.onTap,
+    required this.title,
+    this.height = 60,
+  });
   final void Function()? onTap;
   final String title;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +21,7 @@ class CustomButton extends StatelessWidget {
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(20),
         ),
-        height: 60,
+        height: height,
         width: double.infinity,
         child: Center(
           child: Text(
