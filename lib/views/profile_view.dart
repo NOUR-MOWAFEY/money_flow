@@ -23,7 +23,6 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     super.initState();
-    // Load existing data
     _nameController.text = HiveService.userName;
     String imagePath = HiveService.userImage;
     if (imagePath.isNotEmpty) {
@@ -72,7 +71,7 @@ class _ProfileViewState extends State<ProfileView> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
       ),
       body: Padding(

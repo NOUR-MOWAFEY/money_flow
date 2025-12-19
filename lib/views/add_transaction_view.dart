@@ -1,31 +1,47 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:money_flow/constants/app_colors.dart';
-import 'package:money_flow/models/transaction_model.dart';
-import 'package:money_flow/services/hive_service.dart';
-import 'package:money_flow/views/category_view.dart';
+import 'package:money_flow/utils/add_transaction_save_button.dart';
+import 'package:money_flow/widgets/add_transaction_body.dart';
 import 'package:money_flow/widgets/custom_button.dart';
-import 'package:money_flow/widgets/custom_text_form_field.dart';
-import 'package:money_flow/widgets/home_view_header.dart';
-import 'package:toastification/toastification.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class AddTransactionView extends StatelessWidget {
+class AddTransactionView extends StatefulWidget {
   const AddTransactionView({super.key});
-  static final categoryController = TextEditingController();
-  static final dateController = TextEditingController();
-  static final amountController = TextEditingController();
-  static final noteController = TextEditingController();
-  static final categoryTitle = ValueNotifier<String>('Category');
-  static final ValueNotifier<String> dateTitle = ValueNotifier<String>('Date');
-  static final ValueNotifier<int> transactionType = ValueNotifier<int>(0);
-  static IconData? icon;
+
+  @override
+  State<AddTransactionView> createState() => _AddTransactionViewState();
+}
+
+class _AddTransactionViewState extends State<AddTransactionView> {
+  late TextEditingController categoryController;
+  late TextEditingController dateController;
+  late TextEditingController amountController;
+  late ValueNotifier<int> transactionType;
+  late ValueNotifier<String> categoryTitle;
+  late ValueNotifier<String> dateTitle;
+  late ValueNotifier<IconData?> iconNotifier;
+
+  @override
+  void initState() {
+    categoryController = TextEditingController();
+    dateController = TextEditingController();
+    amountController = TextEditingController();
+    transactionType = ValueNotifier<int>(0);
+    categoryTitle = ValueNotifier<String>('Category');
+    dateTitle = ValueNotifier<String>('Date');
+    iconNotifier = ValueNotifier<IconData?>(Icons.category_rounded);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    categoryController.dispose();
+    dateController.dispose();
+    amountController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    transactionType.value = 0;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: SafeArea(
@@ -33,73 +49,14 @@ class AddTransactionView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: CustomButton(
             title: 'Save',
-            onTap: () async {
-              if (num.tryParse(amountController.text) == null) {
-                toastification.show(
-                  icon: Icon(Icons.warning_rounded, color: AppColors.white),
-                  foregroundColor: AppColors.white,
-                  backgroundColor: Colors.red,
-                  borderSide: BorderSide(color: Colors.red),
-                  context: context, // optional if you use ToastificationWrapper
-                  title: Text(
-                    'Please enter a valid amount',
-                    style: TextStyle(color: AppColors.white),
-                  ),
-                  autoCloseDuration: const Duration(seconds: 3),
-                );
-              } else if (amountController.text.isNotEmpty &&
-                  categoryController.text.isNotEmpty &&
-                  dateController.text.isNotEmpty) {
-                var amount = transactionType.value == 1
-                    ? double.parse(amountController.text)
-                    : double.parse('-${amountController.text}');
-                var transaction = TransactionModel(
-                  title: categoryController.text,
-                  amount: amount,
-                  date: DateFormat.yMMMd().parse(dateController.text),
-                  isExpense: transactionType.value == 0,
-                );
-
-                await HiveService().addTransaction(transaction);
-                var transactions = HiveService().getTransactions();
-                log(transactions.toString());
-
-                BalanceController.updateBalance();
-
-                if (context.mounted) {
-                  Navigator.pop(context);
-                  toastification.show(
-                    icon: Icon(
-                      Icons.check_circle_outline,
-                      color: AppColors.white,
-                    ),
-                    foregroundColor: AppColors.white,
-                    backgroundColor: Colors.green,
-                    borderSide: BorderSide(color: Colors.green),
-                    context: context,
-                    title: Text(
-                      'Transaction added successfully',
-                      style: TextStyle(color: AppColors.white),
-                    ),
-                    autoCloseDuration: const Duration(seconds: 3),
-                  );
-                  await Future.delayed(Duration(seconds: 1));
-                  _clearFields();
-                }
-              } else {
-                toastification.show(
-                  icon: Icon(Icons.warning_rounded, color: AppColors.white),
-                  foregroundColor: AppColors.white,
-                  backgroundColor: Colors.red,
-                  borderSide: BorderSide(color: Colors.red),
-                  context: context, // optional if you use ToastificationWrapper
-                  title: Text(
-                    'Please fill all fields with valid data',
-                    style: TextStyle(color: AppColors.white),
-                  ),
-                  autoCloseDuration: const Duration(seconds: 3),
-                );
-              }
+            onTap: () {
+              onSave(
+                amountController,
+                categoryController,
+                dateController,
+                transactionType,
+                context,
+              );
             },
           ),
         ),
@@ -109,7 +66,6 @@ class AddTransactionView extends StatelessWidget {
           onPressed: () async {
             Navigator.pop(context);
             await Future.delayed(Duration(seconds: 1));
-            _clearFields();
           },
           icon: Icon(Icons.arrow_back_ios_new_rounded),
         ),
@@ -118,133 +74,42 @@ class AddTransactionView extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(height: 24),
-              ToggleSwitch(
-                minWidth: double.infinity,
-                initialLabelIndex: 0,
-                totalSwitches: 2,
-                labels: ['Expenses', 'Income'],
-                onToggle: (index) {
-                  transactionType.value = index!;
-                  _clearFields(clearBalance: false);
-                },
-              ),
-              const SizedBox(height: 32),
-              const Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 28),
-                  child: AddTransactionBody(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 24),
+            ToggleSwitch(
+              minWidth: double.infinity,
+              initialLabelIndex: 0,
+              totalSwitches: 2,
+              labels: ['Expenses', 'Income'],
+              onToggle: (index) {
+                transactionType.value = index!;
+                categoryController.clear();
+                dateController.clear();
+                categoryTitle.value = 'Category';
+                dateTitle.value = 'Date';
+                iconNotifier.value = Icons.category_rounded;
+              },
+            ),
+            const SizedBox(height: 32),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 28),
+                child: AddTransactionBody(
+                  amountController: amountController,
+                  categoryController: categoryController,
+                  dateController: dateController,
+                  transactionType: transactionType,
+                  categoryTitle: categoryTitle,
+                  dateTitle: dateTitle,
+                  iconNotifier: iconNotifier,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
-  }
-}
-
-class AddTransactionBody extends StatelessWidget {
-  const AddTransactionBody({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 64),
-          child: CustomTextFormFiled(
-            keyboardType: TextInputType.number,
-            controller: AddTransactionView.amountController,
-            showPrefixIcon: false,
-            hintText: 'EGP 0',
-            border: 80,
-            padding: EdgeInsets.symmetric(vertical: 24),
-            borderColor: AppColors.grey,
-          ),
-        ),
-        const SizedBox(height: 32),
-
-        // Category field
-        ValueListenableBuilder<String>(
-          valueListenable: AddTransactionView.categoryTitle,
-          builder: (BuildContext context, String value, Widget? child) {
-            return CustomTextFormFiled(
-              icon: AddTransactionView.icon ?? Icons.category_rounded,
-              title: AddTransactionView.categoryController.text.isEmpty
-                  ? 'Category'
-                  : AddTransactionView.categoryController.text,
-              isEnabled: false,
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CategoryView()),
-                );
-              },
-            );
-          },
-        ),
-
-        // Date Field
-        const SizedBox(height: 16),
-        ValueListenableBuilder(
-          valueListenable: AddTransactionView.dateTitle,
-          builder: (BuildContext context, value, Widget? child) {
-            return CustomTextFormFiled(
-              icon: Icons.calendar_month_sharp,
-              title: AddTransactionView.dateController.text == ''
-                  ? 'Date'
-                  : AddTransactionView.dateController.text,
-              isEnabled: false,
-              onTap: () async {
-                FocusManager.instance.primaryFocus?.unfocus();
-                DateTime? date;
-                String formattedDate;
-
-                date = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2010),
-                  lastDate: DateTime.now(),
-                );
-
-                date == null
-                    ? formattedDate = 'Date'
-                    : formattedDate = DateFormat.yMMMd()
-                          .format(date)
-                          .toString();
-                AddTransactionView.dateController.text = formattedDate;
-                AddTransactionView.dateTitle.value = formattedDate;
-              },
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-void _clearFields({bool clearBalance = true}) {
-  if (clearBalance) {
-    AddTransactionView.categoryController.clear();
-    AddTransactionView.dateController.clear();
-    AddTransactionView.amountController.clear();
-    AddTransactionView.categoryTitle.value = 'Category';
-    AddTransactionView.dateTitle.value = 'Date';
-    AddTransactionView.icon = Icons.category_rounded;
-  } else {
-    AddTransactionView.categoryController.clear();
-    AddTransactionView.dateController.clear();
-    AddTransactionView.categoryTitle.value = 'Category';
-    AddTransactionView.dateTitle.value = 'Date';
-    AddTransactionView.icon = Icons.category_rounded;
   }
 }

@@ -5,13 +5,24 @@ import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/views/profile_view.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   const CustomAppBar({super.key, this.onTap});
   final void Function()? onTap;
 
   @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  late String imagePath;
+  @override
+  void initState() {
+    imagePath = HiveService.userImage;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String imagePath = HiveService.userImage;
     return Row(
       children: [
         GestureDetector(
@@ -51,7 +62,7 @@ class CustomAppBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(70),
           ),
           child: GestureDetector(
-            onTap: onTap,
+            onTap: widget.onTap,
             child: const Icon(
               Icons.restart_alt_outlined,
               color: AppColors.white,

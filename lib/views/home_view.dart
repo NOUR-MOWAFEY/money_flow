@@ -31,7 +31,7 @@ class _HomeViewState extends State<HomeView> {
           backgroundColor: AppColors.primaryColor,
           body: SafeArea(
             bottom: false,
-            child: isHome ? HomeBody() : AnalyticsBody(),
+            child: isHome ? const HomeBody() : const AnalyticsBody(),
           ),
         ),
         CustomFloatingBottomNavBar(

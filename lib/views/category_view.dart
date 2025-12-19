@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_categories.dart';
-import 'package:money_flow/views/add_transaction_view.dart';
 import 'package:money_flow/widgets/transaction_tile.dart';
 
 class CategoryView extends StatelessWidget {
-  const CategoryView({super.key});
+  const CategoryView({
+    super.key,
+
+    required this.categoryController,
+    required this.transactionType,
+    required this.categoryTitle,
+    required this.iconNotifier,
+  });
   static late String category;
+  final TextEditingController categoryController;
+  final ValueNotifier<int> transactionType;
+  final ValueNotifier<String> categoryTitle;
+  final ValueNotifier<IconData?> iconNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -18,36 +28,35 @@ class CategoryView extends StatelessWidget {
         title: Text('Select Category'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
         child: ListView.separated(
-          itemCount: AddTransactionView.transactionType.value == 0
+          itemCount: transactionType.value == 0
               ? AppCategories.expenseCategories.length
               : AppCategories.incomeCategories.length,
           itemBuilder: (context, index) => TransactionTile(
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             onTap: () {
-              category = AddTransactionView.transactionType.value == 0
+              category = transactionType.value == 0
                   ? AppCategories.expenseCategories.keys.toList()[index]
                   : AppCategories.incomeCategories.keys.toList()[index];
-              AddTransactionView.categoryController.text = category;
-              AddTransactionView.categoryTitle.value = category;
-              AddTransactionView.icon =
-                  AddTransactionView.transactionType.value == 0
+              categoryController.text = category;
+              categoryTitle.value = category;
+              iconNotifier.value = transactionType.value == 0
                   ? AppCategories.expenseCategories.values.toList()[index]
                   : AppCategories.incomeCategories.values.toList()[index];
               Navigator.pop(context);
             },
             isLastOne: false,
             isCategory: true,
-            icon: AddTransactionView.transactionType.value == 0
+            icon: transactionType.value == 0
                 ? AppCategories.expenseCategories.values.toList()[index]
                 : AppCategories.incomeCategories.values.toList()[index],
-            title: AddTransactionView.transactionType.value == 0
+            title: transactionType.value == 0
                 ? AppCategories.expenseCategories.keys.toList()[index]
                 : AppCategories.incomeCategories.keys.toList()[index],
           ),
           separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(height: 4);
+            return SizedBox(height: 8);
           },
         ),
       ),
