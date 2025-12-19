@@ -42,6 +42,7 @@ class HiveService {
 
   Future<void> deleteTransaction(int index) async {
     await _box.deleteAt(index);
+    
   }
 
   List<TransactionModel> getTransactions() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_flow/constants/app_categories.dart';
 import 'package:money_flow/services/hive_service.dart';
+import 'package:money_flow/utils/show_confirmation_dialog.dart';
 import 'package:money_flow/widgets/home_view_header.dart';
 import 'package:money_flow/widgets/transaction_tile.dart';
 
@@ -34,6 +35,19 @@ class HomeBody extends StatelessWidget {
                   child: ListView.separated(
                     itemCount: transactions.length,
                     itemBuilder: (context, index) => TransactionTile(
+                      onLongPress: () {
+                        ShowConfirmationDialog.showConfirmationDialog(
+                          context,
+                          subtitle:
+                              'Are you Sure you want to delete this transaction',
+                          onTapNo: () => Navigator.pop(context),
+                          onTapYes: () {
+                            Navigator.pop(context);
+                            HiveService().deleteTransaction(index);
+                            BalanceController.updateBalance();
+                          },
+                        );
+                      },
                       isFirstOne: index == 0,
                       isLastOne: index == transactions.length - 1
                           ? true

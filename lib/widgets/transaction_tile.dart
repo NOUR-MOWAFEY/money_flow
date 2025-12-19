@@ -13,6 +13,7 @@ class TransactionTile extends StatelessWidget {
     this.onTap,
     this.isFirstOne = false,
     this.padding,
+    this.onLongPress,
   });
   final bool isLastOne;
   final bool isCategory;
@@ -23,6 +24,7 @@ class TransactionTile extends StatelessWidget {
   final void Function()? onTap;
   final bool isFirstOne;
   final EdgeInsetsGeometry? padding;
+  final void Function()? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class TransactionTile extends StatelessWidget {
         children: [
           isFirstOne ? const SizedBox(height: 20) : SizedBox(),
           GestureDetector(
+            onLongPress: onLongPress,
             onTap: onTap,
             child: Container(
               padding: padding,
