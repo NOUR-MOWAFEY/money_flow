@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/constants/app_theme.dart';
 import 'package:money_flow/models/transaction_model.dart';
-import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/views/home_view.dart';
-import 'package:money_flow/views/profile_view.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -22,7 +20,7 @@ class MoneyFlowApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.mainTheme(),
-      home: HiveService.isFirstTime ? const ProfileView() : const HomeView(),
+      home: const HomeView(),
     );
   }
 }

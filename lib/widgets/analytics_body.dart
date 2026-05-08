@@ -3,7 +3,7 @@ import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/widgets/custom_bar_chart.dart';
 import 'package:money_flow/widgets/custom_line_chart.dart';
-import 'package:money_flow/widgets/home_view_header.dart';
+import 'package:money_flow/widgets/home_view_app_bar.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class AnalyticsBody extends StatefulWidget {
@@ -40,7 +40,7 @@ class _AnalyticsBodyState extends State<AnalyticsBody> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: HomeViewHeader(),
+              child: HomeViewAppBar(),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

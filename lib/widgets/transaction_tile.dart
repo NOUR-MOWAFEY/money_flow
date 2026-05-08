@@ -32,7 +32,7 @@ class TransactionTile extends StatelessWidget {
       // height: isLastOne ? null : 80,
       child: Column(
         children: [
-          isFirstOne ? const SizedBox(height: 20) : SizedBox(),
+          isFirstOne ? const SizedBox(height: 1500) : SizedBox(),
           GestureDetector(
             onLongPress: onLongPress,
             onTap: onTap,

@@ -10,7 +10,9 @@ class AppColors {
     236,
     226,
   );
+
   static const white = Colors.white;
   static const grey = Colors.grey;
+  static const greyTrasparent = Color.fromARGB(104, 175, 175, 175);
   static const black = Colors.black;
 }

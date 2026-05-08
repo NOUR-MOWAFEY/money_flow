@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:money_flow/constants/app_colors.dart';
+import 'package:money_flow/utils/show_confirmation_dialog.dart';
+
+class ResetButton extends StatelessWidget {
+  const ResetButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => ShowConfirmationDialog.showConfirmationDialog(context),
+      borderRadius: BorderRadius.circular(32),
+
+      child: Container(
+        height: 40,
+        width: 40,
+        decoration: BoxDecoration(
+          color: AppColors.greyTrasparent,
+          borderRadius: BorderRadius.circular(70),
+        ),
+        child: const Icon(Icons.restart_alt_outlined, color: AppColors.white),
+      ),
+    );
+  }
+}

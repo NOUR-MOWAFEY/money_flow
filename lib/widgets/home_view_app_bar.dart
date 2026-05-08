@@ -3,28 +3,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/services/hive_service.dart';
-import 'package:money_flow/utils/show_confirmation_dialog.dart';
-import 'package:money_flow/widgets/custom_app_bar.dart';
 
-class HomeViewHeader extends StatelessWidget {
-  const HomeViewHeader({super.key});
+class HomeViewAppBar extends StatelessWidget {
+  const HomeViewAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: .min,
       children: [
-        SizedBox(height: 16),
-        CustomAppBar(
-          onTap: () {
-            ShowConfirmationDialog.showConfirmationDialog(context);
-          },
-        ),
-        const SizedBox(height: 24),
         const Text(
           'Available Balance',
           style: TextStyle(fontSize: 16, color: AppColors.white),
         ),
+
         ValueListenableBuilder<double>(
           valueListenable: BalanceController.balance,
           builder: (context, value, _) {
@@ -38,8 +31,6 @@ class HomeViewHeader extends StatelessWidget {
             );
           },
         ),
-
-        const SizedBox(height: 30),
       ],
     );
   }
