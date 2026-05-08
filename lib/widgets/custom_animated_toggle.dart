@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 
 class CustomAnimatedToggle extends StatefulWidget {
-  const CustomAnimatedToggle({super.key});
+  const CustomAnimatedToggle({super.key, required this.onChange});
+
+  final void Function(TransactionType transactionType) onChange;
 
   @override
   State<CustomAnimatedToggle> createState() => _CustomAnimatedToggleState();
@@ -35,7 +37,10 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
       iconAnimationType: AnimationType.onSelected,
       selectedIconScale: 1.2,
 
-      onChanged: (value) => setState(() => this.value = value),
+      onChanged: (value) {
+        widget.onChange(value);
+        setState(() => this.value = value);
+      },
 
       style: ToggleStyle(
         borderColor: Colors.transparent,

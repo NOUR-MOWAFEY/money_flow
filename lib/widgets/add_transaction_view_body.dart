@@ -31,36 +31,36 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: ListView(
-            children: [
-              const SizedBox(height: 12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28),
+        child: ListView(
+          children: [
+            const SizedBox(height: 12),
 
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: CustomAnimatedToggle(),
+            // toggle switch
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: CustomAnimatedToggle(
+                onChange: (TransactionType transactionType) =>
+                    setState(() => this.transactionType = transactionType),
               ),
+            ),
 
-              const SizedBox(height: 32),
+            const SizedBox(height: 32),
 
-              AmountField(amountController: amountController),
+            // amount field
+            AmountField(amountController: amountController),
 
-              const SizedBox(height: 32),
+            const SizedBox(height: 32),
 
-              // Category field
-              CategoryField(
-                category: category,
-                transactionType: transactionType,
-              ),
+            // Category field
+            CategoryField(transactionType: transactionType),
 
-              const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-              // Date Field
-              DateField(dateController: dateController),
-            ],
-          ),
+            // Date Field
+            DateField(dateController: dateController),
+          ],
         ),
       ),
     );

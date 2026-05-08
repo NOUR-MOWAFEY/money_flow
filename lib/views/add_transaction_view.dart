@@ -24,7 +24,7 @@ class AddTransactionView extends StatelessWidget {
       ),
 
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: const AddTransactionViewBody(),
       ),
     );

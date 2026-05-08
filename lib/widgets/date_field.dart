@@ -15,7 +15,6 @@ class _DateFieldState extends State<DateField> {
   @override
   Widget build(BuildContext context) {
     return CustomTextFormFiled(
-      
       icon: Icons.calendar_month_sharp,
       title: widget.dateController.text,
       isEnabled: false,
@@ -32,7 +31,7 @@ class _DateFieldState extends State<DateField> {
         );
 
         date == null
-            ? formattedDate = 'Date'
+            ? formattedDate = DateFormatter.dateNow
             : formattedDate = DateFormatter.dateFormatter(date);
 
         setState(() => widget.dateController.text = formattedDate);
