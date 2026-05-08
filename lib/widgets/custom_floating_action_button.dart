@@ -12,6 +12,8 @@ class CustomFloatingActionButton extends StatelessWidget {
     return OpenContainer(
       closedShape: const CircleBorder(),
       closedColor: AppColors.primaryColor,
+      transitionDuration: Duration(milliseconds: 350),
+
       closedBuilder: (context, action) => Container(
         height: size,
         width: size,

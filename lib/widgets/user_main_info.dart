@@ -11,20 +11,20 @@ class UserMainInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: const EdgeInsets.only(top: 35),
 
-      leading: UserImage(),
+      leading: const UserImage(),
 
       title: Text(
         HiveService.userName,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
           color: AppColors.white,
         ),
       ),
 
-      trailing: ResetButton(),
+      trailing: const ResetButton(),
     );
   }
 }

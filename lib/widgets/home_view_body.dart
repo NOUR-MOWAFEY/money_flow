@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:money_flow/constants/app_categories.dart';
-import 'package:money_flow/services/hive_service.dart';
-import 'package:money_flow/utils/show_confirmation_dialog.dart';
 import 'package:money_flow/widgets/custom_sliver_app_bar.dart';
-import 'package:money_flow/widgets/home_view_app_bar.dart';
 import 'package:money_flow/widgets/transaction_tile.dart';
+import 'package:money_flow/widgets/transactions_section.dart';
 import 'package:money_flow/widgets/user_main_info.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -13,12 +9,10 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    return const CustomScrollView(
       slivers: [
-        const SliverToBoxAdapter(child: SizedBox(height: 35)),
-
         // user image + name + reset button
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: UserMainInfo(),
@@ -26,10 +20,339 @@ class HomeViewBody extends StatelessWidget {
         ),
 
         // available balance
-        const CustomSliverAppBar(),
+        CustomSliverAppBar(),
 
-        // const SliverToBoxAdapter(child: SizedBox(height: 60)),
-        SliverFillRemaining(
+        // transactions list
+        TransactionsSection(items: items),
+      ],
+    );
+  }
+
+  //! test data
+  static const List<TransactionTile> items = [
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+    TransactionTile(
+      icon: Icons.ac_unit_rounded,
+      title: 'Title',
+      amount: '200',
+      date: '20-10-2022',
+      isCategory: false,
+      padding: EdgeInsets.only(bottom: 12, right: 16, left: 16),
+      isLastOne: false,
+    ),
+  ];
+}
+
+
+
+/*
+
+  SliverFillRemaining(
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -79,7 +402,7 @@ class HomeViewBody extends StatelessWidget {
                       date: DateFormat.yMMMd().format(transactions[index].date),
                     ),
                     separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(height: 18);
+                      return const SizedBox(height: 18);
                     },
                   ),
                 );
@@ -87,7 +410,5 @@ class HomeViewBody extends StatelessWidget {
             ),
           ),
         ),
-      ],
-    );
-  }
-}
+
+ */

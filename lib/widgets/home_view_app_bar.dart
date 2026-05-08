@@ -15,7 +15,7 @@ class HomeViewAppBar extends StatelessWidget {
       children: [
         const Text(
           'Available Balance',
-          style: TextStyle(fontSize: 16, color: AppColors.white),
+          style: TextStyle(fontSize: 14, color: AppColors.white),
         ),
 
         ValueListenableBuilder<double>(
@@ -24,7 +24,7 @@ class HomeViewAppBar extends StatelessWidget {
             return Text(
               'EGP $value',
               style: const TextStyle(
-                fontSize: 32,
+                fontSize: 26,
                 fontWeight: FontWeight.bold,
                 color: AppColors.white,
               ),
