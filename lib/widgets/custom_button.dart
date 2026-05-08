@@ -7,14 +7,17 @@ class CustomButton extends StatelessWidget {
     this.onTap,
     required this.title,
     this.height = 60,
+    this.width = double.infinity,
   });
   final void Function()? onTap;
   final String title;
   final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(20),
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
@@ -22,7 +25,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         height: height,
-        width: double.infinity,
+        width: width,
         child: Center(
           child: Text(
             title,
