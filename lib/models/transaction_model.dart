@@ -11,7 +11,7 @@ class TransactionModel {
   final double amount;
 
   @HiveField(2)
-  final DateTime date;
+  final String date;
 
   @HiveField(3)
   final bool isExpense;

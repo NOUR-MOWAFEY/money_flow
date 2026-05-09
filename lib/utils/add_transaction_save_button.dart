@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/models/transaction_model.dart';
 import 'package:money_flow/services/hive_service.dart';
@@ -54,7 +53,7 @@ Future<void> onSave(
   final transaction = TransactionModel(
     title: categoryController.text,
     amount: amount,
-    date: DateFormat.yMMMd().parse(dateController.text),
+    date: dateController.text,
     isExpense: transactionType.value == 0,
   );
 

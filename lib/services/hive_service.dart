@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:money_flow/models/transaction_model.dart';
 
 class HiveService {
@@ -42,7 +41,6 @@ class HiveService {
 
   Future<void> deleteTransaction(int index) async {
     await _box.deleteAt(index);
-    
   }
 
   List<TransactionModel> getTransactions() {
@@ -94,7 +92,7 @@ class HiveService {
   static List<String> getFormatedDate(List<TransactionModel> expenses) {
     List<String> date = [];
     for (var element in expenses) {
-      date.add(DateFormat.Md().format(element.date).toString());
+      date.add(element.date);
     }
     return date;
   }

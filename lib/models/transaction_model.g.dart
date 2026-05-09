@@ -19,7 +19,7 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
     return TransactionModel(
       title: fields[0] as String,
       amount: fields[1] as double,
-      date: fields[2] as DateTime,
+      date: fields[2] as String,
       isExpense: fields[3] as bool,
     );
   }

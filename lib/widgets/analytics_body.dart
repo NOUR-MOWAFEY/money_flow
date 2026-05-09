@@ -4,7 +4,6 @@ import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/widgets/custom_bar_chart.dart';
 import 'package:money_flow/widgets/custom_line_chart.dart';
 import 'package:money_flow/widgets/home_view_app_bar.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class AnalyticsBody extends StatefulWidget {
   const AnalyticsBody({super.key});
@@ -42,24 +41,24 @@ class _AnalyticsBodyState extends State<AnalyticsBody> {
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: HomeViewAppBar(),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ToggleSwitch(
-                activeBgColor: [AppColors.transparentWhite],
-                activeFgColor: AppColors.black,
-                inactiveBgColor: AppColors.secondaryColor,
-                minWidth: double.infinity,
-                customTextStyles: [TextStyle(fontWeight: FontWeight.bold)],
-                initialLabelIndex: selectedIndex,
-                totalSwitches: 2,
-                labels: ['Expenses', 'Income'],
-                onToggle: (index) {
-                  setState(() {
-                    selectedIndex = index!;
-                  });
-                },
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20),
+            //   child: ToggleSwitch(
+            //     activeBgColor: [AppColors.transparentWhite],
+            //     activeFgColor: AppColors.black,
+            //     inactiveBgColor: AppColors.secondaryColor,
+            //     minWidth: double.infinity,
+            //     customTextStyles: [TextStyle(fontWeight: FontWeight.bold)],
+            //     initialLabelIndex: selectedIndex,
+            //     totalSwitches: 2,
+            //     labels: ['Expenses', 'Income'],
+            //     onToggle: (index) {
+            //       setState(() {
+            //         selectedIndex = index!;
+            //       });
+            //     },
+            //   ),
+            // ),
             const SizedBox(height: 30),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16),

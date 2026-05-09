@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/models/transaction_model.dart';
 
@@ -93,9 +92,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
         tooltipMargin: 5,
         getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
           return touchedBarSpots.map((barSpot) {
-            String date = DateFormat.yMMMd().format(
-              widget.expenses[barSpot.x.toInt()].date,
-            );
+            String date = widget.expenses[barSpot.x.toInt()].date;
             return LineTooltipItem(
               '$date\n',
               const TextStyle(
@@ -141,7 +138,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
 
   Widget _bottomTitle(double value, TitleMeta meta) {
     if (value.toInt() >= 0 && value.toInt() < widget.expenses.length) {
-      String date = DateFormat.Md().format(widget.expenses[value.toInt()].date);
+      String date = widget.expenses[value.toInt()].date;
       return SideTitleWidget(
         meta: meta,
         space: 16,
