@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+import 'package:money_flow/models/category_model.dart';
+import 'package:money_flow/widgets/custom_animated_toggle.dart';
+
+class AddTransactionModel {
+  final TextEditingController amountController;
+  final TextEditingController dateController;
+  final ValueNotifier< TransactionType> transactionType;
+  final ValueNotifier<CategoryModel?> category;
+
+  AddTransactionModel({
+    required this.amountController,
+    required this.dateController,
+    required this.transactionType,
+    required this.category,
+  });
+}

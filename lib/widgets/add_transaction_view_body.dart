@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:money_flow/models/add_transaction_model.dart';
 import 'package:money_flow/utils/date_formatter.dart';
-import 'package:money_flow/widgets/amount_field.dart';
-import 'package:money_flow/widgets/category_field.dart';
+import 'package:money_flow/widgets/add_transaction_fields.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
-import 'package:money_flow/widgets/date_field.dart';
 
 class AddTransactionViewBody extends StatefulWidget {
   const AddTransactionViewBody({super.key});
@@ -13,19 +12,18 @@ class AddTransactionViewBody extends StatefulWidget {
 }
 
 class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
-  late TextEditingController amountController;
-  late Map<String, IconData> category;
-  late TextEditingController dateController;
-  late TransactionType transactionType;
+  late AddTransactionModel addTransactionModel;
 
   @override
   void initState() {
-    amountController = TextEditingController();
-    category = {'Category': Icons.category_rounded};
-    dateController = TextEditingController();
-    dateController.text = DateFormatter.dateNow;
-    transactionType = TransactionType.expenses;
+    _initializeFieldsData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _disposeFieldsData();
+    super.dispose();
   }
 
   @override
@@ -35,34 +33,44 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
         padding: const EdgeInsets.symmetric(horizontal: 28),
         child: ListView(
           children: [
-            const SizedBox(height: 12),
+            const SizedBox(height: 18),
 
             // toggle switch
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: CustomAnimatedToggle(
-                onChange: (TransactionType transactionType) =>
-                    setState(() => this.transactionType = transactionType),
+                onChange: (TransactionType transactionType) {
+                  addTransactionModel.category.value = null;
+                  addTransactionModel.transactionType.value = transactionType;
+                },
               ),
             ),
 
             const SizedBox(height: 32),
 
-            // amount field
-            AmountField(amountController: amountController),
-
-            const SizedBox(height: 32),
-
-            // Category field
-            CategoryField(transactionType: transactionType),
-
-            const SizedBox(height: 16),
-
-            // Date Field
-            DateField(dateController: dateController),
+            // all fields
+            AddTransactionFields(addTransactionModel: addTransactionModel),
           ],
         ),
       ),
     );
+  }
+
+  void _initializeFieldsData() {
+    addTransactionModel = AddTransactionModel(
+      amountController: TextEditingController(),
+      dateController: TextEditingController(),
+      transactionType: ValueNotifier(TransactionType.expenses),
+      category: ValueNotifier(null),
+    );
+
+    addTransactionModel.dateController.text = DateFormatter.dateNow;
+  }
+
+  void _disposeFieldsData() {
+    addTransactionModel.category.dispose();
+    addTransactionModel.amountController.dispose();
+    addTransactionModel.dateController.dispose();
+    addTransactionModel.transactionType.dispose();
   }
 }

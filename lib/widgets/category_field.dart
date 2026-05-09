@@ -5,35 +5,40 @@ import 'package:money_flow/widgets/custom_animated_toggle.dart';
 import 'package:money_flow/widgets/custom_text_form_field.dart';
 
 class CategoryField extends StatelessWidget {
-  const CategoryField({super.key, required this.transactionType});
+  const CategoryField({
+    super.key,
+    required this.transactionType,
+    required this.category,
+  });
 
-  final TransactionType transactionType;
-
-  static final ValueNotifier<CategoryModel> _category = ValueNotifier(
-    CategoryModel(icon: Icons.category_rounded, title: 'Category'),
-  );
+  final ValueNotifier<TransactionType> transactionType;
+  final ValueNotifier<CategoryModel?> category;
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<CategoryModel>(
-      valueListenable: _category,
-      builder: (BuildContext context, CategoryModel value, Widget? child) =>
-          CustomTextFormFiled(
-            icon: _category.value.icon,
-            title: _category.value.title,
-            isEnabled: false,
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CategoriesView(
-                    transactionType: transactionType,
-                    category: _category,
-                  ),
+    return ValueListenableBuilder<CategoryModel?>(
+      valueListenable: category,
+      builder: (BuildContext context, CategoryModel? value, Widget? child) =>
+          ValueListenableBuilder(
+            valueListenable: transactionType,
+            builder: (BuildContext context, value, Widget? child) =>
+                CustomTextFormFiled(
+                  icon: category.value?.icon ?? Icons.category_rounded,
+                  title: category.value?.title ?? 'Category',
+                  isEnabled: false,
+                  onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoriesView(
+                          transactionType: transactionType.value,
+                          category: category,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
           ),
     );
   }

@@ -31,11 +31,9 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
         ),
       ],
 
-      // iconOpacity: 0.2,
-      indicatorSize: const Size.fromWidth(160),
+      indicatorSize: const Size.fromWidth(170),
       borderWidth: 4.0,
-      iconAnimationType: AnimationType.onSelected,
-      selectedIconScale: 1.2,
+      selectedIconScale: 1.15,
 
       onChanged: (value) {
         widget.onChange(value);
@@ -47,7 +45,7 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
         borderRadius: BorderRadius.circular(32),
         indicatorColor: AppColors.primaryColor,
         backgroundColor: AppColors.greyTrasparent,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             spreadRadius: 1,

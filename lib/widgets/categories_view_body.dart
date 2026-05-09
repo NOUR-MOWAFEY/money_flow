@@ -11,7 +11,7 @@ class CategoriesViewBody extends StatelessWidget {
     required this.category,
   });
   final TransactionType transactionType;
-  final ValueNotifier<CategoryModel> category;
+  final ValueNotifier<CategoryModel?> category;
 
   @override
   Widget build(BuildContext context) {

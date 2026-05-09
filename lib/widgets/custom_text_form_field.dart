@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:money_flow/constants/app_colors.dart';
 
 class CustomTextFormFiled extends StatelessWidget {
@@ -18,6 +19,7 @@ class CustomTextFormFiled extends StatelessWidget {
     this.keyboardType,
     this.showCursor = false,
     this.isNormalTextField = false,
+    this.formatter,
   });
   final bool isEnabled;
   final String? title;
@@ -33,6 +35,7 @@ class CustomTextFormFiled extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool showCursor;
   final bool isNormalTextField;
+  final List<TextInputFormatter>? formatter;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +55,7 @@ class CustomTextFormFiled extends StatelessWidget {
         textAlign: centerText ? TextAlign.center : TextAlign.start,
         enabled: isEnabled,
         keyboardType: keyboardType,
+        inputFormatters: formatter,
         decoration: InputDecoration(
           alignLabelWithHint: false,
           prefixIcon: showPrefixIcon
@@ -68,21 +72,22 @@ class CustomTextFormFiled extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 )
               : null,
-          label: title == null ? null : Text(title!),
+          labelText: title,
           labelStyle: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.bold,
           ),
-          border: outlineInputBorder(),
-          enabledBorder: outlineInputBorder(),
-          focusedBorder: outlineInputBorder(),
-          disabledBorder: outlineInputBorder(),
+
+          border: _outlineInputBorder(),
+          enabledBorder: _outlineInputBorder(),
+          focusedBorder: _outlineInputBorder(),
+          disabledBorder: _outlineInputBorder(),
         ),
       ),
     );
   }
 
-  OutlineInputBorder outlineInputBorder() {
+  OutlineInputBorder _outlineInputBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(border),
       borderSide: BorderSide(color: Colors.transparent),

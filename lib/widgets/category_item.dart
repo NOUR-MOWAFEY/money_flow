@@ -9,6 +9,7 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(12),
@@ -24,6 +25,7 @@ class CategoryItem extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Text(
               category.title,
+              textAlign: .center,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
