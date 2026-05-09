@@ -11,6 +11,19 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   TransactionsCubit(this.hiveService) : super(TransactionsInitial());
   final HiveService hiveService;
 
+  //get all transactions
+  void getAllTransactions() {
+    emit(TransactionsLoading());
+    try {
+      final transactions = hiveService.getTransactions();
+      emit(TransactionsSuccess(transactions));
+    } catch (e) {
+      emit(
+        TransactionsFailure('Failed to load transactions, Please try again'),
+      );
+    }
+  }
+
   // add transaction
   Future<void> addTransaction(TransactionModel transaction) async {
     emit(TransactionsLoading());
@@ -40,7 +53,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
     }
   }
 
-  // delete all transactions
+  // clear transactions
   void clearTransactions() {
     emit(TransactionsLoading());
     try {

@@ -21,7 +21,8 @@ class MoneyFlowApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TransactionsCubit(HiveService()),
+      create: (context) =>
+          TransactionsCubit(HiveService())..getAllTransactions(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.mainTheme(),

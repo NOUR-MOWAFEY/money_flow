@@ -7,8 +7,8 @@ import 'package:money_flow/utils/validator.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
 import 'package:money_flow/widgets/custom_button.dart';
 
-class CustomSaveButton extends StatelessWidget {
-  const CustomSaveButton({super.key, required this.addTransactionModel});
+class AddTransactionButton extends StatelessWidget {
+  const AddTransactionButton({super.key, required this.addTransactionModel});
   final AddTransactionModel addTransactionModel;
 
   @override
@@ -17,7 +17,7 @@ class CustomSaveButton extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return CustomButton(
-          title: 'Save',
+          title: 'Add',
           onTap: () {
             Validator.checkAddTransactionFields(
               context,
@@ -32,10 +32,15 @@ class CustomSaveButton extends StatelessWidget {
                   isExpense:
                       addTransactionModel.transactionType.value ==
                       TransactionType.expenses,
+                  icon: addTransactionModel.category.value!.icon.codePoint,
                 );
                 await context.read<TransactionsCubit>().addTransaction(
                   transaction,
                 );
+
+                if (!context.mounted) return;
+
+                Navigator.pop(context);
               },
             );
           },
