@@ -8,7 +8,7 @@ class CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 90,
+      expandedHeight: 120,
       pinned: true,
       automaticallyImplyLeading: false,
       backgroundColor: AppColors.primaryColor,
@@ -21,7 +21,7 @@ class CustomSliverAppBar extends StatelessWidget {
           child: HomeViewAppBar(),
         ),
 
-        expandedTitleScale: 1.4,
+        expandedTitleScale: 1.44,
         background: Container(height: 120, color: AppColors.primaryColor),
       ),
     );

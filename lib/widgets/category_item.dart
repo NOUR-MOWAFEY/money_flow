@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/models/category_model.dart';
 
 class CategoryItem extends StatelessWidget {
@@ -9,10 +8,10 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(12),
+        color: category.color,
+        borderRadius: BorderRadius.circular(22),
       ),
 
       child: Column(

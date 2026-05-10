@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/constants/app_colors.dart';
-import 'package:money_flow/services/hive_service.dart';
+import 'package:money_flow/cubits/transactions_cubit/transactions_cubit.dart';
+import 'package:money_flow/widgets/current_balance_text.dart';
 
 class HomeViewAppBar extends StatelessWidget {
   const HomeViewAppBar({super.key});
@@ -14,34 +14,21 @@ class HomeViewAppBar extends StatelessWidget {
       mainAxisSize: .min,
       children: [
         const Text(
-          'Available Balance',
+          'Current Balance',
           style: TextStyle(fontSize: 14, color: AppColors.white),
         ),
 
-        ValueListenableBuilder<double>(
-          valueListenable: BalanceController.balance,
-          builder: (context, value, _) {
-            return Text(
-              'EGP $value',
-              style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: AppColors.white,
-              ),
-            );
+        BlocBuilder<TransactionsCubit, TransactionsState>(
+          builder: (context, state) {
+            if (state is TransactionsSuccess) {
+              return CurrentBalanceText(balance: state.balance);
+            } else if (state is TransactionsFailure) {
+              return const CurrentBalanceText(text: 'Failed to load balance');
+            }
+            return const CurrentBalanceText(text: 'Loading...');
           },
         ),
       ],
     );
-  }
-}
-
-class BalanceController {
-  static final ValueNotifier<double> balance = ValueNotifier(0);
-
-  static void updateBalance() {
-    final transactions = HiveService().getTransactions();
-    balance.value = transactions.fold(0.0, (sum, e) => sum + e.amount);
-    log(balance.value.toString());
   }
 }

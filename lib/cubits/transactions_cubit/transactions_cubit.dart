@@ -54,10 +54,10 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   }
 
   // clear transactions
-  void clearTransactions() {
+  Future<void> clearTransactions() async {
     emit(TransactionsLoading());
     try {
-      hiveService.reset();
+      await hiveService.reset();
       final transactions = hiveService.getTransactions();
       emit(TransactionsSuccess(transactions));
     } catch (e) {

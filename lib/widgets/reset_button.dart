@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/constants/app_colors.dart';
-import 'package:money_flow/utils/show_confirmation_dialog.dart';
+import 'package:money_flow/cubits/transactions_cubit/transactions_cubit.dart';
 
 class ResetButton extends StatelessWidget {
   const ResetButton({super.key});
@@ -8,7 +9,9 @@ class ResetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => ShowConfirmationDialog.showConfirmationDialog(context),
+      // onTap: () => ShowConfirmationDialog.showConfirmationDialog(context),
+      onTap: () async =>
+          await context.read<TransactionsCubit>().clearTransactions(),
       borderRadius: BorderRadius.circular(32),
 
       child: Container(

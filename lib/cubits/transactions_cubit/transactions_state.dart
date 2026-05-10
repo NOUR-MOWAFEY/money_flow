@@ -9,7 +9,13 @@ class TransactionsLoading extends TransactionsState {}
 
 class TransactionsSuccess extends TransactionsState {
   final List<TransactionModel> transactions;
-  TransactionsSuccess(this.transactions);
+  final double balance;
+  TransactionsSuccess(this.transactions)
+    : balance = transactions.fold(0, (sum, transaction) {
+        return transaction.isExpense
+            ? sum - transaction.amount
+            : sum + transaction.amount;
+      });
 }
 
 class TransactionsFailure extends TransactionsState {

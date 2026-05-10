@@ -16,14 +16,10 @@ class TransactionModel {
   @HiveField(3)
   final bool isExpense;
 
-  @HiveField(4)
-  final int icon;
-
   TransactionModel({
     required this.title,
     required this.amount,
     required this.date,
     required this.isExpense,
-    required this.icon,
   });
 }

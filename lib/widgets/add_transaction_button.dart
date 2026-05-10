@@ -32,7 +32,6 @@ class AddTransactionButton extends StatelessWidget {
                   isExpense:
                       addTransactionModel.transactionType.value ==
                       TransactionType.expenses,
-                  icon: addTransactionModel.category.value!.icon.codePoint,
                 );
                 await context.read<TransactionsCubit>().addTransaction(
                   transaction,

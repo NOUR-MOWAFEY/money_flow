@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/widgets/custom_button.dart';
-import 'package:money_flow/widgets/home_view_app_bar.dart';
 
 class ShowConfirmationDialog {
   static Future<dynamic> showConfirmationDialog(
@@ -42,7 +41,7 @@ class ShowConfirmationDialog {
                   onTapYes ??
                   () async {
                     await HiveService().reset();
-                    BalanceController.updateBalance();
+
                     if (context.mounted) Navigator.pop(context);
                   },
             ),
