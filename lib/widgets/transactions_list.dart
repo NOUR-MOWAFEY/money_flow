@@ -12,8 +12,10 @@ class TransactionsList extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12),
       sliver: SliverList.builder(
         itemCount: transactions.length,
-        itemBuilder: (context, index) =>
-            TransactionTile(transactionModel: transactions[index]),
+        itemBuilder: (context, index) => TransactionTile(
+          transactionModel: transactions[index],
+          index: index,
+        ),
       ),
     );
   }

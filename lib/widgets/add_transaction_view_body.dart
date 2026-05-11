@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/models/add_transaction_model.dart';
 import 'package:money_flow/utils/date_formatter.dart';
+import 'package:money_flow/widgets/add_transaction_button.dart';
 import 'package:money_flow/widgets/add_transaction_fields.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
-import 'package:money_flow/widgets/add_transaction_button.dart';
 
 class AddTransactionViewBody extends StatefulWidget {
   const AddTransactionViewBody({super.key});

@@ -25,7 +25,9 @@ class TransactionsSection extends StatelessWidget {
           sliver: BlocBuilder<TransactionsCubit, TransactionsState>(
             builder: (context, state) {
               if (state is TransactionsSuccess) {
-                return TransactionsList(transactions: state.transactions);
+                return state.transactions.isEmpty
+                    ? const SliverToBoxAdapter(child: SizedBox(height: 50))
+                    : TransactionsList(transactions: state.transactions);
               } else if (state is TransactionsFailure) {
                 return TransactionsFailureBody(message: state.message);
               }
@@ -36,10 +38,7 @@ class TransactionsSection extends StatelessWidget {
 
         const SliverFillRemaining(
           hasScrollBody: false,
-          child: ColoredBox(
-            color: AppColors.white,
-            child: SizedBox(height: 20),
-          ),
+          child: ColoredBox(color: AppColors.white),
         ),
       ],
     );

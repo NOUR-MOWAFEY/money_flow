@@ -6,12 +6,16 @@ class TransactionsFailureBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+    return SliverFillRemaining(
+      hasScrollBody: false,
       child: Center(
-        child: Text(
-          message,
-          style: const TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            message,
+            style: const TextStyle(fontSize: 18),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

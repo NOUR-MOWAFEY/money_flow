@@ -7,26 +7,29 @@ class TransactionTilePrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: .min,
-      children: [
-        Text(
-          transactionModel.isExpense ? '-' : '+',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: _getTextColor(),
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: Row(
+        mainAxisSize: .min,
+        children: [
+          Text(
+            transactionModel.isExpense ? '-' : '+',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: _getTextColor(),
+            ),
           ),
-        ),
-        Text(
-          transactionModel.amount.toString(),
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: _getTextColor(),
+          Text(
+            transactionModel.amount.toString(),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: _getTextColor(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

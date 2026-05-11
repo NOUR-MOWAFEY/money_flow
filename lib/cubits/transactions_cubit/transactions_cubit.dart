@@ -40,10 +40,10 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   }
 
   //delete transaction
-  Future<void> deleteTransaction(int index) async {
+  Future<void> deleteTransaction(TransactionModel transaction) async {
     emit(TransactionsLoading());
     try {
-      await hiveService.deleteTransaction(index);
+      await hiveService.deleteTransaction(transaction);
       final transactions = hiveService.getTransactions();
       emit(TransactionsSuccess(transactions));
     } catch (e) {

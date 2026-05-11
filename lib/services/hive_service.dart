@@ -39,12 +39,12 @@ class HiveService {
     await _box.add(transaction);
   }
 
-  Future<void> deleteTransaction(int index) async {
-    await _box.deleteAt(index);
+  Future<void> deleteTransaction(TransactionModel transaction) async {
+    await transaction.delete();
   }
 
   List<TransactionModel> getTransactions() {
-    return _box.values.toList().reversed.toList();
+    return _box.values.toList();
   }
 
   ValueListenable<Box<TransactionModel>> get listenable {
