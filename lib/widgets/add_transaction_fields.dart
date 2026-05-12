@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/models/add_transaction_model.dart';
+import 'package:money_flow/models/transaction_data_model.dart';
 import 'package:money_flow/widgets/amount_field.dart';
 import 'package:money_flow/widgets/category_field.dart';
 import 'package:money_flow/widgets/date_field.dart';
@@ -7,7 +7,7 @@ import 'package:money_flow/widgets/date_field.dart';
 class AddTransactionFields extends StatelessWidget {
   const AddTransactionFields({super.key, required this.addTransactionModel});
 
-  final AddTransactionModel addTransactionModel;
+  final TransactionDataModel addTransactionModel;
 
   @override
   Widget build(BuildContext context) {

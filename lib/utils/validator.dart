@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/models/add_transaction_model.dart';
+import 'package:money_flow/models/transaction_data_model.dart';
 import 'package:money_flow/utils/show_toastification.dart';
 
 class Validator {
   static void checkAddTransactionFields(
     BuildContext context,
-    AddTransactionModel addTransactionModel, {
+    TransactionDataModel addTransactionModel, {
     void Function()? onValid,
   }) {
     final amount = addTransactionModel.amountController.text;

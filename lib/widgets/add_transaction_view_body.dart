@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/models/add_transaction_model.dart';
+import 'package:money_flow/models/transaction_data_model.dart';
 import 'package:money_flow/utils/date_formatter.dart';
 import 'package:money_flow/widgets/add_transaction_fields.dart';
 import 'package:money_flow/widgets/add_transaction_view_buttons.dart';
@@ -13,7 +13,7 @@ class AddTransactionViewBody extends StatefulWidget {
 }
 
 class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
-  late AddTransactionModel addTransactionModel;
+  late TransactionDataModel addTransactionModel;
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
   }
 
   void _initializeFieldsData() {
-    addTransactionModel = AddTransactionModel(
+    addTransactionModel = TransactionDataModel(
       amountController: TextEditingController(),
       dateController: TextEditingController(),
       transactionType: ValueNotifier(TransactionType.expenses),

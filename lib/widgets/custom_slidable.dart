@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:money_flow/cubits/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/models/transaction_model.dart';
+import 'package:money_flow/views/edit_transaction_view.dart';
 
 class CustomSlidable extends StatelessWidget {
   const CustomSlidable({
@@ -43,7 +44,14 @@ class CustomSlidable extends StatelessWidget {
       ),
 
       SlidableAction(
-        onPressed: (context) {},
+        onPressed: (context) => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                EditTransactionView(transactionModel: transactionModel),
+          ),
+        ),
+
         backgroundColor: Color.fromARGB(255, 73, 188, 254),
         foregroundColor: Colors.white,
         borderRadius: const BorderRadius.only(

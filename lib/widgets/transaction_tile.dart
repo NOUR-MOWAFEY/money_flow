@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/constants/app_categories.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/models/category_model.dart';
 import 'package:money_flow/models/transaction_model.dart';
+import 'package:money_flow/utils/get_category.dart';
 import 'package:money_flow/widgets/custom_slidable.dart';
 import 'package:money_flow/widgets/transaction_tile_price.dart';
 
@@ -18,7 +18,7 @@ class TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CategoryModel category = _getCategory(
+    final CategoryModel category = getCategory(
       transactionModel.title,
       transactionModel.isExpense,
     );
@@ -30,10 +30,10 @@ class TransactionTile extends StatelessWidget {
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 6),
           minVerticalPadding: 8,
-          minTileHeight: 70,
+          minTileHeight: 65,
           // icon
           leading: CircleAvatar(
-            radius: 30,
+            radius: 26,
             backgroundColor: category.color,
             foregroundColor: AppColors.white,
             child: Icon(category.icon),
@@ -56,16 +56,5 @@ class TransactionTile extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  CategoryModel _getCategory(String title, bool isExpenses) {
-    final list = isExpenses
-        ? AppCategories.expenseCategories
-        : AppCategories.incomeCategories;
-    final category = list.firstWhere(
-      (element) => element.title == title,
-      orElse: () => AppCategories.defaultCategory, // or some fallback
-    );
-    return category;
   }
 }

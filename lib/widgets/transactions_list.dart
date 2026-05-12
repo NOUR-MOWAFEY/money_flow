@@ -9,7 +9,7 @@ class TransactionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.only(top: 8),
       sliver: SliverList.builder(
         itemCount: transactions.length,
         itemBuilder: (context, index) => TransactionTile(

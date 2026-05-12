@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/models/add_transaction_model.dart';
+import 'package:money_flow/models/transaction_data_model.dart';
 import 'package:money_flow/widgets/add_transaction_button.dart';
 import 'package:money_flow/widgets/calculator_button.dart';
 
@@ -9,7 +9,7 @@ class AddTransactionViewButtons extends StatelessWidget {
     required this.addTransactionModel,
   });
 
-  final AddTransactionModel addTransactionModel;
+  final TransactionDataModel addTransactionModel;
 
   @override
   Widget build(BuildContext context) {
