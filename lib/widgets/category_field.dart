@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_flow/constants/app_categories.dart';
 import 'package:money_flow/models/category_model.dart';
 import 'package:money_flow/views/categories_view.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
@@ -23,8 +24,12 @@ class CategoryField extends StatelessWidget {
             valueListenable: transactionType,
             builder: (BuildContext context, value, Widget? child) =>
                 CustomTextFormFiled(
-                  icon: category.value?.icon ?? Icons.category_rounded,
-                  title: category.value?.title ?? 'Category',
+                  icon:
+                      category.value?.icon ??
+                      AppCategories.defaultCategory.icon,
+                  title:
+                      category.value?.title ??
+                      AppCategories.defaultCategory.title,
                   isEnabled: false,
                   onTap: () {
                     FocusManager.instance.primaryFocus?.unfocus();

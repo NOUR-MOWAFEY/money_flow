@@ -12,16 +12,11 @@ class CustomFloatingActionButton extends StatelessWidget {
     return OpenContainer(
       closedShape: const CircleBorder(),
       closedColor: AppColors.primaryColor,
-      transitionDuration: Duration(milliseconds: 350),
-
       closedBuilder: (context, action) => Container(
         height: size,
         width: size,
 
-        decoration: const BoxDecoration(
-          color: AppColors.primaryColor,
-          shape: BoxShape.circle,
-        ),
+        decoration: const BoxDecoration(color: AppColors.primaryColor),
 
         child: const Center(
           child: Icon(

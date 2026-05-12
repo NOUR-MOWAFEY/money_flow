@@ -7,7 +7,7 @@ class AppCategories {
     icon: Icons.category_rounded,
     color: Colors.transparent,
   );
-  
+
   static const List<CategoryModel> expenseCategories = [
     CategoryModel(
       title: 'Food',

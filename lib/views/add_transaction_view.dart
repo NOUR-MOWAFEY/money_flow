@@ -11,8 +11,8 @@ class AddTransactionView extends StatelessWidget {
       resizeToAvoidBottomInset: false,
 
       appBar: AppBar(
-        leading: CustomBackButton(),
-        title: Text('Add Transaction'),
+        leading: const CustomBackButton(),
+        title: const Text('Add Transaction'),
       ),
 
       body: GestureDetector(
@@ -22,3 +22,4 @@ class AddTransactionView extends StatelessWidget {
     );
   }
 }
+

@@ -38,7 +38,10 @@ class TransactionsSection extends StatelessWidget {
 
         const SliverFillRemaining(
           hasScrollBody: false,
-          child: ColoredBox(color: AppColors.white),
+          child: SizedBox(
+            height: 110,
+            child: ColoredBox(color: AppColors.white),
+          ),
         ),
       ],
     );

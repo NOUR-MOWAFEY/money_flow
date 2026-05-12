@@ -1,0 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:money_flow/models/add_transaction_model.dart';
+import 'package:money_flow/widgets/add_transaction_button.dart';
+import 'package:money_flow/widgets/calculator_button.dart';
+
+class AddTransactionViewButtons extends StatelessWidget {
+  const AddTransactionViewButtons({
+    super.key,
+    required this.addTransactionModel,
+  });
+
+  final AddTransactionModel addTransactionModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 9,
+          child: AddTransactionButton(addTransactionModel: addTransactionModel),
+        ),
+
+        const SizedBox(width: 8),
+
+        Expanded(
+          flex: 2,
+          child: CalculatorButton(addTransactionModel: addTransactionModel),
+        ),
+      ],
+    );
+  }
+}

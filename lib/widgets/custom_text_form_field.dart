@@ -42,55 +42,64 @@ class CustomTextFormFiled extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: TextFormField(
+        showCursor: showCursor,
         cursorColor: AppColors.primaryColor,
+        cursorHeight: 20,
+
         controller: controller,
+
         style: isNormalTextField
             ? null
-            : TextStyle(
+            : const TextStyle(
                 color: AppColors.black,
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
               ),
-        showCursor: showCursor,
+
         textAlign: centerText ? TextAlign.center : TextAlign.start,
         enabled: isEnabled,
         keyboardType: keyboardType,
         inputFormatters: formatter,
+
         decoration: InputDecoration(
+          contentPadding: padding ?? const EdgeInsets.symmetric(vertical: 20),
           alignLabelWithHint: false,
+
           prefixIcon: showPrefixIcon
-              ? Container(padding: EdgeInsets.all(20), child: Icon(icon))
+              ? Container(padding: const EdgeInsets.all(20), child: Icon(icon))
               : null,
+
           fillColor: AppColors.secondaryColor,
           filled: true,
-          contentPadding: padding ?? EdgeInsets.symmetric(vertical: 20),
+
           hintText: hintText,
           hintStyle: isNormalTextField
-              ? TextStyle(
+              ? const TextStyle(
                   color: AppColors.black,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 )
               : null,
+
           labelText: title,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.bold,
           ),
 
-          border: _outlineInputBorder(),
-          enabledBorder: _outlineInputBorder(),
-          focusedBorder: _outlineInputBorder(),
-          disabledBorder: _outlineInputBorder(),
+          border: _borderBuilder(),
+          enabledBorder: _borderBuilder(),
+          focusedBorder: _borderBuilder(),
+          disabledBorder: _borderBuilder(),
         ),
       ),
     );
   }
 
-  OutlineInputBorder _outlineInputBorder() {
+  OutlineInputBorder _borderBuilder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(border),
-      borderSide: BorderSide(color: Colors.transparent),
+      borderSide: const BorderSide(color: Colors.transparent),
     );
   }
 }

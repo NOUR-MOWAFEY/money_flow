@@ -18,6 +18,7 @@ class AddTransactionButton extends StatelessWidget {
       builder: (context, state) {
         return CustomButton(
           title: 'Add',
+          
           onTap: () {
             Validator.checkAddTransactionFields(
               context,

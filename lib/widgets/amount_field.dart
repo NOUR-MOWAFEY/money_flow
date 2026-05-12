@@ -11,14 +11,14 @@ class AmountField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 64),
+      padding: const EdgeInsets.symmetric(horizontal: 64),
       child: CustomTextFormFiled(
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         controller: amountController,
         showPrefixIcon: false,
         hintText: 'EGP 0',
         border: 80,
-        padding: EdgeInsets.symmetric(vertical: 24),
+        padding: const EdgeInsets.symmetric(vertical: 24),
         borderColor: AppColors.grey,
         formatter: [MaxDigitsFormatter()],
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/models/add_transaction_model.dart';
 import 'package:money_flow/utils/date_formatter.dart';
-import 'package:money_flow/widgets/add_transaction_button.dart';
 import 'package:money_flow/widgets/add_transaction_fields.dart';
+import 'package:money_flow/widgets/add_transaction_view_buttons.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
 
 class AddTransactionViewBody extends StatefulWidget {
@@ -54,8 +54,8 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
 
             const SizedBox(height: 32),
 
-            // save button
-            AddTransactionButton(addTransactionModel: addTransactionModel),
+            // add button + calculator button
+            AddTransactionViewButtons(addTransactionModel: addTransactionModel),
           ],
         ),
       ),

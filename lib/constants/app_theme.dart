@@ -32,13 +32,13 @@ class AppTheme {
         backgroundColor: AppColors.secondaryColorWithHeightOpacity,
       ),
       scaffoldBackgroundColor: AppColors.white,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: AppColors.white,
         centerTitle: true,
         titleTextStyle: TextStyle(
-          // fontFamily: 'Poppins',
+          fontFamily: 'Poppins',
           fontWeight: FontWeight.bold,
           fontSize: 18,
           color: AppColors.black,

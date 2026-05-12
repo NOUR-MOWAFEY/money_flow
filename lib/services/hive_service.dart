@@ -44,7 +44,7 @@ class HiveService {
   }
 
   List<TransactionModel> getTransactions() {
-    return _box.values.toList();
+    return _box.values.toList().reversed.toList();
   }
 
   ValueListenable<Box<TransactionModel>> get listenable {
