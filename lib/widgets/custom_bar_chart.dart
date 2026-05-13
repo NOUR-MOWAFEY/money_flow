@@ -77,7 +77,7 @@ class _CustomBarChartState extends State<CustomBarChart> {
         getTooltipColor: (_) => AppColors.grey,
         tooltipMargin: 5,
         getTooltipItem: (group, _, rod, _) {
-          String date = widget.expenses[group.x].date;
+          String date = widget.expenses[group.x].date.toString();
           return BarTooltipItem(
             '$date\n',
             const TextStyle(
@@ -155,7 +155,7 @@ class _CustomBarChartState extends State<CustomBarChart> {
 
   Widget _bottomTitle(double value, TitleMeta meta) {
     if (value.toInt() >= 0 && value.toInt() < widget.expenses.length) {
-      String date = widget.expenses[value.toInt()].date;
+      String date = widget.expenses[value.toInt()].date.toString();
       return SideTitleWidget(
         meta: meta,
         space: 16,

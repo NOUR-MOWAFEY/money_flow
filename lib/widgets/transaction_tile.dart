@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/models/category_model.dart';
 import 'package:money_flow/models/transaction_model.dart';
+import 'package:money_flow/utils/date_formatter.dart';
 import 'package:money_flow/utils/get_category.dart';
 import 'package:money_flow/widgets/custom_slidable.dart';
 import 'package:money_flow/widgets/transaction_tile_price.dart';
@@ -47,7 +48,7 @@ class TransactionTile extends StatelessWidget {
 
           // date
           subtitle: Text(
-            transactionModel.date,
+            DateFormatter.dateFormatter(transactionModel.date),
             style: const TextStyle(fontSize: 14),
           ),
 

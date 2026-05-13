@@ -6,9 +6,9 @@ import 'package:money_flow/views/calculator_view.dart';
 import 'package:money_flow/widgets/custom_button.dart';
 
 class CalculatorButton extends StatelessWidget {
-  const CalculatorButton({super.key, required this.addTransactionModel});
+  const CalculatorButton({super.key, required this.transactionDataModel});
 
-  final TransactionDataModel addTransactionModel;
+  final TransactionDataModel transactionDataModel;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CalculatorButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => CalculatorView(
-              amountController: addTransactionModel.amountController,
+              amountController: transactionDataModel.amountController,
             ),
           ),
         );

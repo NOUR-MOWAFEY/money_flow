@@ -3,9 +3,9 @@ import 'package:money_flow/models/category_model.dart';
 import 'package:money_flow/models/transaction_data_model.dart';
 import 'package:money_flow/models/transaction_model.dart';
 import 'package:money_flow/utils/get_category.dart';
-import 'package:money_flow/widgets/add_transaction_fields.dart';
-import 'package:money_flow/widgets/add_transaction_view_buttons.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
+import 'package:money_flow/widgets/edit_transaction_view_buttons.dart';
+import 'package:money_flow/widgets/transaction_fields.dart';
 
 class EditTransactionViewBody extends StatefulWidget {
   const EditTransactionViewBody({super.key, required this.transactionModel});
@@ -38,28 +38,31 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
         padding: const EdgeInsets.symmetric(horizontal: 28),
         child: ListView(
           children: [
-            // const SizedBox(height: 18),
+            const SizedBox(height: 18),
 
             // toggle switch
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20),
-            //   child: CustomAnimatedToggle(
-            //     onChange: (TransactionType transactionType) {
-            //       transactionDataModel.category.value = null;
-            //       transactionDataModel.transactionType.value = transactionType;
-            //     },
-            //   ),
-            // ),
-            const SizedBox(height: 60),
-
-            // all fields
-            AddTransactionFields(addTransactionModel: transactionDataModel),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: CustomAnimatedToggle(
+                transactionType: transactionDataModel.transactionType.value,
+                onChange: (TransactionType transactionType) {
+                  transactionDataModel.category.value = null;
+                  transactionDataModel.transactionType.value = transactionType;
+                },
+              ),
+            ),
 
             const SizedBox(height: 32),
 
-            // add button + calculator button
-            AddTransactionViewButtons(
-              addTransactionModel: transactionDataModel,
+            // all fields
+            TransactionFields(addTransactionModel: transactionDataModel),
+
+            const SizedBox(height: 32),
+
+            // edit button + calculator button
+            EditTransactionViewButtons(
+              transactionModel: widget.transactionModel,
+              transactionDataModel: transactionDataModel,
             ),
           ],
         ),
@@ -76,7 +79,7 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
         text: transaction.amount.toString(),
       ),
 
-      dateController: TextEditingController(),
+      date: ValueNotifier(transaction.date),
 
       transactionType: ValueNotifier(
         transaction.isExpense
@@ -92,14 +95,12 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
         ),
       ),
     );
-
-    transactionDataModel.dateController.text = transaction.date;
   }
 
   void _disposeFieldsData() {
     transactionDataModel.category.dispose();
     transactionDataModel.amountController.dispose();
-    transactionDataModel.dateController.dispose();
+    transactionDataModel.date.dispose();
     transactionDataModel.transactionType.dispose();
   }
 }

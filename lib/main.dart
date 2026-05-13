@@ -8,6 +8,7 @@ import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/views/home_view.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(TransactionModelAdapter());
   await Hive.openBox<TransactionModel>('transactions');

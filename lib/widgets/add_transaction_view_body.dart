@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/models/transaction_data_model.dart';
-import 'package:money_flow/utils/date_formatter.dart';
-import 'package:money_flow/widgets/add_transaction_fields.dart';
 import 'package:money_flow/widgets/add_transaction_view_buttons.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
+import 'package:money_flow/widgets/transaction_fields.dart';
 
 class AddTransactionViewBody extends StatefulWidget {
   const AddTransactionViewBody({super.key});
@@ -50,7 +49,7 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
             const SizedBox(height: 32),
 
             // all fields
-            AddTransactionFields(addTransactionModel: addTransactionModel),
+            TransactionFields(addTransactionModel: addTransactionModel),
 
             const SizedBox(height: 32),
 
@@ -65,18 +64,16 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
   void _initializeFieldsData() {
     addTransactionModel = TransactionDataModel(
       amountController: TextEditingController(),
-      dateController: TextEditingController(),
+      date: ValueNotifier(DateTime.now()),
       transactionType: ValueNotifier(TransactionType.expenses),
       category: ValueNotifier(null),
     );
-
-    addTransactionModel.dateController.text = DateFormatter.dateNow;
   }
 
   void _disposeFieldsData() {
     addTransactionModel.category.dispose();
     addTransactionModel.amountController.dispose();
-    addTransactionModel.dateController.dispose();
+    addTransactionModel.date.dispose();
     addTransactionModel.transactionType.dispose();
   }
 }

@@ -1,64 +1,93 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/models/transaction_model.dart';
 
 class HiveService {
-  static const String _boxName = 'transactions';
+  static const String _trabsactionsBoxName = 'transactions';
   static const String _userBoxName = 'user';
+  static const String _isFirstTime = 'isFirstTime';
+  static const String _name = 'name';
+  static const String _image = 'image';
+
+  // ------------------------------
+  //   user
+  // ------------------------------
 
   static Box get _userBox {
     return Hive.box(_userBoxName);
   }
 
+  // get is first time
   static bool get isFirstTime {
-    return _userBox.get('isFirstTime', defaultValue: true);
+    return _userBox.get(_isFirstTime, defaultValue: true);
   }
 
+  // set is first time
   static Future<void> setNotFirstTime() async {
-    await _userBox.put('isFirstTime', false);
+    await _userBox.put(_isFirstTime, false);
   }
 
+  // save user
   static Future<void> saveUser(String name, String image) async {
-    await _userBox.put('name', name);
-    await _userBox.put('image', image);
+    await _userBox.put(_name, name);
+    await _userBox.put(_image, image);
   }
 
+  // get user name
   static String get userName {
-    return _userBox.get('name', defaultValue: '');
+    return _userBox.get(_name, defaultValue: '');
   }
 
+  // get user image
   static String get userImage {
-    return _userBox.get('image', defaultValue: '');
+    return _userBox.get(_image, defaultValue: '');
   }
 
-  Box<TransactionModel> get _box {
-    return Hive.box<TransactionModel>(_boxName);
+  // ------------------------------
+  //   transactions
+  // ------------------------------
+
+  Box<TransactionModel> get _transactionsBox {
+    return Hive.box<TransactionModel>(_trabsactionsBoxName);
   }
 
+  // add
   Future<void> addTransaction(TransactionModel transaction) async {
-    await _box.add(transaction);
+    await _transactionsBox.add(transaction);
   }
 
+  //delete
   Future<void> deleteTransaction(TransactionModel transaction) async {
     await transaction.delete();
   }
 
+  // get
   List<TransactionModel> getTransactions() {
-    return _box.values.toList().reversed.toList();
+    return _transactionsBox.values.toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
   }
 
-  ValueListenable<Box<TransactionModel>> get listenable {
-    return _box.listenable();
+  // edit
+  Future<void> editTransaction(
+    TransactionModel transaction, {
+    String? title,
+    double? amount,
+    bool? isExpense,
+    DateTime? date,
+  }) async {
+    if (title != null) transaction.title = title;
+    if (amount != null) transaction.amount = amount;
+    if (isExpense != null) transaction.isExpense = isExpense;
+    if (date != null) transaction.date = date;
+
+    await transaction.save();
   }
 
+  // clear
   Future<void> reset() async {
-    await _box.clear();
+    await _transactionsBox.clear();
   }
 
-  bool isEmpty() {
-    return _box.isEmpty;
-  }
-
+  // get expenses
   static List<TransactionModel> getExpenses(
     List<TransactionModel> transactions,
   ) {
@@ -71,6 +100,7 @@ class HiveService {
     return expenses;
   }
 
+  // get income
   static List<TransactionModel> getIncome(List<TransactionModel> transactions) {
     List<TransactionModel> income = [];
     for (var transaction in transactions) {
@@ -81,19 +111,23 @@ class HiveService {
     return income;
   }
 
-  static List<double> getAmounts(List<TransactionModel> transactions) {
-    List<double> amounts = [];
-    for (var element in transactions) {
-      amounts.add(element.amount.abs());
-    }
-    return amounts;
-  }
+  //! ------------------------------
+  //!   unused yet
+  //! ------------------------------
 
-  static List<String> getFormatedDate(List<TransactionModel> expenses) {
-    List<String> date = [];
-    for (var element in expenses) {
-      date.add(element.date);
-    }
-    return date;
-  }
+  // ValueListenable<Box<TransactionModel>> get listenable {
+  //   return _box.listenable();
+  // }
+
+  // bool isEmpty() {
+  //   return _box.isEmpty;
+  // }
+
+  // static List<double> getAmounts(List<TransactionModel> transactions) {
+  //   List<double> amounts = [];
+  //   for (var element in transactions) {
+  //     amounts.add(element.amount.abs());
+  //   }
+  //   return amounts;
+  // }
 }

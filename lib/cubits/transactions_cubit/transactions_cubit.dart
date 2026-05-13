@@ -53,6 +53,31 @@ class TransactionsCubit extends Cubit<TransactionsState> {
     }
   }
 
+  //edit transaction
+  Future<void> editTransaction(
+    TransactionModel transaction, {
+    String? title,
+    double? amount,
+    bool? isExpense,
+    DateTime? date,
+  }) async {
+    emit(TransactionsLoading());
+    try {
+      await hiveService.editTransaction(
+        transaction,
+        title: title,
+        amount: amount,
+        isExpense: isExpense,
+        date: date,
+      );
+      final transactions = hiveService.getTransactions();
+      emit(TransactionsSuccess(transactions));
+    } catch (e) {
+      log(e.toString());
+      emit(TransactionsFailure('Failed to edit transaction, Please try again'));
+    }
+  }
+
   // clear transactions
   Future<void> clearTransactions() async {
     emit(TransactionsLoading());

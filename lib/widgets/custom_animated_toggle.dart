@@ -3,16 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 
 class CustomAnimatedToggle extends StatefulWidget {
-  const CustomAnimatedToggle({super.key, required this.onChange});
+  const CustomAnimatedToggle({
+    super.key,
+    required this.onChange,
+    this.transactionType,
+  });
 
   final void Function(TransactionType transactionType) onChange;
+  final TransactionType? transactionType;
 
   @override
   State<CustomAnimatedToggle> createState() => _CustomAnimatedToggleState();
 }
 
 class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
-  TransactionType value = TransactionType.expenses;
+  late TransactionType value;
+
+  @override
+  void initState() {
+    value = widget.transactionType ?? TransactionType.expenses;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

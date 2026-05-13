@@ -17,14 +17,16 @@ class AddTransactionViewButtons extends StatelessWidget {
       children: [
         Expanded(
           flex: 9,
-          child: AddTransactionButton(addTransactionModel: addTransactionModel),
+          child: AddTransactionButton(
+            transactionDataModel: addTransactionModel,
+          ),
         ),
 
         const SizedBox(width: 8),
 
         Expanded(
           flex: 2,
-          child: CalculatorButton(addTransactionModel: addTransactionModel),
+          child: CalculatorButton(transactionDataModel: addTransactionModel),
         ),
       ],
     );

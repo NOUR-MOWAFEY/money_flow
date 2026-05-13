@@ -4,8 +4,8 @@ import 'package:money_flow/widgets/amount_field.dart';
 import 'package:money_flow/widgets/category_field.dart';
 import 'package:money_flow/widgets/date_field.dart';
 
-class AddTransactionFields extends StatelessWidget {
-  const AddTransactionFields({super.key, required this.addTransactionModel});
+class TransactionFields extends StatelessWidget {
+  const TransactionFields({super.key, required this.addTransactionModel});
 
   final TransactionDataModel addTransactionModel;
 
@@ -27,7 +27,7 @@ class AddTransactionFields extends StatelessWidget {
         const SizedBox(height: 16),
 
         // Date Field
-        DateField(dateController: addTransactionModel.dateController),
+        DateField(date: addTransactionModel.date),
       ],
     );
   }

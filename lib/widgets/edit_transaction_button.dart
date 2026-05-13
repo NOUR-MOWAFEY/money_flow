@@ -7,34 +7,42 @@ import 'package:money_flow/utils/validator.dart';
 import 'package:money_flow/widgets/custom_animated_toggle.dart';
 import 'package:money_flow/widgets/custom_button.dart';
 
-class AddTransactionButton extends StatelessWidget {
-  const AddTransactionButton({super.key, required this.transactionDataModel});
+class EditTransactionButton extends StatelessWidget {
+  const EditTransactionButton({
+    super.key,
+    required this.transactionDataModel,
+    required this.transactionModel,
+  });
+
   final TransactionDataModel transactionDataModel;
+  final TransactionModel transactionModel;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TransactionsCubit, TransactionsState>(
       builder: (context, state) {
         return CustomButton(
-          title: 'Add',
+          title: 'Edit',
 
           onTap: () {
             Validator.checkAddTransactionFields(
               context,
               transactionDataModel,
               onValid: () async {
-                final transaction = TransactionModel(
-                  title: transactionDataModel.category.value!.title,
+                await context.read<TransactionsCubit>().editTransaction(
+                  transactionModel,
+
                   amount: double.parse(
                     transactionDataModel.amountController.text.trim(),
                   ),
+
                   date: transactionDataModel.date.value,
+
                   isExpense:
                       transactionDataModel.transactionType.value ==
                       TransactionType.expenses,
-                );
-                await context.read<TransactionsCubit>().addTransaction(
-                  transaction,
+
+                  title: transactionDataModel.category.value!.title,
                 );
 
                 if (!context.mounted) return;

@@ -92,7 +92,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
         tooltipMargin: 5,
         getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
           return touchedBarSpots.map((barSpot) {
-            String date = widget.expenses[barSpot.x.toInt()].date;
+            String date = widget.expenses[barSpot.x.toInt()].date.toString();
             return LineTooltipItem(
               '$date\n',
               const TextStyle(
@@ -138,7 +138,7 @@ class _CustomLineChartState extends State<CustomLineChart> {
 
   Widget _bottomTitle(double value, TitleMeta meta) {
     if (value.toInt() >= 0 && value.toInt() < widget.expenses.length) {
-      String date = widget.expenses[value.toInt()].date;
+      String date = widget.expenses[value.toInt()].date.toString();
       return SideTitleWidget(
         meta: meta,
         space: 16,
