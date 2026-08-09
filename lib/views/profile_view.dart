@@ -82,7 +82,7 @@ class _ProfileViewState extends State<ProfileView> {
             GestureDetector(
               onTap: _pickImage,
               child: CircleAvatar(
-                backgroundColor: AppColors.primaryColor,
+                backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.secondaryColorWithHeightOpacity,
                 radius: 60,
                 backgroundImage: _image != null ? FileImage(_image!) : null,

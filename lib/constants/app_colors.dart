@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const primaryColor = Color(0xFF7D8C86);
-  static const transparentWhite = Color.fromARGB(160, 223, 223, 223);
-  static const secondaryColor = Color.fromARGB(137, 240, 239, 226);
+  static const primary = Color.fromARGB(255, 11, 96, 152);
+  static const transparentPrimary = Color.fromARGB(160, 11, 96, 152);
+  static const secondaryColor = Color.fromARGB(255, 48, 48, 48);
   static const secondaryColorWithHeightOpacity = Color.fromARGB(
     255,
     238,
@@ -11,8 +11,10 @@ class AppColors {
     226,
   );
 
-  static const white = Colors.white;
+  static const bg = Color(0xff191919);
+  static const text = Color(0xffE0E0E0);
+  static const icon = Color(0xffE0E0E0);
   static const grey = Colors.grey;
-  static const greyTrasparent = Color.fromARGB(104, 175, 175, 175);
+  static const greyTrasparent = Color.fromARGB(170, 78, 121, 150);
   static const black = Colors.black;
 }

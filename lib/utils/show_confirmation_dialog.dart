@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/services/hive_service.dart';
 import 'package:money_flow/widgets/custom_button.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class ShowConfirmationDialog {
   static Future<dynamic> showConfirmationDialog(
@@ -17,12 +18,12 @@ class ShowConfirmationDialog {
         return AlertDialog(
           title: Column(
             children: [
-              Text(
+              CustomText(
                 title ?? 'Are you sure?',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 6),
-              Text(
+              CustomText(
                 subtitle ?? 'Do you really want to delete all transactions?',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, color: AppColors.grey),

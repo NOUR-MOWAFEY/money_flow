@@ -5,16 +5,22 @@ class AppTheme {
   static ThemeData mainTheme() {
     return ThemeData(
       fontFamily: 'Poppins',
-      primaryColor: AppColors.primaryColor,
+
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.primary,
+        brightness: .dark,
+      ),
+
+      primaryColor: AppColors.primary,
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: AppColors.primaryColor),
+        style: TextButton.styleFrom(foregroundColor: AppColors.primary),
       ),
       datePickerTheme: DatePickerThemeData(
         dayBackgroundColor: WidgetStateProperty.resolveWith<Color?>((
           Set<WidgetState> states,
         ) {
           if (states.contains(WidgetState.selected)) {
-            return AppColors.primaryColor;
+            return AppColors.primary;
           }
 
           return null;
@@ -23,19 +29,19 @@ class AppTheme {
           Set<WidgetState> states,
         ) {
           if (states.contains(WidgetState.selected)) {
-            return AppColors.primaryColor;
+            return AppColors.primary;
           }
 
           return null;
         }),
 
-        backgroundColor: AppColors.secondaryColorWithHeightOpacity,
+        backgroundColor: AppColors.bg,
       ),
-      scaffoldBackgroundColor: AppColors.white,
+      scaffoldBackgroundColor: AppColors.bg,
       appBarTheme: const AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.bg,
         centerTitle: true,
         titleTextStyle: TextStyle(
           fontFamily: 'Poppins',

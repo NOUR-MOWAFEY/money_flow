@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/models/transaction_model.dart';
 import 'package:money_flow/widgets/custom_back_button.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 import 'package:money_flow/widgets/edit_transaction_view_body.dart';
 
 class EditTransactionView extends StatelessWidget {
@@ -14,7 +15,7 @@ class EditTransactionView extends StatelessWidget {
 
       appBar: AppBar(
         leading: const CustomBackButton(),
-        title: const Text('Edit Transaction'),
+        title: const CustomText('Edit Transaction'),
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),

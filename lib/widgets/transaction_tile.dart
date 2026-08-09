@@ -5,6 +5,7 @@ import 'package:money_flow/models/transaction_model.dart';
 import 'package:money_flow/utils/date_formatter.dart';
 import 'package:money_flow/utils/get_category.dart';
 import 'package:money_flow/widgets/custom_slidable.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 import 'package:money_flow/widgets/transaction_tile_price.dart';
 
 class TransactionTile extends StatelessWidget {
@@ -36,18 +37,18 @@ class TransactionTile extends StatelessWidget {
           leading: CircleAvatar(
             radius: 26,
             backgroundColor: category.color,
-            foregroundColor: AppColors.white,
+            foregroundColor: AppColors.icon,
             child: Icon(category.icon),
           ),
 
           // title
-          title: Text(
+          title: CustomText(
             transactionModel.title,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
 
           // date
-          subtitle: Text(
+          subtitle: CustomText(
             DateFormatter.dateFormatter(transactionModel.date),
             style: const TextStyle(fontSize: 14),
           ),

@@ -28,7 +28,7 @@ class CalculatorButton extends StatelessWidget {
       child: const Center(
         child: FaIcon(
           FontAwesomeIcons.calculator,
-          color: Color.fromARGB(222, 20, 20, 20),
+          color: AppColors.icon,
           size: 22,
         ),
       ),

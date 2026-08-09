@@ -16,7 +16,7 @@ class TransactionsSection extends StatelessWidget {
       children: [
         DecoratedSliver(
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppColors.bg,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(26),
               topRight: Radius.circular(26),
@@ -38,10 +38,7 @@ class TransactionsSection extends StatelessWidget {
 
         const SliverFillRemaining(
           hasScrollBody: false,
-          child: SizedBox(
-            height: 110,
-            child: ColoredBox(color: AppColors.white),
-          ),
+          child: SizedBox(height: 110, child: ColoredBox(color: AppColors.bg)),
         ),
       ],
     );

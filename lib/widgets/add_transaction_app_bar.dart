@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/widgets/custom_back_button.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class AddTransactionAppBar extends StatelessWidget {
   const AddTransactionAppBar({super.key});
@@ -14,7 +15,7 @@ class AddTransactionAppBar extends StatelessWidget {
 
           SizedBox(width: 8),
 
-          Text(
+          CustomText(
             'Add Transaction',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),

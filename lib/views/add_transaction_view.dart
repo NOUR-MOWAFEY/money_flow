@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/widgets/add_transaction_view_body.dart';
 import 'package:money_flow/widgets/custom_back_button.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class AddTransactionView extends StatelessWidget {
   const AddTransactionView({super.key});
@@ -12,7 +13,7 @@ class AddTransactionView extends StatelessWidget {
 
       appBar: AppBar(
         leading: const CustomBackButton(),
-        title: const Text('Add Transaction'),
+        title: const CustomText('Add Transaction'),
       ),
 
       body: GestureDetector(

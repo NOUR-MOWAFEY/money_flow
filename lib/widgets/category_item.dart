@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/models/category_model.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class CategoryItem extends StatelessWidget {
   const CategoryItem({super.key, required this.category});
@@ -22,7 +23,7 @@ class CategoryItem extends StatelessWidget {
           const SizedBox(height: 6),
           FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(
+            child: CustomText(
               category.title,
               textAlign: .center,
               style: const TextStyle(

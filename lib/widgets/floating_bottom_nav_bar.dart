@@ -78,9 +78,7 @@ class _FloatingBottomNavBarState extends State<_FloatingBottomNavBar> {
             },
             icon: Icon(
               Icons.home,
-              color: selectedIndex == 0
-                  ? AppColors.primaryColor
-                  : AppColors.grey,
+              color: selectedIndex == 0 ? AppColors.primary : AppColors.grey,
             ),
           ),
           const Spacer(),
@@ -93,9 +91,7 @@ class _FloatingBottomNavBarState extends State<_FloatingBottomNavBar> {
             },
             icon: Icon(
               Icons.analytics,
-              color: selectedIndex == 1
-                  ? AppColors.primaryColor
-                  : AppColors.grey,
+              color: selectedIndex == 1 ? AppColors.primary : AppColors.grey,
             ),
           ),
           const SizedBox(width: 30),

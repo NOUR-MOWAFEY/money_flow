@@ -92,6 +92,7 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
           title: category.title,
           icon: category.icon,
           color: category.color,
+          categoryType: category.categoryType,
         ),
       ),
     );

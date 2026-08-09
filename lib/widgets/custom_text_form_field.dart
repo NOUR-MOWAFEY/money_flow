@@ -43,7 +43,7 @@ class CustomTextFormFiled extends StatelessWidget {
       onTap: onTap,
       child: TextFormField(
         showCursor: showCursor,
-        cursorColor: AppColors.primaryColor,
+        cursorColor: AppColors.primary,
         cursorHeight: 20,
 
         controller: controller,
@@ -51,7 +51,7 @@ class CustomTextFormFiled extends StatelessWidget {
         style: isNormalTextField
             ? null
             : const TextStyle(
-                color: AppColors.black,
+                color: AppColors.text,
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
               ),
@@ -75,7 +75,7 @@ class CustomTextFormFiled extends StatelessWidget {
           hintText: hintText,
           hintStyle: isNormalTextField
               ? const TextStyle(
-                  color: AppColors.black,
+                  color: AppColors.text,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 )
@@ -83,7 +83,7 @@ class CustomTextFormFiled extends StatelessWidget {
 
           labelText: title,
           labelStyle: const TextStyle(
-            color: AppColors.black,
+            color: AppColors.text,
             fontWeight: FontWeight.bold,
           ),
 

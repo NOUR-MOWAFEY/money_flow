@@ -10,7 +10,8 @@ class CustomBackButton extends StatelessWidget {
       child: IconButton(
         onPressed: () => Navigator.pop(context),
         icon: const Icon(
-          Icons.arrow_back_ios_new_rounded,
+          size: 24,
+          Icons.arrow_back_rounded,
           fontWeight: FontWeight.w500,
         ),
       ),

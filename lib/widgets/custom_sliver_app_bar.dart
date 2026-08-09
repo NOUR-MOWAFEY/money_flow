@@ -11,7 +11,7 @@ class CustomSliverAppBar extends StatelessWidget {
       expandedHeight: 120,
       pinned: true,
       automaticallyImplyLeading: false,
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.primary,
       toolbarHeight: 80,
 
       flexibleSpace: FlexibleSpaceBar(
@@ -22,7 +22,7 @@ class CustomSliverAppBar extends StatelessWidget {
         ),
 
         expandedTitleScale: 1.44,
-        background: Container(height: 120, color: AppColors.primaryColor),
+        background: Container(height: 120, color: AppColors.primary),
       ),
     );
   }

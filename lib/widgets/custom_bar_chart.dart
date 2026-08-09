@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/models/transaction_model.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class CustomBarChart extends StatefulWidget {
   const CustomBarChart({
@@ -16,7 +17,7 @@ class CustomBarChart extends StatefulWidget {
 
   static const Duration animDuration = Duration(milliseconds: 250);
 
-  static const Color barColor = AppColors.primaryColor;
+  static const Color barColor = AppColors.primary;
   static const Color touchedBarColor = AppColors.grey;
   static const Color barBackgroundColor =
       AppColors.secondaryColorWithHeightOpacity;
@@ -81,14 +82,14 @@ class _CustomBarChartState extends State<CustomBarChart> {
           return BarTooltipItem(
             '$date\n',
             const TextStyle(
-              color: AppColors.white,
+              color: AppColors.bg,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
             children: [
               TextSpan(
                 text: (rod.toY - maxValue / 10).toStringAsFixed(1),
-                style: const TextStyle(color: AppColors.white, fontSize: 16),
+                style: const TextStyle(color: AppColors.bg, fontSize: 16),
               ),
             ],
           );
@@ -159,7 +160,7 @@ class _CustomBarChartState extends State<CustomBarChart> {
       return SideTitleWidget(
         meta: meta,
         space: 16,
-        child: Text(
+        child: CustomText(
           date,
           style: const TextStyle(
             color: Colors.black,
@@ -169,7 +170,7 @@ class _CustomBarChartState extends State<CustomBarChart> {
         ),
       );
     }
-    return SideTitleWidget(meta: meta, space: 16, child: const Text(''));
+    return SideTitleWidget(meta: meta, space: 16, child: const CustomText(''));
   }
 }
 
@@ -182,7 +183,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, bottom: 10),
-      child: Text(
+      child: CustomText(
         title,
         style: TextStyle(
           color: Colors.black,

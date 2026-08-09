@@ -26,7 +26,7 @@ class _UserImageState extends State<UserImage> {
       backgroundColor: AppColors.greyTrasparent,
       backgroundImage: imagePath.isNotEmpty ? FileImage(File(imagePath)) : null,
       child: imagePath.isEmpty
-          ? const Icon(Icons.person, color: AppColors.white)
+          ? const Icon(Icons.person, color: AppColors.icon)
           : null,
     );
   }

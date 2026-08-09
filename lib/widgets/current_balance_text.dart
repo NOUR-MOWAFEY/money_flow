@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class CurrentBalanceText extends StatelessWidget {
   const CurrentBalanceText({super.key, this.balance = 0, this.text});
@@ -10,12 +11,12 @@ class CurrentBalanceText extends StatelessWidget {
   Widget build(BuildContext context) {
     return FittedBox(
       fit: BoxFit.scaleDown,
-      child: Text(
+      child: CustomText(
         text == null ? 'EGP ${balance.toStringAsFixed(2)}' : text!,
         style: const TextStyle(
           fontSize: 26,
           fontWeight: FontWeight.bold,
-          color: AppColors.white,
+          color: AppColors.bg,
         ),
       ),
     );

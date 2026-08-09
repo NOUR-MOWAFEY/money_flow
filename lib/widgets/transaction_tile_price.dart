@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/models/transaction_model.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class TransactionTilePrice extends StatelessWidget {
   const TransactionTilePrice({super.key, required this.transactionModel});
@@ -12,7 +13,7 @@ class TransactionTilePrice extends StatelessWidget {
       child: Row(
         mainAxisSize: .min,
         children: [
-          Text(
+          CustomText(
             transactionModel.isExpense ? '-' : '+',
             style: TextStyle(
               fontSize: 16,
@@ -20,7 +21,7 @@ class TransactionTilePrice extends StatelessWidget {
               color: _getTextColor(),
             ),
           ),
-          Text(
+          CustomText(
             transactionModel.amount.toString(),
             style: TextStyle(
               fontSize: 16,

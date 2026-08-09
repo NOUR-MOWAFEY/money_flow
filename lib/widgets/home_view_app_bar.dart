@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/constants/app_colors.dart';
 import 'package:money_flow/cubits/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/widgets/current_balance_text.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class HomeViewAppBar extends StatelessWidget {
   const HomeViewAppBar({super.key});
@@ -13,9 +14,9 @@ class HomeViewAppBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: .min,
       children: [
-        const Text(
+        const CustomText(
           'Current Balance',
-          style: TextStyle(fontSize: 14, color: AppColors.white),
+          style: TextStyle(fontSize: 14, color: AppColors.bg),
         ),
 
         BlocBuilder<TransactionsCubit, TransactionsState>(

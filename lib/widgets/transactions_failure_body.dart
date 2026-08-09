@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class TransactionsFailureBody extends StatelessWidget {
   const TransactionsFailureBody({super.key, required this.message});
@@ -11,7 +12,7 @@ class TransactionsFailureBody extends StatelessWidget {
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Text(
+          child: CustomText(
             message,
             style: const TextStyle(fontSize: 18),
             textAlign: TextAlign.center,

@@ -1,6 +1,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:money_flow/constants/app_colors.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 
 class CustomAnimatedToggle extends StatefulWidget {
   const CustomAnimatedToggle({
@@ -32,11 +33,11 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
       values: TransactionType.values,
 
       iconList: [
-        Text(
+        CustomText(
           TransactionType.expenses.name,
           style: _customTextStyle(TransactionType.expenses),
         ),
-        Text(
+        CustomText(
           TransactionType.income.name,
           style: _customTextStyle(TransactionType.income),
         ),
@@ -54,15 +55,15 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
       style: ToggleStyle(
         borderColor: Colors.transparent,
         borderRadius: BorderRadius.circular(32),
-        indicatorColor: AppColors.primaryColor,
-        backgroundColor: AppColors.greyTrasparent,
+        indicatorColor: AppColors.primary,
+        backgroundColor: AppColors.secondaryColor,
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            spreadRadius: 1,
-            blurRadius: 2,
-            offset: Offset(0, 1.5),
-          ),
+          // BoxShadow(
+          //   color: Colors.black26,
+          //   spreadRadius: 1,
+          //   blurRadius: 2,
+          //   offset: Offset(0, 1.5),
+          // ),
         ],
       ),
     );

@@ -21,7 +21,7 @@ class ResetButton extends StatelessWidget {
           color: AppColors.greyTrasparent,
           borderRadius: BorderRadius.circular(70),
         ),
-        child: const Icon(Icons.restart_alt_outlined, color: AppColors.white),
+        child: const Icon(Icons.restart_alt_outlined, color: AppColors.icon),
       ),
     );
   }

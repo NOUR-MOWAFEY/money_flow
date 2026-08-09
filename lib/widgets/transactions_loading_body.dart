@@ -8,9 +8,7 @@ class TransactionsLoadingBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SliverFillRemaining(
       hasScrollBody: false,
-      child: Center(
-        child: CircularProgressIndicator(color: AppColors.primaryColor),
-      ),
+      child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
     );
   }
 }

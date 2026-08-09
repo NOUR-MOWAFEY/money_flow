@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_flow/widgets/custom_text.dart';
 import 'package:toastification/toastification.dart';
 
 class ShowToastification {
@@ -11,7 +12,7 @@ class ShowToastification {
       backgroundColor: Colors.red,
       borderSide: BorderSide(color: Colors.transparent),
       context: context,
-      title: Text(text, style: TextStyle(color: Colors.white)),
+      title: CustomText(text),
       autoCloseDuration: const Duration(seconds: 5),
       pauseOnHover: true,
       applyBlurEffect: true,
@@ -27,7 +28,7 @@ class ShowToastification {
       backgroundColor: Colors.green,
       borderSide: BorderSide(color: Colors.transparent),
       context: context,
-      title: Text(text, style: TextStyle(color: Colors.white)),
+      title: CustomText(text),
       autoCloseDuration: const Duration(seconds: 3),
       pauseOnHover: true,
       applyBlurEffect: true,
@@ -43,7 +44,7 @@ class ShowToastification {
       backgroundColor: Colors.orangeAccent,
       borderSide: BorderSide(color: Colors.orangeAccent),
       context: context,
-      title: Text(text, style: TextStyle(color: Colors.white)),
+      title: CustomText(text),
       autoCloseDuration: const Duration(seconds: 5),
       pauseOnHover: true,
       applyBlurEffect: true,
@@ -67,10 +68,7 @@ class ShowToastification {
       borderSide: BorderSide(color: Colors.transparent),
       borderRadius: BorderRadius.circular(32),
       context: context,
-      title: Text(
-        text,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
+      title: CustomText(text),
       autoCloseDuration: const Duration(seconds: 2),
       pauseOnHover: true,
       applyBlurEffect: true,

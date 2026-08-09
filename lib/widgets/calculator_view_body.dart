@@ -25,8 +25,8 @@ class CalculatorViewBody extends StatelessWidget {
 
             theme: const CalculatorThemeData(
               borderColor: AppColors.greyTrasparent,
-              operatorColor: AppColors.primaryColor,
-              equalColor: AppColors.primaryColor,
+              operatorColor: AppColors.primary,
+              equalColor: AppColors.primary,
               borderWidth: 0,
             ),
           ),
@@ -41,7 +41,6 @@ class CalculatorViewBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: CustomButton(
             title: 'Done',
-            height: 60,
             onTap: () => Navigator.pop(context),
           ),
         ),

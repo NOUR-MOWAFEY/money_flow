@@ -20,7 +20,7 @@
 //       backgroundColor: Colors.red,
 //       borderSide: BorderSide(color: Colors.red),
 //       context: context,
-//       title: Text(
+//       title: CustomText(
 //         'Please enter a valid amount',
 //         style: TextStyle(color: AppColors.white),
 //       ),
@@ -38,7 +38,7 @@
 //       backgroundColor: Colors.red,
 //       borderSide: BorderSide(color: Colors.red),
 //       context: context,
-//       title: Text(
+//       title: CustomText(
 //         'Please fill all fields with valid data',
 //         style: TextStyle(color: AppColors.white),
 //       ),
@@ -71,7 +71,7 @@
 //     backgroundColor: Colors.green,
 //     borderSide: BorderSide(color: Colors.green),
 //     context: context,
-//     title: Text(
+//     title: CustomText(
 //       'Transaction added successfully',
 //       style: TextStyle(color: AppColors.white),
 //     ),
