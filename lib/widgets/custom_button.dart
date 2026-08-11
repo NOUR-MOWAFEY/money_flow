@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
     this.width = double.infinity,
     this.color = AppColors.primary,
     this.child,
+    this.textSize,
   });
   final void Function()? onTap;
   final String title;
@@ -18,6 +19,7 @@ class CustomButton extends StatelessWidget {
   final double width;
   final Color color;
   final Widget? child;
+  final double? textSize;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class CustomButton extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.bg,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: textSize ?? 16,
                 ),
               ),
             ),

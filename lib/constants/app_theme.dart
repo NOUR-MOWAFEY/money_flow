@@ -6,6 +6,8 @@ class AppTheme {
     return ThemeData(
       fontFamily: 'Poppins',
 
+      iconTheme: IconThemeData(color: AppColors.icon),
+
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
         brightness: .dark,
