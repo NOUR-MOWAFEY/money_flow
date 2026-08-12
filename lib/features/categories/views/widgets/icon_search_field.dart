@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_flow/features/categories/view_models/icon_picker_cubit/icon_picker_cubit.dart';
+import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_cubit.dart';
 
 class IconSearchField extends StatelessWidget {
   const IconSearchField({super.key});
@@ -9,7 +9,7 @@ class IconSearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       cursorHeight: 20,
-      onChanged: context.read<IconPickerCubit>().searchIcons,
+      onChanged: context.read<NewCategoryCubit>().searchIcons,
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
         hintText: 'Search for icons',

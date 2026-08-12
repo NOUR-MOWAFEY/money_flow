@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/widgets/custom_back_button.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
-import 'package:money_flow/features/categories/views/widgets/new_category_color_button.dart';
-import 'package:money_flow/features/categories/views/widgets/new_category_icon_button.dart';
-import 'package:money_flow/features/categories/views/widgets/new_category_name_field.dart';
-import 'package:money_flow/features/categories/views/widgets/new_category_type_field.dart';
+import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_cubit.dart';
+import 'package:money_flow/features/categories/views/widgets/add_new_category_view_body.dart';
 
 class AddNewCategoryView extends StatelessWidget {
   const AddNewCategoryView({super.key});
@@ -16,33 +15,9 @@ class AddNewCategoryView extends StatelessWidget {
         leading: const CustomBackButton(),
         title: const CustomText('Add New Category'),
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            NewCategoryNameField(),
-
-            SizedBox(height: 20),
-
-            Row(
-              children: [
-                // icon
-                NewCategoryIconButton(),
-
-                SizedBox(width: 12),
-
-                // color
-                NewCategoryColorButton(),
-
-                SizedBox(width: 12),
-
-                // type
-                NewCategoryTypeField(),
-              ],
-            ),
-          ],
-        ),
+      body: BlocProvider(
+        create: (context) => NewCategoryCubit(),
+        child: const AddNewCategoryViewBody(),
       ),
     );
   }

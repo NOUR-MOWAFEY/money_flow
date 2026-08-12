@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
-import 'package:money_flow/features/categories/view_models/icon_picker_cubit/icon_picker_cubit.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_cubit.dart';
+import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_state.dart';
 import 'package:money_flow/features/categories/views/widgets/icon_picker_alert_dialog.dart';
 
 class NewCategoryIconButton extends StatelessWidget {
@@ -17,14 +18,19 @@ class NewCategoryIconButton extends StatelessWidget {
         const SizedBox(height: 8),
         InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () {
-            showDialog(
+          onTap: () async {
+            final cubit = context.read<NewCategoryCubit>();
+
+            await showDialog(
               context: context,
-              builder: (context) => BlocProvider(
-                create: (context) => IconPickerCubit(),
+
+              builder: (context) => BlocProvider.value(
+                value: cubit,
                 child: const IconPickerAlertDialog(),
               ),
             );
+
+            // cubit.resetIconPicker();
           },
           child: Container(
             height: 60,
@@ -33,7 +39,12 @@ class NewCategoryIconButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: AppColors.secondaryColor,
             ),
-            child: const Icon(Icons.style_rounded, size: 28),
+            child: BlocBuilder<NewCategoryCubit, NewCategoryState>(
+              builder: (context, state) => Icon(
+                state.selectedIcon?.icon ?? Icons.style_rounded,
+                size: 28,
+              ),
+            ),
           ),
         ),
       ],

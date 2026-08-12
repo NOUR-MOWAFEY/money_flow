@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_flow/features/categories/view_models/icon_picker_cubit/icon_picker_cubit.dart';
+import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_cubit.dart';
 import 'package:money_flow/features/categories/data/models/category_icon.dart';
 import 'package:money_flow/features/categories/views/widgets/pick_icon_item.dart';
 
@@ -43,7 +43,7 @@ class CategoryIconsGrid extends StatelessWidget {
 
         return GestureDetector(
           onTap: () {
-            context.read<IconPickerCubit>().selectIcon(icon);
+            context.read<NewCategoryCubit>().selectIcon(icon);
           },
           child: PickIconItem(
             item: icon,
