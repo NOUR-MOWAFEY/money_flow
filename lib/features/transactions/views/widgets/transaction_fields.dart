@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:money_flow/features/transactions/data/models/transaction_data_model.dart';
+import 'package:money_flow/features/transactions/views/widgets/amount_field.dart';
+import 'package:money_flow/features/transactions/views/widgets/category_field.dart';
+import 'package:money_flow/features/transactions/views/widgets/date_field.dart';
+
+class TransactionFields extends StatelessWidget {
+  const TransactionFields({super.key, required this.addTransactionModel});
+
+  final TransactionDataModel addTransactionModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // amount field
+        AmountField(amountController: addTransactionModel.amountController),
+
+        const SizedBox(height: 32),
+
+        // Category field
+        CategoryField(
+          transactionType: addTransactionModel.transactionType,
+          category: addTransactionModel.category,
+        ),
+
+        const SizedBox(height: 16),
+
+        // Date Field
+        DateField(date: addTransactionModel.date),
+      ],
+    );
+  }
+}

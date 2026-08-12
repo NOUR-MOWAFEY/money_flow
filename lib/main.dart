@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:money_flow/constants/app_theme.dart';
-import 'package:money_flow/cubits/transactions_cubit/transactions_cubit.dart';
-import 'package:money_flow/models/transaction_model.dart';
-import 'package:money_flow/services/hive_service.dart';
-import 'package:money_flow/views/home_view.dart';
+import 'package:money_flow/core/constants/app_theme.dart';
+import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
+import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
+import 'package:money_flow/core/services/hive_service.dart';
+import 'package:money_flow/features/home/views/home_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

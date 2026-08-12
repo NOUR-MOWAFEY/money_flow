@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
+import 'package:money_flow/core/widgets/custom_text.dart';
+
+class TransactionTilePrice extends StatelessWidget {
+  const TransactionTilePrice({super.key, required this.transactionModel});
+  final TransactionModel transactionModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomText(
+            transactionModel.isExpense ? '-' : '+',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: _getTextColor(),
+            ),
+          ),
+          CustomText(
+            transactionModel.amount.toString(),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: _getTextColor(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  MaterialColor _getTextColor() {
+    return transactionModel.isExpense ? Colors.red : Colors.green;
+  }
+}
