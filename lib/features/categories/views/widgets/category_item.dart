@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/features/categories/data/models/category_model.dart';
 
 class CategoryItem extends StatelessWidget {
   const CategoryItem({super.key, required this.category});

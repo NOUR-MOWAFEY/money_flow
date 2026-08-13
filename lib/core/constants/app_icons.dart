@@ -248,15 +248,24 @@ class AppIcons {
   ];
 
   static List<CategoryIcon> searchIcons(String query) {
-  final normalizedQuery = query.trim().toLowerCase();
+    final normalizedQuery = query.trim().toLowerCase();
 
-  if (normalizedQuery.isEmpty) {
-    return icons;
+    if (normalizedQuery.isEmpty) {
+      return icons;
+    }
+
+    final startsWithList = <CategoryIcon>[];
+    final containsList = <CategoryIcon>[];
+
+    for (final icon in icons) {
+      final name = icon.name.trim().toLowerCase();
+      if (name.startsWith(normalizedQuery)) {
+        startsWithList.add(icon);
+      } else if (name.contains(normalizedQuery)) {
+        containsList.add(icon);
+      }
+    }
+
+    return [...startsWithList, ...containsList];
   }
-
-  return icons.where((icon) {
-    final name = icon.name.trim().toLowerCase();
-    return name.contains(normalizedQuery);
-  }).toList();
-}
 }

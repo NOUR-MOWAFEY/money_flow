@@ -1,6 +1,7 @@
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_flow/core/constants/app_icons.dart';
 import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_cubit.dart';
 import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_state.dart';
 import 'package:money_flow/features/categories/views/widgets/category_icons_grid.dart';
@@ -19,9 +20,11 @@ class _IconPickerPageViewState extends State<IconPickerPageView> {
   void initState() {
     super.initState();
 
-    context.read<NewCategoryCubit>().resetIconPicker();
+    final cubit = context.read<NewCategoryCubit>();
 
-    final initialPage = context.read<NewCategoryCubit>().state.currentPageIndex;
+    cubit.resetIconPicker();
+
+    final initialPage = cubit.state.currentPageIndex;
 
     _pageController = PageController(initialPage: initialPage);
   }
@@ -34,24 +37,43 @@ class _IconPickerPageViewState extends State<IconPickerPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewCategoryCubit, NewCategoryState>(
-      builder: (context, state) {
-        return ExpandablePageView.builder(
-          controller: _pageController,
-          itemCount: state.totalPages,
-          onPageChanged: context.read<NewCategoryCubit>().changePage,
-          itemBuilder: (context, pageIndex) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: CategoryIconsGrid(
-                pageIndex: pageIndex,
-                icons: state.icons,
-                selectedIcon: state.selectedIcon,
-              ),
-            );
-          },
-        );
-      },
+    return SizedBox(
+      height: 345,
+      child: BlocConsumer<NewCategoryCubit, NewCategoryState>(
+        listenWhen: (previous, current) => previous.icons != current.icons,
+
+        listener: (context, state) {
+          final isSearching = state.icons.length != AppIcons.icons.length;
+
+          if (isSearching && _pageController.hasClients) {
+            _pageController.jumpToPage(0);
+          }
+        },
+
+        builder: (context, state) {
+          return ExpandablePageView.builder(
+            controller: _pageController,
+            itemCount: state.totalPages,
+            onPageChanged: context.read<NewCategoryCubit>().changePage,
+            itemBuilder: (context, pageIndex) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                child: CategoryIconsGrid(
+                  pageIndex: pageIndex,
+                  icons: state.icons,
+                  selectedIcon: state.selectedIcon,
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
+
+
+

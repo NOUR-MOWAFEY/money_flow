@@ -4,29 +4,29 @@ import 'package:money_flow/features/categories/views/widgets/icon_picker_alert_d
 import 'package:money_flow/features/categories/views/widgets/icon_picker_page_view.dart';
 import 'package:money_flow/features/categories/views/widgets/icon_search_field.dart';
 
-class IconPickerAlertDialog extends StatelessWidget {
-  const IconPickerAlertDialog({super.key});
+class CategoryIconPickerDialog extends StatelessWidget {
+  const CategoryIconPickerDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return const AlertDialog(
       backgroundColor: AppColors.bg,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 12),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      insetPadding: EdgeInsets.symmetric(horizontal: 12),
+      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       content: SizedBox(
         width: 400,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const IconSearchField(),
+            IconSearchField(),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
-            const IconPickerPageView(),
+            IconPickerPageView(),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
-            const IconPickerAlertDialogFooter(),
+            IconPickerAlertDialogFooter(),
           ],
         ),
       ),

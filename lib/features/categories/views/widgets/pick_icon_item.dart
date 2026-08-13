@@ -1,7 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/features/categories/data/models/category_icon.dart';
-import 'package:money_flow/core/widgets/custom_text.dart';
 
 class PickIconItem extends StatelessWidget {
   const PickIconItem({super.key, required this.item, required this.isSelected});
@@ -29,15 +29,26 @@ class PickIconItem extends StatelessWidget {
         children: [
           Icon(item.icon, size: 28),
           const SizedBox(height: 8),
-          Flexible(
-            child: CustomText(
-              item.name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 12),
-            ),
+
+          _buildCategoryLabel(
+            item.name,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
           ),
         ],
       ),
     );
   }
+}
+
+Widget _buildCategoryLabel(String name, {required TextStyle style}) {
+  final isSingleWord = !name.trim().contains(' ');
+
+  return AutoSizeText(
+    name,
+    maxLines: isSingleWord ? 1 : 2,
+    minFontSize: 8,
+    textAlign: TextAlign.center,
+    overflow: TextOverflow.ellipsis,
+    style: style,
+  );
 }
