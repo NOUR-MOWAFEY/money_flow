@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
-import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
 
 class TransactionDataModel {
   final TextEditingController amountController;
   final ValueNotifier<DateTime> date;
-  final ValueNotifier<TransactionType> transactionType;
+  final ValueNotifier<CategoryType> transactionType;
   final ValueNotifier<CategoryModel?> category;
 
   TransactionDataModel({

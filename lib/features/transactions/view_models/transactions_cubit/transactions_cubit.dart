@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_flow/core/constants/app_categories.dart';
+import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/core/services/hive_service.dart';
 
@@ -16,7 +18,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
     emit(TransactionsLoading());
     try {
       final transactions = hiveService.getTransactions();
-      emit(TransactionsSuccess(transactions));
+      emit(TransactionsSuccess(transactions, _buildAllCategories()));
     } catch (e) {
       emit(
         TransactionsFailure('Failed to load transactions, Please try again'),
@@ -31,7 +33,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
       await hiveService.addTransaction(transaction);
       final transactions = hiveService.getTransactions();
 
-      emit(TransactionsSuccess(transactions));
+      emit(TransactionsSuccess(transactions, _buildAllCategories()));
       log('Done');
       log(transactions.toString());
     } catch (e) {
@@ -45,7 +47,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
     try {
       await hiveService.deleteTransaction(transaction);
       final transactions = hiveService.getTransactions();
-      emit(TransactionsSuccess(transactions));
+      emit(TransactionsSuccess(transactions, _buildAllCategories()));
     } catch (e) {
       emit(
         TransactionsFailure('Failed to delete transaction, Please try again'),
@@ -71,7 +73,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
         date: date,
       );
       final transactions = hiveService.getTransactions();
-      emit(TransactionsSuccess(transactions));
+      emit(TransactionsSuccess(transactions, _buildAllCategories()));
     } catch (e) {
       log(e.toString());
       emit(TransactionsFailure('Failed to edit transaction, Please try again'));
@@ -84,7 +86,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
     try {
       await hiveService.reset();
       final transactions = hiveService.getTransactions();
-      emit(TransactionsSuccess(transactions));
+      emit(TransactionsSuccess(transactions, _buildAllCategories()));
     } catch (e) {
       emit(
         TransactionsFailure(
@@ -92,5 +94,15 @@ class TransactionsCubit extends Cubit<TransactionsState> {
         ),
       );
     }
+  }
+
+  /// Builds the full category list once: predefined + user-created from Hive.
+  List<CategoryModel> _buildAllCategories() {
+    final userCategories = hiveService.getCategories();
+    return [
+      ...AppCategories.expenseCategories,
+      ...AppCategories.incomeCategories,
+      ...userCategories,
+    ];
   }
 }

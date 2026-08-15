@@ -1,8 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
 class HiveService {
+  // Singleton: one instance for the whole app lifetime
+  HiveService._();
+  static final HiveService instance = HiveService._();
+  factory HiveService() => instance;
   static const String _trabsactionsBoxName = 'transactions';
+  static const String _categoriesBoxName = 'categories';
   static const String _userBoxName = 'user';
   static const String _isFirstTime = 'isFirstTime';
   static const String _name = 'name';
@@ -111,23 +118,67 @@ class HiveService {
     return income;
   }
 
-  //! ------------------------------
-  //!   unused yet
-  //! ------------------------------
+  // ------------------------------
+  //   categories
+  // ------------------------------
 
-  // ValueListenable<Box<TransactionModel>> get listenable {
-  //   return _box.listenable();
-  // }
+  Box<CategoryModel> get _categoriesBox {
+    return Hive.box<CategoryModel>(_categoriesBoxName);
+  }
 
-  // bool isEmpty() {
-  //   return _box.isEmpty;
-  // }
+  // add category
+  Future<void> addCategory(CategoryModel category) async {
+    await _categoriesBox.add(category);
+  }
 
-  // static List<double> getAmounts(List<TransactionModel> transactions) {
-  //   List<double> amounts = [];
-  //   for (var element in transactions) {
-  //     amounts.add(element.amount.abs());
-  //   }
-  //   return amounts;
-  // }
+  // delete category
+  Future<void> deleteCategory(CategoryModel category) async {
+    await category.delete();
+  }
+
+  // get all categories
+  List<CategoryModel> getCategories() {
+    return _categoriesBox.values.toList();
+  }
+
+  // watch categories box for real-time changes
+  Stream<BoxEvent> watchCategories() => _categoriesBox.watch();
+
+  // get categories by type
+  List<CategoryModel> getCategoriesByType(CategoryType type) {
+    return _categoriesBox.values
+        .where((category) => category.categoryType == type)
+        .toList();
+  }
+
+  // get expense categories
+  List<CategoryModel> getExpenseCategories() {
+    return getCategoriesByType(CategoryType.expenses);
+  }
+
+  // get income categories
+  List<CategoryModel> getIncomeCategories() {
+    return getCategoriesByType(CategoryType.income);
+  }
+
+  // update category
+  Future<void> updateCategory(
+    CategoryModel category, {
+    String? title,
+    IconData? icon,
+    Color? color,
+    CategoryType? categoryType,
+  }) async {
+    if (title != null) category.title = title;
+    if (icon != null) category.icon = icon;
+    if (color != null) category.color = color;
+    if (categoryType != null) category.categoryType = categoryType;
+
+    await category.save();
+  }
+
+  // clear all categories
+  Future<void> clearCategories() async {
+    await _categoriesBox.clear();
+  }
 }

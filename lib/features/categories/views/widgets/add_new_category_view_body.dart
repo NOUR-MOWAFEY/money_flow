@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_flow/core/utils/show_toastification.dart';
+import 'package:money_flow/core/widgets/custom_loading.dart';
+import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_cubit.dart';
+import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_state.dart';
 import 'package:money_flow/features/categories/views/widgets/new_category_color_button.dart';
 import 'package:money_flow/features/categories/views/widgets/new_category_icon_button.dart';
 import 'package:money_flow/features/categories/views/widgets/new_category_name_field.dart';
@@ -9,32 +14,49 @@ class AddNewCategoryViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          NewCategoryNameField(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: BlocConsumer<NewCategoryCubit, NewCategoryState>(
+        buildWhen: (previous, current) =>
+            previous is NewCategoryLoading != current is NewCategoryLoading,
 
-          SizedBox(height: 20),
+        listener: (context, state) {
+          if (state is NewCategorySuccess) {
+            Navigator.pop(context);
+          } else if (state is NewCategoryFailure) {
+            ShowToastification.failure(context, state.errorMessage);
+          }
+        },
 
-          Row(
-            children: [
-              // icon
-              NewCategoryIconButton(),
+        builder: (context, state) {
+          return state is NewCategoryLoading
+              ? const CustomLoading()
+              : const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NewCategoryNameField(),
 
-              SizedBox(width: 12),
+                    SizedBox(height: 20),
 
-              // color
-              NewCategoryColorButton(),
+                    Row(
+                      children: [
+                        // icon
+                        NewCategoryIconButton(),
 
-              SizedBox(width: 12),
+                        SizedBox(width: 12),
 
-              // type
-              NewCategoryTypeField(),
-            ],
-          ),
-        ],
+                        // color
+                        NewCategoryColorButton(),
+
+                        SizedBox(width: 12),
+
+                        // type
+                        NewCategoryTypeField(),
+                      ],
+                    ),
+                  ],
+                );
+        },
       ),
     );
   }

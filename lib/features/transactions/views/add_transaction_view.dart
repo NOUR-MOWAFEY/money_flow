@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/features/transactions/views/widgets/add_transaction_view_body.dart';
 import 'package:money_flow/core/widgets/custom_back_button.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/features/transactions/views/widgets/add_transaction_view_body.dart';
 
 class AddTransactionView extends StatelessWidget {
   const AddTransactionView({super.key});
@@ -23,4 +23,3 @@ class AddTransactionView extends StatelessWidget {
     );
   }
 }
-

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_categories.dart';
+import 'package:money_flow/core/widgets/custom_text_form_field.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/views/categories_view.dart';
-import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
-import 'package:money_flow/core/widgets/custom_text_form_field.dart';
 
 class CategoryField extends StatelessWidget {
   const CategoryField({
@@ -12,7 +11,7 @@ class CategoryField extends StatelessWidget {
     required this.category,
   });
 
-  final ValueNotifier<TransactionType> transactionType;
+  final ValueNotifier<CategoryType> transactionType;
   final ValueNotifier<CategoryModel?> category;
 
   @override
@@ -37,7 +36,7 @@ class CategoryField extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => CategoriesView(
-                          transactionType: transactionType.value,
+                          type: transactionType.value,
                           category: category,
                         ),
                       ),

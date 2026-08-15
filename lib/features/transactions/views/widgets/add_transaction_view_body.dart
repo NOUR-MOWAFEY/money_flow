@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_data_model.dart';
 import 'package:money_flow/features/transactions/views/widgets/add_transaction_view_buttons.dart';
 import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
@@ -39,7 +40,7 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: CustomAnimatedToggle(
-                onChange: (TransactionType transactionType) {
+                onChange: (CategoryType transactionType) {
                   addTransactionModel.category.value = null;
                   addTransactionModel.transactionType.value = transactionType;
                 },
@@ -65,7 +66,7 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
     addTransactionModel = TransactionDataModel(
       amountController: TextEditingController(),
       date: ValueNotifier(DateTime.now()),
-      transactionType: ValueNotifier(TransactionType.expenses),
+      transactionType: ValueNotifier(CategoryType.expenses),
       category: ValueNotifier(null),
     );
   }

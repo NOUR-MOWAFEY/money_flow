@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/core/widgets/custom_text_form_field.dart';
+import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_cubit.dart';
 
 class NewCategoryNameField extends StatelessWidget {
   const NewCategoryNameField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText('Category Name: '),
-        SizedBox(height: 8),
+        const CustomText('Category Name: '),
+        const SizedBox(height: 8),
         CustomTextFormFiled(
-          centerText: false,
+          controller: context.read<NewCategoryCubit>().nameController,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
           isNormalTextField: true,
-          showCursor: true,
           showPrefixIcon: false,
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          centerText: false,
+          showCursor: true,
+
+          validator: (text) {
+            final trimmedText = text?.trim() ?? '';
+
+            if (trimmedText.isEmpty) {
+              return 'Required Field';
+            }
+
+            if (trimmedText.length < 3) {
+              return 'Name must be at least 3 letters';
+            }
+
+            return null;
+          },
         ),
       ],
     );

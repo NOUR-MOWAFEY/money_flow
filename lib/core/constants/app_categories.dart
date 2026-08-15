@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 
 class AppCategories {
-  static const defaultCategory = CategoryModel(
+  static final defaultCategory = CategoryModel(
     title: "Category",
     icon: Icons.category_rounded,
     color: Colors.transparent,
-    categoryType: null,
+    categoryType: CategoryType.expenses,
   );
 
-  static const List<CategoryModel> expenseCategories = [
+  static List<CategoryModel> expenseCategories = [
     CategoryModel(
       title: 'Food',
       icon: Icons.fastfood,
@@ -162,7 +162,7 @@ class AppCategories {
     ),
   ];
 
-  static const List<CategoryModel> incomeCategories = [
+  static List<CategoryModel> incomeCategories = [
     CategoryModel(
       title: 'Salary',
       icon: Icons.work,

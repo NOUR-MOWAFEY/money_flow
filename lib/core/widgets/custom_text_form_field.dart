@@ -20,7 +20,9 @@ class CustomTextFormFiled extends StatelessWidget {
     this.showCursor = false,
     this.isNormalTextField = false,
     this.formatter,
+    this.validator,
   });
+
   final bool isEnabled;
   final String? title;
   final String? hintText;
@@ -36,12 +38,15 @@ class CustomTextFormFiled extends StatelessWidget {
   final bool showCursor;
   final bool isNormalTextField;
   final List<TextInputFormatter>? formatter;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+
       child: TextFormField(
+        validator: validator,
         showCursor: showCursor,
         cursorColor: AppColors.primary,
         cursorHeight: 20,
@@ -57,8 +62,11 @@ class CustomTextFormFiled extends StatelessWidget {
               ),
 
         textAlign: centerText ? TextAlign.center : TextAlign.start,
+
         enabled: isEnabled,
+
         keyboardType: keyboardType,
+
         inputFormatters: formatter,
 
         decoration: InputDecoration(

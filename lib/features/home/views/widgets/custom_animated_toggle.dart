@@ -2,6 +2,7 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/features/categories/data/models/category_model.dart';
 
 class CustomAnimatedToggle extends StatefulWidget {
   const CustomAnimatedToggle({
@@ -10,36 +11,36 @@ class CustomAnimatedToggle extends StatefulWidget {
     this.transactionType,
   });
 
-  final void Function(TransactionType transactionType) onChange;
-  final TransactionType? transactionType;
+  final void Function(CategoryType transactionType) onChange;
+  final CategoryType? transactionType;
 
   @override
   State<CustomAnimatedToggle> createState() => _CustomAnimatedToggleState();
 }
 
 class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
-  late TransactionType value;
+  late CategoryType value;
 
   @override
   void initState() {
-    value = widget.transactionType ?? TransactionType.expenses;
+    value = widget.transactionType ?? CategoryType.expenses;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedToggleSwitch<TransactionType>.size(
+    return AnimatedToggleSwitch<CategoryType>.size(
       current: value,
-      values: TransactionType.values,
+      values: CategoryType.values,
 
       iconList: [
         CustomText(
-          TransactionType.expenses.name,
-          style: _customTextStyle(TransactionType.expenses),
+          CategoryType.expenses.name,
+          style: _customTextStyle(CategoryType.expenses),
         ),
         CustomText(
-          TransactionType.income.name,
-          style: _customTextStyle(TransactionType.income),
+          CategoryType.income.name,
+          style: _customTextStyle(CategoryType.income),
         ),
       ],
 
@@ -69,7 +70,7 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
     );
   }
 
-  TextStyle _customTextStyle(TransactionType type) {
+  TextStyle _customTextStyle(CategoryType type) {
     return TextStyle(
       fontSize: 14,
       color: value == type ? Colors.white : Colors.black54,
@@ -77,4 +78,4 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
   }
 }
 
-enum TransactionType { expenses, income }
+// enum TransactionType { expenses, income }

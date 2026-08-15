@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-class CategoryModel {
-  final String title;
-  final IconData icon;
-  final Color color;
-  final CategoryType? categoryType;
+part 'category_model.g.dart';
 
-  const CategoryModel({
+@HiveType(typeId: 2)
+class CategoryModel extends HiveObject {
+  @HiveField(0)
+  String title;
+
+  @HiveField(1)
+  IconData icon;
+
+  @HiveField(2)
+  Color color;
+
+  @HiveField(3)
+  CategoryType categoryType;
+
+  CategoryModel({
     required this.title,
     required this.icon,
     required this.color,
@@ -14,4 +25,10 @@ class CategoryModel {
   });
 }
 
-enum CategoryType { expenses, income}
+@HiveType(typeId: 3)
+enum CategoryType {
+  @HiveField(0)
+  expenses,
+  @HiveField(1)
+  income,
+}

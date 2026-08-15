@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
+import 'package:money_flow/core/utils/validator.dart';
+import 'package:money_flow/core/widgets/custom_button.dart';
+import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_data_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
-import 'package:money_flow/core/utils/validator.dart';
-import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
-import 'package:money_flow/core/widgets/custom_button.dart';
+import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 
 class EditTransactionButton extends StatelessWidget {
   const EditTransactionButton({
@@ -40,7 +40,7 @@ class EditTransactionButton extends StatelessWidget {
 
                   isExpense:
                       transactionDataModel.transactionType.value ==
-                      TransactionType.expenses,
+                      CategoryType.expenses,
 
                   title: transactionDataModel.category.value!.title,
                 );

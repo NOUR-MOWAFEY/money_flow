@@ -2,8 +2,8 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_icons.dart';
-import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_cubit.dart';
-import 'package:money_flow/features/categories/view_models/icon_picker_cubit/new_category_state.dart';
+import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_cubit.dart';
+import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_state.dart';
 import 'package:money_flow/features/categories/views/widgets/category_icons_grid.dart';
 
 class IconPickerPageView extends StatefulWidget {

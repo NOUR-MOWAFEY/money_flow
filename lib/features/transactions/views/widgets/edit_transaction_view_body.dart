@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
+import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_data_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
-import 'package:money_flow/core/utils/get_category.dart';
-import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
+import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/features/transactions/views/widgets/edit_transaction_view_buttons.dart';
 import 'package:money_flow/features/transactions/views/widgets/transaction_fields.dart';
 
@@ -21,7 +23,7 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
 
   @override
   void initState() {
-    _initializeFieldsData();
+    _initializeFieldsData(context);
     super.initState();
   }
 
@@ -45,7 +47,7 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: CustomAnimatedToggle(
                 transactionType: transactionDataModel.transactionType.value,
-                onChange: (TransactionType transactionType) {
+                onChange: (CategoryType transactionType) {
                   transactionDataModel.category.value = null;
                   transactionDataModel.transactionType.value = transactionType;
                 },
@@ -70,9 +72,14 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
     );
   }
 
-  void _initializeFieldsData() {
+  void _initializeFieldsData(BuildContext context) {
     final transaction = widget.transactionModel;
-    final category = getCategory(transaction.title, transaction.isExpense);
+
+    // Look up the category from the already-loaded cubit state (no Hive read)
+    final cubitState = context.read<TransactionsCubit>().state;
+    final CategoryModel category = cubitState is TransactionsSuccess
+        ? cubitState.findCategory(transaction.title, transaction.isExpense)
+        : AppCategories.defaultCategory;
 
     transactionDataModel = TransactionDataModel(
       amountController: TextEditingController(
@@ -82,9 +89,7 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
       date: ValueNotifier(transaction.date),
 
       transactionType: ValueNotifier(
-        transaction.isExpense
-            ? TransactionType.expenses
-            : TransactionType.income,
+        transaction.isExpense ? CategoryType.expenses : CategoryType.income,
       ),
 
       category: ValueNotifier(
