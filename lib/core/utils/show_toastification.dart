@@ -4,24 +4,19 @@ import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:toastification/toastification.dart';
 
 class ShowToastification {
-  static ToastificationItem? _current;
-
   static void _dismissCurrent() {
-    if (_current != null) {
-      toastification.dismiss(_current!);
-      _current = null;
-    }
+    toastification.dismissAll(delayForAnimation: false);
   }
 
   static ToastificationItem failure(BuildContext context, String text) {
     _dismissCurrent();
 
-    final item = toastification.show(
+    return toastification.show(
       alignment: Alignment.topCenter,
-      icon: FaIcon(FontAwesomeIcons.circleExclamation, color: Colors.white),
+      icon: const FaIcon(FontAwesomeIcons.circleExclamation, color: Colors.white),
       foregroundColor: Colors.white,
       backgroundColor: Colors.red,
-      borderSide: BorderSide(color: Colors.transparent),
+      borderSide: const BorderSide(color: Colors.transparent),
       context: context,
       title: CustomText(text),
       autoCloseDuration: const Duration(seconds: 5),
@@ -29,20 +24,17 @@ class ShowToastification {
       applyBlurEffect: true,
       closeOnClick: true,
     );
-
-    _current = item;
-    return item;
   }
 
   static ToastificationItem success(BuildContext context, String text) {
     _dismissCurrent();
 
-    final item = toastification.show(
+    return toastification.show(
       alignment: Alignment.topCenter,
-      icon: FaIcon(FontAwesomeIcons.circleCheck, color: Colors.white),
+      icon: const FaIcon(FontAwesomeIcons.circleCheck, color: Colors.white),
       foregroundColor: Colors.white,
       backgroundColor: Colors.green,
-      borderSide: BorderSide(color: Colors.transparent),
+      borderSide: const BorderSide(color: Colors.transparent),
       context: context,
       title: CustomText(text),
       autoCloseDuration: const Duration(seconds: 3),
@@ -50,20 +42,17 @@ class ShowToastification {
       applyBlurEffect: true,
       closeOnClick: true,
     );
-
-    _current = item;
-    return item;
   }
 
   static ToastificationItem warning(BuildContext context, String text) {
     _dismissCurrent();
 
-    final item = toastification.show(
+    return toastification.show(
       alignment: Alignment.topCenter,
-      icon: FaIcon(FontAwesomeIcons.circleExclamation, color: Colors.white),
+      icon: const FaIcon(FontAwesomeIcons.circleExclamation, color: Colors.white),
       foregroundColor: Colors.white,
       backgroundColor: Colors.orangeAccent,
-      borderSide: BorderSide(color: Colors.orangeAccent),
+      borderSide: const BorderSide(color: Colors.orangeAccent),
       context: context,
       title: CustomText(text),
       autoCloseDuration: const Duration(seconds: 5),
@@ -71,9 +60,6 @@ class ShowToastification {
       applyBlurEffect: true,
       closeOnClick: true,
     );
-
-    _current = item;
-    return item;
   }
 
   static ToastificationItem popUp(
@@ -83,15 +69,15 @@ class ShowToastification {
   ]) {
     _dismissCurrent();
 
-    final item = toastification.show(
+    return toastification.show(
       closeOnClick: true,
-      closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
-      padding: EdgeInsets.only(left: 14, right: 10, top: 8, bottom: 8),
+      closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
+      padding: const EdgeInsets.only(left: 14, right: 10, top: 8, bottom: 8),
       style: ToastificationStyle.simple,
       alignment: Alignment.bottomCenter,
       foregroundColor: Colors.white,
       backgroundColor: bgColor ?? Colors.black45,
-      borderSide: BorderSide(color: Colors.transparent),
+      borderSide: const BorderSide(color: Colors.transparent),
       borderRadius: BorderRadius.circular(32),
       context: context,
       title: CustomText(text),
@@ -99,8 +85,5 @@ class ShowToastification {
       pauseOnHover: true,
       applyBlurEffect: true,
     );
-
-    _current = item;
-    return item;
   }
 }

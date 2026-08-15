@@ -23,6 +23,8 @@ class CategoryModel extends HiveObject {
     required this.color,
     required this.categoryType,
   });
+
+  bool get isDefault => !isInBox;
 }
 
 @HiveType(typeId: 3)

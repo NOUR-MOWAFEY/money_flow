@@ -9,6 +9,8 @@ import 'package:money_flow/features/home/views/home_view.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 
+import 'package:toastification/toastification.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeHive();
@@ -23,10 +25,12 @@ class MoneyFlowApp extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           TransactionsCubit(HiveService())..getAllTransactions(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.mainTheme(),
-        home: const HomeView(),
+      child: ToastificationWrapper(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.mainTheme(),
+          home: const HomeView(),
+        ),
       ),
     );
   }

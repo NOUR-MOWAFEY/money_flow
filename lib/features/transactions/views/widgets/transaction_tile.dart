@@ -42,7 +42,7 @@ class TransactionTile extends StatelessWidget {
           // icon
           leading: CircleAvatar(
             radius: 26,
-            backgroundColor: category.color,
+            backgroundColor: category.color.withValues(alpha: .7),
             foregroundColor: AppColors.icon,
             child: Icon(category.icon),
           ),

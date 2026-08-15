@@ -19,6 +19,26 @@ class Validator {
     }
   }
 
+  static String? categoryNameValidator(String? text) {
+    final trimmedText = text?.trim() ?? '';
+
+    if (trimmedText.isEmpty) {
+      return 'Required Field';
+    }
+
+    final lines = trimmedText.split('\n');
+
+    if (lines.length > 2) {
+      return 'Enter at most 2 lines';
+    }
+
+    if (lines.any((line) => line.trim().length > 10)) {
+      return 'Each line must be at most 10 letters';
+    }
+
+    return null;
+  }
+
   static bool _isInvalidAmount(String value) {
     final parsed = double.tryParse(value);
     return parsed == null || parsed <= 0;

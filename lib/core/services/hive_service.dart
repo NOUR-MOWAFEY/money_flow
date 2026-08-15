@@ -73,6 +73,9 @@ class HiveService {
       ..sort((a, b) => b.date.compareTo(a.date));
   }
 
+  // watch transactions box for real-time changes
+  Stream<BoxEvent> watchTransactions() => _transactionsBox.watch();
+
   // edit
   Future<void> editTransaction(
     TransactionModel transaction, {
@@ -133,7 +136,9 @@ class HiveService {
 
   // delete category
   Future<void> deleteCategory(CategoryModel category) async {
-    await category.delete();
+    if (category.isInBox) {
+      await category.delete();
+    }
   }
 
   // get all categories
@@ -169,12 +174,33 @@ class HiveService {
     Color? color,
     CategoryType? categoryType,
   }) async {
+    if (!category.isInBox) return;
+
+    final oldTitle = category.title;
+    final oldIsExpense = category.categoryType == CategoryType.expenses;
+
     if (title != null) category.title = title;
     if (icon != null) category.icon = icon;
     if (color != null) category.color = color;
     if (categoryType != null) category.categoryType = categoryType;
 
     await category.save();
+
+    final newTitle = category.title;
+    final newIsExpense = category.categoryType == CategoryType.expenses;
+
+    // If title or type changed, synchronize existing transactions using this category
+    if (oldTitle != newTitle || oldIsExpense != newIsExpense) {
+      final matchingTransactions = _transactionsBox.values.where(
+        (t) => t.title == oldTitle && t.isExpense == oldIsExpense,
+      ).toList();
+
+      for (var transaction in matchingTransactions) {
+        transaction.title = newTitle;
+        transaction.isExpense = newIsExpense;
+        await transaction.save();
+      }
+    }
   }
 
   // clear all categories

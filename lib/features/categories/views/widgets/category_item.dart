@@ -12,7 +12,7 @@ class CategoryItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: category.color.withValues(alpha: .8),
+        color: category.color.withValues(alpha: .7),
         borderRadius: BorderRadius.circular(22),
       ),
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/core/services/hive_service.dart';
@@ -77,6 +78,12 @@ class CategoriesCubit extends Cubit<CategoriesState> {
 
   // delete a category
   Future<bool> deleteCategory(CategoryModel category) async {
+    if (category.isDefault) {
+      log('Cannot delete default category: ${category.title}');
+      emit(state.copyWith(errorMessage: 'Default categories cannot be deleted'));
+      return false;
+    }
+
     try {
       await hiveService.deleteCategory(category);
 
@@ -95,9 +102,29 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   }
 
   // update an existing category
-  Future<bool> updateCategory(CategoryModel category) async {
+  Future<bool> updateCategory(
+    CategoryModel category, {
+    String? title,
+    IconData? icon,
+    Color? color,
+    CategoryType? categoryType,
+  }) async {
+    if (category.isDefault) {
+      log('Cannot update default category: ${category.title}');
+      emit(
+        state.copyWith(errorMessage: 'Default categories cannot be modified'),
+      );
+      return false;
+    }
+
     try {
-      await hiveService.updateCategory(category);
+      await hiveService.updateCategory(
+        category,
+        title: title,
+        icon: icon,
+        color: color,
+        categoryType: categoryType,
+      );
 
       final updated = state.categories
           .map((c) => c.key == category.key ? category : c)

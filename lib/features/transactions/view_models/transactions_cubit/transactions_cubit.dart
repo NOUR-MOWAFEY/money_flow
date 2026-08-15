@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -10,8 +11,29 @@ import 'package:money_flow/core/services/hive_service.dart';
 part 'transactions_state.dart';
 
 class TransactionsCubit extends Cubit<TransactionsState> {
-  TransactionsCubit(this.hiveService) : super(TransactionsInitial());
+  TransactionsCubit(this.hiveService) : super(TransactionsInitial()) {
+    _categoriesSubscription = hiveService.watchCategories().listen((_) {
+      _reload();
+    });
+    _transactionsSubscription = hiveService.watchTransactions().listen((_) {
+      _reload();
+    });
+  }
+
   final HiveService hiveService;
+  StreamSubscription? _categoriesSubscription;
+  StreamSubscription? _transactionsSubscription;
+
+  void _reload() {
+    try {
+      final transactions = hiveService.getTransactions();
+      emit(TransactionsSuccess(transactions, _buildAllCategories()));
+    } catch (e) {
+      emit(
+        TransactionsFailure('Failed to load transactions, Please try again'),
+      );
+    }
+  }
 
   //get all transactions
   void getAllTransactions() {
@@ -104,5 +126,12 @@ class TransactionsCubit extends Cubit<TransactionsState> {
       ...AppCategories.incomeCategories,
       ...userCategories,
     ];
+  }
+
+  @override
+  Future<void> close() {
+    _categoriesSubscription?.cancel();
+    _transactionsSubscription?.cancel();
+    return super.close();
   }
 }

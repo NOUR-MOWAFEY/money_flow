@@ -46,12 +46,32 @@ class CustomTextFormFiled extends StatelessWidget {
       onTap: onTap,
 
       child: TextFormField(
+        maxLength: 20,
+
+        maxLengthEnforcement: MaxLengthEnforcement.none,
+
+        minLines: 1,
+        maxLines: 2,
+
+        buildCounter:
+            (
+              context, {
+              required currentLength,
+              required isFocused,
+              required maxLength,
+            }) => null,
+
         validator: validator,
+
         showCursor: showCursor,
+
         cursorColor: AppColors.primary,
+
         cursorHeight: 20,
 
         controller: controller,
+
+        autovalidateMode: .onUserInteraction,
 
         style: isNormalTextField
             ? null

@@ -20,7 +20,7 @@ class AmountField extends StatelessWidget {
         border: 80,
         padding: const EdgeInsets.symmetric(vertical: 24),
         borderColor: AppColors.grey,
-        formatter: [MaxDigitsFormatter()],
+        formatter: [InputFormatters.maxDigitsFormatter()],
       ),
     );
   }
