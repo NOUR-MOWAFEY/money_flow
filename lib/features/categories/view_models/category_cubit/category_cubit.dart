@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/core/services/hive_service.dart';
@@ -20,7 +19,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   //   emit(state.copyWith(status: CategoriesStatus.loading));
 
   //   try {
-  //     final categories = hiveService.getAllCategories();
+  //     final categories = hiveService.getCategories();
   //     emit(
   //       state.copyWith(
   //         status: CategoriesStatus.loaded,
@@ -37,6 +36,25 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   //     );
   //   }
   // }
+
+  List<CategoryModel> getAllCategories() {
+    final defalutCategories = [
+      ...AppCategories.expenseCategories,
+      ...AppCategories.incomeCategories,
+    ];
+
+    final List<CategoryModel> categories = defalutCategories;
+
+    
+
+    try {
+      categories.addAll(hiveService.getCategories());
+    } catch (e) {
+      log('Couldn\'t get categories');
+    }
+
+    return categories;
+  }
 
   // fetch categories filtered by type
   Future<void> getCategoriesByType(CategoryType type) async {
@@ -73,70 +91,6 @@ class CategoriesCubit extends Cubit<CategoriesState> {
           errorMessage: 'Failed to load categories',
         ),
       );
-    }
-  }
-
-  // delete a category
-  Future<bool> deleteCategory(CategoryModel category) async {
-    if (category.isDefault) {
-      log('Cannot delete default category: ${category.title}');
-      emit(state.copyWith(errorMessage: 'Default categories cannot be deleted'));
-      return false;
-    }
-
-    try {
-      await hiveService.deleteCategory(category);
-
-      final updated = state.categories
-          .where((c) => c.key != category.key)
-          .toList();
-
-      emit(state.copyWith(categories: updated));
-      log('Category deleted: ${category.title}');
-      return true;
-    } catch (e) {
-      log('Failed to delete category: $e');
-      emit(state.copyWith(errorMessage: 'Failed to delete category'));
-      return false;
-    }
-  }
-
-  // update an existing category
-  Future<bool> updateCategory(
-    CategoryModel category, {
-    String? title,
-    IconData? icon,
-    Color? color,
-    CategoryType? categoryType,
-  }) async {
-    if (category.isDefault) {
-      log('Cannot update default category: ${category.title}');
-      emit(
-        state.copyWith(errorMessage: 'Default categories cannot be modified'),
-      );
-      return false;
-    }
-
-    try {
-      await hiveService.updateCategory(
-        category,
-        title: title,
-        icon: icon,
-        color: color,
-        categoryType: categoryType,
-      );
-
-      final updated = state.categories
-          .map((c) => c.key == category.key ? category : c)
-          .toList();
-
-      emit(state.copyWith(categories: updated));
-      log('Category updated: ${category.title}');
-      return true;
-    } catch (e) {
-      log('Failed to update category: $e');
-      emit(state.copyWith(errorMessage: 'Failed to update category'));
-      return false;
     }
   }
 

@@ -5,8 +5,8 @@ import 'package:money_flow/core/widgets/custom_back_button.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/view_models/edit_category_cubit/edit_category_cubit.dart';
-import 'package:money_flow/features/categories/views/widgets/edit_category_button.dart';
 import 'package:money_flow/features/categories/views/widgets/edit_category_view_body.dart';
+import 'package:money_flow/features/categories/views/widgets/edit_category_view_buttons.dart';
 
 class EditCategoryView extends StatefulWidget {
   const EditCategoryView({super.key, required this.category});
@@ -29,6 +29,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
         child: BlocProvider(
           create: (context) =>
               EditCategoryCubit(widget.category, HiveService()),
+
           child: Scaffold(
             appBar: AppBar(
               leading: const CustomBackButton(),
@@ -37,7 +38,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
 
             body: const EditCategoryViewBody(),
 
-            bottomNavigationBar: EditCategoryButton(formKey: formKey),
+            bottomNavigationBar: EditCategoryViewButtons(formKey: formKey),
           ),
         ),
       ),

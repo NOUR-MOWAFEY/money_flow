@@ -15,16 +15,13 @@ class EditCategoryButton extends StatelessWidget {
       builder: (context, state) {
         return state is EditCategoryLoading
             ? const SizedBox()
-            : Padding(
-                padding: const EdgeInsets.only(bottom: 32, left: 20, right: 20),
-                child: CustomButton(
-                  title: 'Save',
-                  onTap: () async {
-                    if (formKey.currentState!.validate()) {
-                      await context.read<EditCategoryCubit>().updateCategory();
-                    }
-                  },
-                ),
+            : CustomButton(
+                title: 'Save',
+                onTap: () async {
+                  if (formKey.currentState!.validate()) {
+                    await context.read<EditCategoryCubit>().updateCategory();
+                  }
+                },
               );
       },
     );

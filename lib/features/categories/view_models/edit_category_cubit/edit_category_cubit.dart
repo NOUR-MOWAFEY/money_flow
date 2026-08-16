@@ -2,22 +2,26 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/core/constants/app_icons.dart';
 import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/features/categories/data/models/category_icon.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/view_models/edit_category_cubit/edit_category_state.dart';
+import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
 class EditCategoryCubit extends Cubit<EditCategoryState> {
   EditCategoryCubit(this.category, this.hiveService)
-      : super(EditCategoryInitial.fromCategory(category)) {
+    : super(EditCategoryInitial.fromCategory(category)) {
     nameController.text = category.title;
     nameController.addListener(_onNameChanged);
+    transactions = hiveService.getTransactions();
   }
 
   final CategoryModel category;
   final HiveService hiveService;
   final TextEditingController nameController = TextEditingController();
+  late List<TransactionModel> transactions;
 
   void _onNameChanged() {
     setName(nameController.text);
@@ -165,6 +169,74 @@ class EditCategoryCubit extends Cubit<EditCategoryState> {
       emit(
         EditCategoryFailure(
           errorMessage: 'Failed to update category',
+          name: state.name,
+          selectedIcon: state.selectedIcon,
+          selectedColor: state.selectedColor,
+          selectedType: state.selectedType,
+          icons: state.icons,
+          currentPageIndex: state.currentPageIndex,
+        ),
+      );
+    }
+  }
+
+  // delete category from Hive
+  Future<void> deleteCategory() async {
+    if (category.isDefault) {
+      emit(
+        EditCategoryFailure(
+          errorMessage: 'Default categories cannot be deleted',
+          name: state.name,
+          selectedIcon: state.selectedIcon,
+          selectedColor: state.selectedColor,
+          selectedType: state.selectedType,
+          icons: state.icons,
+          currentPageIndex: state.currentPageIndex,
+        ),
+      );
+      return;
+    }
+
+    emit(
+      EditCategoryLoading(
+        name: state.name,
+        selectedIcon: state.selectedIcon,
+        selectedColor: state.selectedColor,
+        selectedType: state.selectedType,
+        icons: state.icons,
+        currentPageIndex: state.currentPageIndex,
+      ),
+    );
+
+    try {
+      await hiveService.deleteCategory(category);
+
+      for (var transaction in transactions) {
+        if (transaction.title == category.title) {
+          hiveService.editTransaction(
+            transaction,
+            title: AppCategories.deletedCategory.title,
+          );
+        }
+      }
+
+      log('Category deleted: ${category.title}');
+
+      emit(
+        EditCategorySuccess(
+          name: state.name,
+          selectedIcon: state.selectedIcon,
+          selectedColor: state.selectedColor,
+          selectedType: state.selectedType,
+          icons: state.icons,
+          currentPageIndex: state.currentPageIndex,
+        ),
+      );
+    } catch (e) {
+      log('Failed to delete category: $e');
+      emit(
+        EditCategoryFailure(
+          errorMessage: 'Failed to delete category',
           name: state.name,
           selectedIcon: state.selectedIcon,
           selectedColor: state.selectedColor,

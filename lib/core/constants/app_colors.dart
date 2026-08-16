@@ -18,4 +18,5 @@ class AppColors {
   static const grey = Colors.grey;
   static const greyTrasparent = Color.fromARGB(170, 78, 121, 150);
   static const black = Colors.black;
+  static const error = Color.fromARGB(255, 221, 60, 49);
 }

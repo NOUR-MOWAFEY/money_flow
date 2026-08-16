@@ -9,6 +9,13 @@ class AppCategories {
     categoryType: CategoryType.expenses,
   );
 
+  static final deletedCategory = CategoryModel(
+    title: "Deleted Category",
+    icon: Icons.question_mark_rounded,
+    color: Colors.transparent,
+    categoryType: CategoryType.expenses,
+  );
+
   static List<CategoryModel> expenseCategories = [
     CategoryModel(
       title: 'Food',
