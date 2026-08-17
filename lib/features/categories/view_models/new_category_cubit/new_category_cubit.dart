@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/core/constants/app_icons.dart';
 import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/features/categories/data/models/category_icon.dart';
@@ -67,6 +68,55 @@ class NewCategoryCubit extends Cubit<NewCategoryState> {
     emit(state.copyWith(currentPageIndex: index));
   }
 
+  // get categories by type
+  List<CategoryModel> getCategoriesByType(CategoryType type) {
+    final defaultCategories = type == CategoryType.expenses
+        ? AppCategories.expenseCategories
+        : AppCategories.incomeCategories;
+
+    return [...defaultCategories, ...hiveService.getCategoriesByType(type)];
+  }
+
+  // check if category is already used
+  bool isCategoryAvailable(CategoryType categoryType) {
+    final allCategories = getCategoriesByType(categoryType);
+
+    final isUsed = allCategories.any(
+      (category) =>
+          category.title.trim().toLowerCase() ==
+          state.name.trim().toLowerCase(),
+    );
+
+    if (isUsed) {
+      emit(
+        NewCategoryFailure(
+          errorMessage: 'A category with this name already exists.',
+          name: state.name,
+          selectedIcon: state.selectedIcon,
+          selectedColor: state.selectedColor,
+          selectedType: state.selectedType,
+          icons: state.icons,
+          currentPageIndex: state.currentPageIndex,
+        ),
+      );
+
+      emit(
+        NewCategoryInitial(
+          name: state.name,
+          selectedIcon: state.selectedIcon,
+          selectedColor: state.selectedColor,
+          selectedType: state.selectedType,
+          icons: state.icons,
+          currentPageIndex: state.currentPageIndex,
+        ),
+      );
+
+      return false;
+    }
+
+    return true;
+  }
+
   // validate form fields
   String? validate() {
     if (state.name.trim().isEmpty) return 'Please enter a category name';
@@ -121,6 +171,10 @@ class NewCategoryCubit extends Cubit<NewCategoryState> {
       final categoryType = state.selectedType!.toLowerCase() == 'expenses'
           ? CategoryType.expenses
           : CategoryType.income;
+
+      if (!isCategoryAvailable(categoryType)) {
+        return;
+      }
 
       final category = CategoryModel(
         title: state.name.trim(),

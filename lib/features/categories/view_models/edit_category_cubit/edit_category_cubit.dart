@@ -8,20 +8,16 @@ import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/features/categories/data/models/category_icon.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/view_models/edit_category_cubit/edit_category_state.dart';
-import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
-
 class EditCategoryCubit extends Cubit<EditCategoryState> {
   EditCategoryCubit(this.category, this.hiveService)
     : super(EditCategoryInitial.fromCategory(category)) {
     nameController.text = category.title;
     nameController.addListener(_onNameChanged);
-    transactions = hiveService.getTransactions();
   }
 
   final CategoryModel category;
   final HiveService hiveService;
   final TextEditingController nameController = TextEditingController();
-  late List<TransactionModel> transactions;
 
   void _onNameChanged() {
     setName(nameController.text);
@@ -72,6 +68,64 @@ class EditCategoryCubit extends Cubit<EditCategoryState> {
     if (state.currentPageIndex == index) return;
 
     emit(state.copyWith(currentPageIndex: index));
+  }
+
+  // get categories by type
+  List<CategoryModel> getCategoriesByType(CategoryType type) {
+    final defaultCategories = type == CategoryType.expenses
+        ? AppCategories.expenseCategories
+        : AppCategories.incomeCategories;
+
+    return [...defaultCategories, ...hiveService.getCategoriesByType(type)];
+  }
+
+  // check if category is already used
+  bool isCategoryAvailable(CategoryType categoryType) {
+    final trimmedName = state.name.trim().toLowerCase();
+
+    // If the name and type haven't changed from the original category, it is valid
+    if (trimmedName == category.title.trim().toLowerCase() &&
+        category.categoryType == categoryType) {
+      return true;
+    }
+
+    final allCategories = getCategoriesByType(categoryType);
+
+    // Exclude the category itself when checking for duplicates
+    final isUsed = allCategories.any(
+      (c) =>
+          c.key != category.key &&
+          c.title.trim().toLowerCase() == trimmedName,
+    );
+
+    if (isUsed) {
+      emit(
+        EditCategoryFailure(
+          errorMessage: 'A category with this name already exists.',
+          name: state.name,
+          selectedIcon: state.selectedIcon,
+          selectedColor: state.selectedColor,
+          selectedType: state.selectedType,
+          icons: state.icons,
+          currentPageIndex: state.currentPageIndex,
+        ),
+      );
+
+      emit(
+        EditCategoryInitial(
+          name: state.name,
+          selectedIcon: state.selectedIcon,
+          selectedColor: state.selectedColor,
+          selectedType: state.selectedType,
+          icons: state.icons,
+          currentPageIndex: state.currentPageIndex,
+        ),
+      );
+
+      return false;
+    }
+
+    return true;
   }
 
   // validate form fields
@@ -144,6 +198,10 @@ class EditCategoryCubit extends Cubit<EditCategoryState> {
           ? CategoryType.expenses
           : CategoryType.income;
 
+      if (!isCategoryAvailable(categoryType)) {
+        return;
+      }
+
       await hiveService.updateCategory(
         category,
         title: state.name.trim(),
@@ -210,16 +268,6 @@ class EditCategoryCubit extends Cubit<EditCategoryState> {
 
     try {
       await hiveService.deleteCategory(category);
-
-      for (var transaction in transactions) {
-        if (transaction.title == category.title) {
-          hiveService.editTransaction(
-            transaction,
-            title: AppCategories.deletedCategory.title,
-          );
-        }
-      }
-
       log('Category deleted: ${category.title}');
 
       emit(

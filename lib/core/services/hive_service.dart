@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
@@ -136,8 +137,21 @@ class HiveService {
 
   // delete category
   Future<void> deleteCategory(CategoryModel category) async {
-    if (category.isInBox) {
-      await category.delete();
+    if (!category.isInBox) return;
+
+    final categoryTitle = category.title;
+    final isExpense = category.categoryType == CategoryType.expenses;
+
+    await category.delete();
+
+    // Reassign transactions using this category to deletedCategory
+    final matchingTransactions = _transactionsBox.values.where(
+      (t) => t.title == categoryTitle && t.isExpense == isExpense,
+    ).toList();
+
+    for (var transaction in matchingTransactions) {
+      transaction.title = AppCategories.deletedCategory.title;
+      await transaction.save();
     }
   }
 

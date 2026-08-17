@@ -14,46 +14,18 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   StreamSubscription? _categoriesSubscription;
   CategoryType? _currentType;
 
-  // fetch all categories
-  // Future<void> getCategories() async {
-  //   emit(state.copyWith(status: CategoriesStatus.loading));
-
-  //   try {
-  //     final categories = hiveService.getCategories();
-  //     emit(
-  //       state.copyWith(
-  //         status: CategoriesStatus.loaded,
-  //         categories: categories,
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     log('Failed to load categories: $e');
-  //     emit(
-  //       state.copyWith(
-  //         status: CategoriesStatus.error,
-  //         errorMessage: 'Failed to load categories',
-  //       ),
-  //     );
-  //   }
-  // }
-
   List<CategoryModel> getAllCategories() {
-    final defalutCategories = [
+    final defaultCategories = [
       ...AppCategories.expenseCategories,
       ...AppCategories.incomeCategories,
     ];
 
-    final List<CategoryModel> categories = defalutCategories;
-
-    
-
     try {
-      categories.addAll(hiveService.getCategories());
+      return [...defaultCategories, ...hiveService.getCategories()];
     } catch (e) {
-      log('Couldn\'t get categories');
+      log('Couldn\'t get categories: $e');
+      return defaultCategories;
     }
-
-    return categories;
   }
 
   // fetch categories filtered by type
