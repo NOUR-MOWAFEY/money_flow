@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/extensions/color_extension.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 
@@ -10,9 +11,9 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: category.color.withValues(alpha: .7),
+        color: category.color.categoryContainerColor,
         borderRadius: BorderRadius.circular(22),
       ),
 
@@ -20,7 +21,7 @@ class CategoryItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(category.icon, color: AppColors.icon, size: 28),
+          Icon(category.icon, color: category.color.categoryIconColor, size: 28),
           const SizedBox(height: 6),
           FittedBox(
             fit: BoxFit.scaleDown,

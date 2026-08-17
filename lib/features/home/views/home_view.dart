@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
-import 'package:money_flow/features/transactions/views/widgets/custom_floating_action_button.dart';
 import 'package:money_flow/features/home/views/widgets/home_view_body.dart';
+import 'package:money_flow/features/transactions/views/widgets/custom_floating_action_button.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

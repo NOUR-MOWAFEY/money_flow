@@ -5,10 +5,9 @@ import 'package:money_flow/core/constants/app_theme.dart';
 import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/data/models/icon_data_adapter.dart';
-import 'package:money_flow/features/home/views/home_view.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
-
+import 'package:money_flow/main_nav_view.dart';
 import 'package:toastification/toastification.dart';
 
 void main() async {
@@ -29,7 +28,7 @@ class MoneyFlowApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.mainTheme(),
-          home: const HomeView(),
+          home: const MainNavView(),
         ),
       ),
     );

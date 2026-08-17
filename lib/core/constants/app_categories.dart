@@ -44,7 +44,7 @@ class AppCategories {
     CategoryModel(
       title: 'Rent',
       icon: Icons.home,
-      color: Color(0xFF795548),
+      color: Color(0xFF795223),
       categoryType: CategoryType.expenses,
     ),
     CategoryModel(

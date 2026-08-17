@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
+import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/features/transactions/views/edit_transaction_view.dart';
 
 class CustomSlidable extends StatelessWidget {
@@ -44,8 +44,7 @@ class CustomSlidable extends StatelessWidget {
       ),
 
       SlidableAction(
-        onPressed: (context) => Navigator.push(
-          context,
+        onPressed: (context) => Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) =>
                 EditTransactionView(transactionModel: transactionModel),

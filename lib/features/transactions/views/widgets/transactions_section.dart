@@ -27,7 +27,10 @@ class TransactionsSection extends StatelessWidget {
               if (state is TransactionsSuccess) {
                 return state.transactions.isEmpty
                     ? const SliverToBoxAdapter(child: SizedBox(height: 50))
-                    : TransactionsList(transactions: state.transactions);
+                    : TransactionsList(
+                        transactions: state.transactions,
+                        findCategory: state.findCategory,
+                      );
               } else if (state is TransactionsFailure) {
                 return TransactionsFailureBody(message: state.message);
               }
@@ -38,7 +41,7 @@ class TransactionsSection extends StatelessWidget {
 
         const SliverFillRemaining(
           hasScrollBody: false,
-          child: SizedBox(height: 110, child: ColoredBox(color: AppColors.bg)),
+          child: SizedBox(height: 140, child: ColoredBox(color: AppColors.bg)),
         ),
       ],
     );
