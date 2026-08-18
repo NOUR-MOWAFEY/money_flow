@@ -12,9 +12,10 @@ class MainNavView extends StatelessWidget {
   // ---------- Colors ----------
   static const Color _activeColor = Colors.blue;
   static const Color _inactiveColor = Colors.white24;
-  static final Color _barColor = AppColors.secondaryColor.withValues(
-    alpha: .7,
-  ); // translucent dark bar
+  static final Color _barColor = AppColors.bg;
+  // .withValues(
+  //   alpha: .7,
+  // ); // translucent dark bar
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,11 @@ class MainNavView extends StatelessWidget {
       color: _barColor,
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
-      // borderRadius: BorderRadius.circular(32),
+
+      // borderRadius: BorderRadius.only(
+      //   topLeft: Radius.circular(20),
+      //   topRight: Radius.circular(20),
+      // ),
     );
   }
 }

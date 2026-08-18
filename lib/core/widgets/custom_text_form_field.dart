@@ -20,7 +20,7 @@ class CustomTextFormFiled extends StatelessWidget {
     this.showCursor = false,
     this.isNormalTextField = false,
     this.formatter,
-    this.validator,
+    this.validator, this.focusNode,
   });
 
   final bool isEnabled;
@@ -39,6 +39,7 @@ class CustomTextFormFiled extends StatelessWidget {
   final bool isNormalTextField;
   final List<TextInputFormatter>? formatter;
   final String? Function(String?)? validator;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,7 @@ class CustomTextFormFiled extends StatelessWidget {
       onTap: onTap,
 
       child: TextFormField(
+        focusNode: focusNode,
         maxLength: 20,
 
         maxLengthEnforcement: MaxLengthEnforcement.none,

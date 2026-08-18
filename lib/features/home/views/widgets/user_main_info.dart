@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/core/services/hive_service.dart';
+import 'package:money_flow/core/constants/app_dimensions.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
-import 'package:money_flow/features/home/views/widgets/reset_button.dart';
 import 'package:money_flow/features/home/views/widgets/user_image.dart';
 
 class UserMainInfo extends StatelessWidget {
@@ -10,17 +9,27 @@ class UserMainInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.only(top: 35),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppDimensions.viewPadding),
+      child: ListTile(
+        contentPadding: EdgeInsets.only(bottom: 22),
 
-      leading: const UserImage(),
+        leading: UserImage(),
 
-      title: CustomText(
-        HiveService.userName,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        title: Column(
+          crossAxisAlignment: .start,
+          children: [
+            CustomText('Hello,', style: TextStyle(fontSize: 14)),
+
+            CustomText(
+              'Nour Mowafey',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ],
+        ),
+
+        // trailing: const ResetButton(),
       ),
-
-      trailing: const ResetButton(),
     );
   }
 }
