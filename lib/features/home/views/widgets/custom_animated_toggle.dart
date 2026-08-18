@@ -77,5 +77,3 @@ class _CustomAnimatedToggleState extends State<CustomAnimatedToggle> {
     );
   }
 }
-
-// enum TransactionType { expenses, income }

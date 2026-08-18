@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/features/home/views/home_view.dart';
+import 'package:money_flow/features/reports/views/reports_view.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class MainNavView extends StatelessWidget {
@@ -46,8 +45,8 @@ class MainNavView extends StatelessWidget {
 
   PersistentTabConfig _chartsTab() {
     return PersistentTabConfig(
-      screen: const HomeView(),
-      item: _customIconConfig(FontAwesomeIcons.chartPie, "Charts"),
+      screen: const ReportsView(),
+      item: _customIconConfig(FontAwesomeIcons.chartSimple, "Charts"),
     );
   }
 
@@ -102,7 +101,7 @@ class MainNavView extends StatelessWidget {
   NavBarDecoration _navBarDecoration() {
     return NavBarDecoration(
       color: _barColor,
-      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      // filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
 
       // borderRadius: BorderRadius.only(

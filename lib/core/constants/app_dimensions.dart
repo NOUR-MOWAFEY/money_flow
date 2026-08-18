@@ -5,6 +5,7 @@ abstract final class AppDimensions {
   static const double screenVerticalPadding = 16;
 
   static const double viewBottomSpace = 140;
+  static const double viewTopSpace = 30;
 
   static const EdgeInsets screenPadding = EdgeInsets.symmetric(
     horizontal: viewPadding,
