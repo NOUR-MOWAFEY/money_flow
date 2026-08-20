@@ -11,17 +11,18 @@ import 'package:money_flow/features/reports/data/models/report_period.dart';
 part 'budget_state.dart';
 
 class BudgetCubit extends Cubit<BudgetState> {
-  BudgetCubit(this.hiveService) : super(BudgetInitial()) {
+  BudgetCubit(this.hiveService, {this.period}) : super(BudgetInitial()) {
     _transactionsSubscription = hiveService.watchTransactions().listen((_) {
-      _reload();
+      _reload(period);
     });
     _budgetsSubscription = hiveService.watchBudgets().listen((_) {
-      _reload();
+      _reload(period);
     });
     loadBudgets();
   }
 
   final HiveService hiveService;
+  BudgetPeriod? period;
   StreamSubscription? _transactionsSubscription;
   StreamSubscription? _budgetsSubscription;
 
@@ -29,30 +30,33 @@ class BudgetCubit extends Cubit<BudgetState> {
 
   void loadBudgets() {
     emit(BudgetLoading());
-    _reload();
+    _reload(period);
   }
 
- void changePeriod(ReportPeriod period) {
-  if (selectedPeriod == period) return;
+  void changePeriod(ReportPeriod period) {
+    if (selectedPeriod == period) return;
 
-  selectedPeriod = period;
+    selectedPeriod = period;
 
-  BudgetPeriod? budgetPeriod;
+    BudgetPeriod? budgetPeriod;
 
-  switch (period) {
-    case ReportPeriod.daily:
-      budgetPeriod = null;
+    switch (period) {
+      case ReportPeriod.daily:
+        budgetPeriod = null;
+        this.period = budgetPeriod;
 
-    case ReportPeriod.weekly:
-      budgetPeriod = BudgetPeriod.weekly;
+      case ReportPeriod.weekly:
+        budgetPeriod = BudgetPeriod.weekly;
+        this.period = budgetPeriod;
 
-    case ReportPeriod.monthly:
-      budgetPeriod = BudgetPeriod.monthly;
+      case ReportPeriod.monthly:
+        budgetPeriod = BudgetPeriod.monthly;
+        this.period = budgetPeriod;
+    }
+
+    emit(BudgetLoading());
+    _reload(budgetPeriod);
   }
-
-  emit(BudgetLoading());
-  _reload(budgetPeriod);
-}
 
   void _reload([BudgetPeriod? period]) {
     try {

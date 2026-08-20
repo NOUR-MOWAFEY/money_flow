@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/features/budget/view_models/budget_cubit/budget_cubit.dart';
@@ -16,6 +18,8 @@ class ReportsViewBudgetSection extends StatelessWidget {
     return BlocBuilder<BudgetCubit, BudgetState>(
       builder: (context, budgetState) {
         final isDaily = selectedPeriod == ReportPeriod.daily;
+
+        log(context.read<BudgetCubit>().selectedPeriod.toString());
 
         if (budgetState is BudgetSuccess) {
           return CategoryBudgetLimits(items: isDaily ? [] : budgetState.items);
