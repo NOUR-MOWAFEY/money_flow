@@ -6,6 +6,7 @@ abstract final class AppDimensions {
 
   static const double viewBottomSpace = 140;
   static const double viewTopSpace = 30;
+  static const double chartSpacing = 20;
 
   static const EdgeInsets screenPadding = EdgeInsets.symmetric(
     horizontal: viewPadding,

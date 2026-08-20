@@ -30,6 +30,7 @@ class ReportsCubit extends Cubit<ReportsState> {
   }
 
   void changePeriod(ReportPeriod period) {
+    if (selectedPeriod == period) return;
     _selectedPeriod = period;
     emit(ReportsLoading());
     _reload();
@@ -42,6 +43,7 @@ class ReportsCubit extends Cubit<ReportsState> {
         transactions,
         _selectedPeriod,
       );
+
       final pieItems = ReportsDataHelper.buildPieChartData(
         transactions,
         _selectedPeriod,

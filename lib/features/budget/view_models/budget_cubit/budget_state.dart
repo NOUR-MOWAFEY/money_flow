@@ -8,8 +8,9 @@ class BudgetInitial extends BudgetState {}
 class BudgetLoading extends BudgetState {}
 
 class BudgetSuccess extends BudgetState {
-  BudgetSuccess(this.items);
+  BudgetSuccess(this.items, this.period);
 
+  final BudgetPeriod? period;
   final List<BudgetLimitItem> items;
 }
 

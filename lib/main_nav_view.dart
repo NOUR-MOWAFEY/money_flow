@@ -23,7 +23,7 @@ class MainNavView extends StatelessWidget {
       tabs: _buildTabs(),
       navBarOverlap: const NavBarOverlap.full(),
       backgroundColor: Colors.transparent,
-      // keepNavigatorHistory: false,
+      keepNavigatorHistory: false,
       resizeToAvoidBottomInset: false,
       navBarBuilder: (navBarConfig) => _buildNavBar(navBarConfig),
     );

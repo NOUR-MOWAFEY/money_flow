@@ -25,7 +25,7 @@ class ReportsAnimatedToggle extends StatelessWidget {
       indicatorSize: const Size.fromWidth(140),
       borderWidth: 4.0,
       selectedIconScale: 1.15,
-      onChanged: onChange,
+      onChanged: onChange.call,
       style: ToggleStyle(
         borderColor: Colors.transparent,
         borderRadius: BorderRadius.circular(32),

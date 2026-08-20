@@ -19,6 +19,7 @@ class BudgetDataHelper {
         final weekEnd = weekStart.add(const Duration(days: 6));
         return !normalizedDate.isBefore(weekStart) &&
             !normalizedDate.isAfter(weekEnd);
+
       case BudgetPeriod.monthly:
         final now = DateTime.now();
         return date.year == now.year && date.month == now.month;
@@ -62,7 +63,6 @@ class BudgetDataHelper {
         limit: budget.limitAmount,
         period: budget.period,
       );
-    }).toList()
-      ..sort((a, b) => b.percentage.compareTo(a.percentage));
+    }).toList()..sort((a, b) => b.percentage.compareTo(a.percentage));
   }
 }

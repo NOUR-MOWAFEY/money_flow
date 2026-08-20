@@ -148,9 +148,9 @@ class HiveService {
     await category.delete();
 
     // Reassign transactions using this category to deletedCategory
-    final matchingTransactions = _transactionsBox.values.where(
-      (t) => t.title == categoryTitle && t.isExpense == isExpense,
-    ).toList();
+    final matchingTransactions = _transactionsBox.values
+        .where((t) => t.title == categoryTitle && t.isExpense == isExpense)
+        .toList();
 
     for (var transaction in matchingTransactions) {
       transaction.title = AppCategories.deletedCategory.title;
@@ -210,9 +210,9 @@ class HiveService {
 
     // If title or type changed, synchronize existing transactions using this category
     if (oldTitle != newTitle || oldIsExpense != newIsExpense) {
-      final matchingTransactions = _transactionsBox.values.where(
-        (t) => t.title == oldTitle && t.isExpense == oldIsExpense,
-      ).toList();
+      final matchingTransactions = _transactionsBox.values
+          .where((t) => t.title == oldTitle && t.isExpense == oldIsExpense)
+          .toList();
 
       for (var transaction in matchingTransactions) {
         transaction.title = newTitle;
@@ -247,8 +247,20 @@ class HiveService {
     await budget.delete();
   }
 
-  List<BudgetModel> getBudgets() {
-    return _budgetsBox.values.toList();
+  List<BudgetModel> getBudgets([BudgetPeriod? period]) {
+    switch (period) {
+      case BudgetPeriod.weekly:
+        return _budgetsBox.values
+            .where((budget) => budget.period == BudgetPeriod.weekly)
+            .toList();
+
+      case BudgetPeriod.monthly:
+        return _budgetsBox.values
+            .where((budget) => budget.period == BudgetPeriod.monthly)
+            .toList();
+      case null:
+        return _budgetsBox.values.toList();
+    }
   }
 
   Stream<BoxEvent> watchBudgets() => _budgetsBox.watch();

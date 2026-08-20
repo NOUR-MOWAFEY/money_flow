@@ -1,61 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
-import 'package:money_flow/features/reports/data/models/category_limit_item.dart';
+import 'package:money_flow/features/budget/data/models/budget_limit_item.dart';
 import 'package:money_flow/features/reports/views/widgets/reports_card.dart';
 
 class CategoryBudgetLimits extends StatelessWidget {
-  const CategoryBudgetLimits({super.key, this.items});
+  const CategoryBudgetLimits({super.key, required this.items});
 
-  final List<CategoryLimitItem>? items;
-
-  List<CategoryLimitItem> get _defaultItems => const [
-    CategoryLimitItem(
-      title: 'Food & Dining',
-      icon: Icons.fastfood,
-      iconColor: Color(0xFFFF6B35),
-      spent: 280,
-      limit: 300,
-    ),
-    CategoryLimitItem(
-      title: 'Shopping',
-      icon: Icons.shopping_bag,
-      iconColor: Color(0xFFE91E8C),
-      spent: 195,
-      limit: 300,
-    ),
-    CategoryLimitItem(
-      title: 'Groceries',
-      icon: Icons.local_grocery_store,
-      iconColor: Color(0xFF43A047),
-      spent: 120,
-      limit: 400,
-    ),
-    CategoryLimitItem(
-      title: 'Entertainment',
-      icon: Icons.movie,
-      iconColor: Color(0xFF8E24AA),
-      spent: 85,
-      limit: 100,
-    ),
-  ];
+  final List<BudgetLimitItem> items;
 
   @override
   Widget build(BuildContext context) {
-    final list = (items != null && items!.isNotEmpty) ? items! : _defaultItems;
-
     return ReportsCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _Header(activeCount: list.length),
+          _Header(activeCount: items.length),
           const SizedBox(height: 18),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: list.length,
+            itemCount: items.length,
             separatorBuilder: (_, _) => const SizedBox(height: 18),
-            itemBuilder: (_, index) => _CategoryLimitTile(item: list[index]),
+            itemBuilder: (_, index) => _CategoryLimitTile(item: items[index]),
           ),
         ],
       ),
@@ -91,7 +58,7 @@ class _Header extends StatelessWidget {
 
 class _CategoryLimitTile extends StatelessWidget {
   const _CategoryLimitTile({required this.item});
-  final CategoryLimitItem item;
+  final BudgetLimitItem item;
 
   @override
   Widget build(BuildContext context) {
