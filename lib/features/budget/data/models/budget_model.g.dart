@@ -1,0 +1,47 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'budget_model.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class BudgetModelAdapter extends TypeAdapter<BudgetModel> {
+  @override
+  final int typeId = 6;
+
+  @override
+  BudgetModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return BudgetModel(
+      categoryTitle: fields[0] as String,
+      limitAmount: fields[1] as double,
+      period: fields[2] as BudgetPeriod,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, BudgetModel obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.categoryTitle)
+      ..writeByte(1)
+      ..write(obj.limitAmount)
+      ..writeByte(2)
+      ..write(obj.period);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BudgetModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

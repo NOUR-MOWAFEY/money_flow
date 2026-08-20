@@ -1,11 +1,15 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
-import 'package:money_flow/features/transactions/views/add_transaction_view.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
-  const CustomFloatingActionButton({super.key, this.size = 58});
+  const CustomFloatingActionButton({
+    super.key,
+    this.size = 58,
+    required this.view,
+  });
   final double size;
+  final Widget view;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,7 @@ class CustomFloatingActionButton extends StatelessWidget {
           ),
         ),
       ),
-      openBuilder: (context, action) => const AddTransactionView(),
+      openBuilder: (context, action) => view,
     );
   }
 }

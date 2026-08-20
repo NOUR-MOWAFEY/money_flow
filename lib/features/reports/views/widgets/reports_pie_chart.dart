@@ -17,20 +17,10 @@ class ReportsPieChart extends StatefulWidget {
 class _ReportsPieChartState extends State<ReportsPieChart> {
   int touchedIndex = -1;
 
-  List<PieChartItem> get _defaultItems => const [
-    PieChartItem(title: 'Food', value: 40, color: Color(0xFF4E9F3D)),
-    PieChartItem(title: 'Shopping', value: 30, color: AppColors.primary),
-    PieChartItem(title: 'Bills', value: 15, color: Color(0xFFE5A93C)),
-    PieChartItem(title: 'Other', value: 15, color: Color(0xFFE84545)),
-    PieChartItem(title: 'Other', value: 15, color: Color(0xFFE84545)),
-    PieChartItem(title: 'Other', value: 15, color: Color(0xFFE84545)),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final chartItems = (widget.items != null && widget.items!.isNotEmpty)
-        ? widget.items!
-        : _defaultItems;
+    final chartItems = widget.items ?? const [];
+    final hasData = chartItems.isNotEmpty;
 
     return ReportsCard(
       child: Column(
@@ -45,33 +35,46 @@ class _ReportsPieChartState extends State<ReportsPieChart> {
             ),
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            height: 180,
-            child: PieChart(
-              PieChartData(
-                pieTouchData: PieTouchData(
-                  touchCallback: (event, pieTouchResponse) {
-                    setState(() {
-                      if (!event.isInterestedForInteractions ||
-                          pieTouchResponse == null ||
-                          pieTouchResponse.touchedSection == null) {
-                        touchedIndex = -1;
-                        return;
-                      }
-                      touchedIndex =
-                          pieTouchResponse.touchedSection!.touchedSectionIndex;
-                    });
-                  },
+          if (!hasData)
+            const SizedBox(
+              height: 180,
+              child: Center(
+                child: CustomText(
+                  'No expenses for this period',
+                  style: TextStyle(color: Colors.white54, fontSize: 14),
                 ),
-                borderData: FlBorderData(show: false),
-                sectionsSpace: 3,
-                centerSpaceRadius: 42,
-                sections: _buildSections(chartItems),
+              ),
+            )
+          else ...[
+            SizedBox(
+              height: 180,
+              child: PieChart(
+                PieChartData(
+                  pieTouchData: PieTouchData(
+                    touchCallback: (event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
+                            .touchedSection!
+                            .touchedSectionIndex;
+                      });
+                    },
+                  ),
+                  borderData: FlBorderData(show: false),
+                  sectionsSpace: 3,
+                  centerSpaceRadius: 42,
+                  sections: _buildSections(chartItems),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          _PieChartLegend(items: chartItems, touchedIndex: touchedIndex),
+            const SizedBox(height: 20),
+            _PieChartLegend(items: chartItems, touchedIndex: touchedIndex),
+          ],
         ],
       ),
     );

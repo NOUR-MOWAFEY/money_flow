@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/core/constants/app_theme.dart';
 import 'package:money_flow/core/services/hive_service.dart';
+import 'package:money_flow/features/budget/data/models/budget_model.dart';
+import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/data/models/icon_data_adapter.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
@@ -42,7 +44,10 @@ Future<void> _initializeHive() async {
   Hive.registerAdapter(CategoryTypeAdapter());
   Hive.registerAdapter(IconDataAdapter());
   Hive.registerAdapter(ColorAdapter());
+  Hive.registerAdapter(BudgetPeriodAdapter());
+  Hive.registerAdapter(BudgetModelAdapter());
   await Hive.openBox<TransactionModel>('transactions');
   await Hive.openBox<CategoryModel>('categories');
+  await Hive.openBox<BudgetModel>('budgets');
   await Hive.openBox('user');
 }

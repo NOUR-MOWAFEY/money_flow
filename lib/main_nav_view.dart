@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/features/budget/views/budget_view.dart';
 import 'package:money_flow/features/home/views/home_view.dart';
 import 'package:money_flow/features/reports/views/reports_view.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
@@ -19,10 +20,7 @@ class MainNavView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
-      // floatingActionButton: const CustomFloatingActionButton(),
-      // floatingActionButtonLocation: .centerDocked,
       tabs: _buildTabs(),
-      // margin: const EdgeInsets.only(left: 36, right: 36, bottom: 16),
       navBarOverlap: const NavBarOverlap.full(),
       backgroundColor: Colors.transparent,
       // keepNavigatorHistory: false,
@@ -33,7 +31,13 @@ class MainNavView extends StatelessWidget {
 
   // ---------- Tabs ----------
   List<PersistentTabConfig> _buildTabs() {
-    return [_homeTab(), _chartsTab(), _settingsTab(), _profileTab()];
+    return [
+      _homeTab(),
+      _chartsTab(),
+      _budgetTab(),
+      _settingsTab(),
+      _profileTab(),
+    ];
   }
 
   PersistentTabConfig _homeTab() {
@@ -50,17 +54,12 @@ class MainNavView extends StatelessWidget {
     );
   }
 
-  // PersistentTabConfig _addTab() {
-  //   return PersistentTabConfig(
-  //     screen: const HomeView(),
-  //     item: ItemConfig(
-  //       icon: CustomFloatingActionButton(size: 50),
-
-  //       inactiveForegroundColor: Colors.transparent,
-  //       activeForegroundColor: Colors.transparent,
-  //     ),
-  //   );
-  // }
+  PersistentTabConfig _budgetTab() {
+    return PersistentTabConfig(
+      screen: const BudgetView(),
+      item: _customIconConfig(FontAwesomeIcons.wallet, "Budget"),
+    );
+  }
 
   PersistentTabConfig _settingsTab() {
     return PersistentTabConfig(
@@ -100,14 +99,8 @@ class MainNavView extends StatelessWidget {
 
   NavBarDecoration _navBarDecoration() {
     return NavBarDecoration(
-      color: _barColor,
-      // filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
-
-      // borderRadius: BorderRadius.only(
-      //   topLeft: Radius.circular(20),
-      //   topRight: Radius.circular(20),
-      // ),
+      color: _barColor,
     );
   }
 }

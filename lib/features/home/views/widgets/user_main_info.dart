@@ -12,7 +12,7 @@ class UserMainInfo extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: AppDimensions.viewPadding),
       child: ListTile(
-        contentPadding: EdgeInsets.only(bottom: 22),
+        contentPadding: EdgeInsets.only(bottom: 16),
 
         leading: UserImage(),
 

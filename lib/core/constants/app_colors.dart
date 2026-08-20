@@ -12,6 +12,7 @@ class AppColors {
   );
 
   static const bg = Color(0xff191919);
+  static const loadingIndicator = Color.fromARGB(255, 14, 125, 199);
   static const text = Color(0xffE0E0E0);
   static const icon = Color(0xffE0E0E0);
   static const iconDark = Color.fromARGB(255, 145, 145, 145);

@@ -18,16 +18,21 @@ class DateField extends StatelessWidget {
             isEnabled: false,
             onTap: () async {
               FocusManager.instance.primaryFocus?.unfocus();
-              final DateTime? date;
+              final now = DateTime.now();
+              final current = date.value;
 
-              date = await showDatePicker(
+              final picked = await showDatePicker(
                 context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(DateTime.now().year),
-                lastDate: DateTime.now(),
+                initialDate: current.isAfter(now) ? now : current,
+                firstDate: DateTime(
+                  current.year < now.year ? current.year : now.year,
+                ),
+                lastDate: now,
               );
 
-              this.date.value = date ?? DateTime.now();
+              if (picked != null) {
+                date.value = picked;
+              }
             },
           ),
     );

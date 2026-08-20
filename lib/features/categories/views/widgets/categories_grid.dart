@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/utils/show_toastification.dart';
+import 'package:money_flow/core/widgets/selectable_category_item.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/views/edit_category_view.dart';
-import 'package:money_flow/features/categories/views/widgets/category_item.dart';
 
 class CategoriesGrid extends StatelessWidget {
   const CategoriesGrid({
@@ -17,11 +17,11 @@ class CategoriesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         mainAxisSpacing: 6,
         crossAxisSpacing: 6,
         childAspectRatio: 1,
-        maxCrossAxisExtent: 100,
+        crossAxisCount: 3,
       ),
 
       itemCount: categories.length,
@@ -50,7 +50,12 @@ class CategoriesGrid extends StatelessWidget {
           );
         },
 
-        child: CategoryItem(category: categories[index]),
+        child: SelectableCategoryItem(
+          category: categories[index],
+          isSelected: category.value == categories[index],
+        ),
+
+       
       ),
     );
   }

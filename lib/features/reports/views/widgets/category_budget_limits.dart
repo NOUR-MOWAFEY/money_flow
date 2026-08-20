@@ -5,43 +5,40 @@ import 'package:money_flow/features/reports/data/models/category_limit_item.dart
 import 'package:money_flow/features/reports/views/widgets/reports_card.dart';
 
 class CategoryBudgetLimits extends StatelessWidget {
-  const CategoryBudgetLimits({
-    super.key,
-    this.items,
-  });
+  const CategoryBudgetLimits({super.key, this.items});
 
   final List<CategoryLimitItem>? items;
 
   List<CategoryLimitItem> get _defaultItems => const [
-        CategoryLimitItem(
-          title: 'Food & Dining',
-          icon: Icons.fastfood,
-          iconColor: Color(0xFFFF6B35),
-          spent: 280,
-          limit: 300,
-        ),
-        CategoryLimitItem(
-          title: 'Shopping',
-          icon: Icons.shopping_bag,
-          iconColor: Color(0xFFE91E8C),
-          spent: 195,
-          limit: 300,
-        ),
-        CategoryLimitItem(
-          title: 'Groceries',
-          icon: Icons.local_grocery_store,
-          iconColor: Color(0xFF43A047),
-          spent: 120,
-          limit: 400,
-        ),
-        CategoryLimitItem(
-          title: 'Entertainment',
-          icon: Icons.movie,
-          iconColor: Color(0xFF8E24AA),
-          spent: 85,
-          limit: 100,
-        ),
-      ];
+    CategoryLimitItem(
+      title: 'Food & Dining',
+      icon: Icons.fastfood,
+      iconColor: Color(0xFFFF6B35),
+      spent: 280,
+      limit: 300,
+    ),
+    CategoryLimitItem(
+      title: 'Shopping',
+      icon: Icons.shopping_bag,
+      iconColor: Color(0xFFE91E8C),
+      spent: 195,
+      limit: 300,
+    ),
+    CategoryLimitItem(
+      title: 'Groceries',
+      icon: Icons.local_grocery_store,
+      iconColor: Color(0xFF43A047),
+      spent: 120,
+      limit: 400,
+    ),
+    CategoryLimitItem(
+      title: 'Entertainment',
+      icon: Icons.movie,
+      iconColor: Color(0xFF8E24AA),
+      spent: 85,
+      limit: 100,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +82,7 @@ class _Header extends StatelessWidget {
         ),
         CustomText(
           '$activeCount active',
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.white54,
-          ),
+          style: const TextStyle(fontSize: 12, color: Colors.white54),
         ),
       ],
     );
@@ -110,7 +104,13 @@ class _CategoryLimitTile extends StatelessWidget {
           children: [
             _CategoryIcon(icon: item.icon, color: item.iconColor),
             const SizedBox(width: 12),
-            Expanded(child: _CategoryInfo(title: item.title, spent: item.spent, limit: item.limit)),
+            Expanded(
+              child: _CategoryInfo(
+                title: item.title,
+                spent: item.spent,
+                limit: item.limit,
+              ),
+            ),
             _PercentageBadge(percentage: item.percentage, color: color),
           ],
         ),
@@ -167,10 +167,7 @@ class _CategoryInfo extends StatelessWidget {
         const SizedBox(height: 2),
         CustomText(
           '\$${spent.toStringAsFixed(0)} / \$${limit.toStringAsFixed(0)}',
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.white60,
-          ),
+          style: const TextStyle(fontSize: 12, color: Colors.white60),
         ),
       ],
     );

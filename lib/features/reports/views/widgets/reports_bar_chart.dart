@@ -22,27 +22,15 @@ class ReportsBarChart extends StatefulWidget {
 class _ReportsBarChartState extends State<ReportsBarChart> {
   int touchedGroupIndex = -1;
 
-  List<IncomeExpenseBarData> get _defaultData => const [
-    IncomeExpenseBarData(label: 'Mon', income: 320, expense: 210),
-    IncomeExpenseBarData(label: 'Tue', income: 450, expense: 380),
-    IncomeExpenseBarData(label: 'Wed', income: 280, expense: 190),
-    IncomeExpenseBarData(label: 'Thu', income: 600, expense: 420),
-    IncomeExpenseBarData(label: 'Fri', income: 520, expense: 490),
-    IncomeExpenseBarData(label: 'Sat', income: 750, expense: 620),
-    IncomeExpenseBarData(label: 'Sun', income: 410, expense: 300),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final chartData = (widget.data != null && widget.data!.isNotEmpty)
-        ? widget.data!
-        : _defaultData;
+    final chartData = widget.data ?? const [];
 
     final double maxVal = chartData.fold<double>(
       0,
       (prev, e) => max(prev, max(e.income, e.expense)),
     );
-    final double maxY = (maxVal * 1.25).ceilToDouble();
+    final double maxY = max(maxVal * 1.25, 10).ceilToDouble();
 
     return ReportsCard(
       child: Column(

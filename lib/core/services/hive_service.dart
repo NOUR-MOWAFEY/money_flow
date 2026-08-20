@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/core/constants/app_categories.dart';
+import 'package:money_flow/features/budget/data/models/budget_model.dart';
+import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
@@ -11,6 +13,7 @@ class HiveService {
   factory HiveService() => instance;
   static const String _trabsactionsBoxName = 'transactions';
   static const String _categoriesBoxName = 'categories';
+  static const String _budgetsBoxName = 'budgets';
   static const String _userBoxName = 'user';
   static const String _isFirstTime = 'isFirstTime';
   static const String _name = 'name';
@@ -153,6 +156,8 @@ class HiveService {
       transaction.title = AppCategories.deletedCategory.title;
       await transaction.save();
     }
+
+    await _deleteBudgetsForCategory(categoryTitle);
   }
 
   // get all categories
@@ -214,11 +219,77 @@ class HiveService {
         transaction.isExpense = newIsExpense;
         await transaction.save();
       }
+
+      if (oldIsExpense && oldTitle != newTitle) {
+        await _renameBudgetCategory(oldTitle, newTitle);
+      }
     }
   }
 
   // clear all categories
   Future<void> clearCategories() async {
     await _categoriesBox.clear();
+  }
+
+  // ------------------------------
+  //   budgets
+  // ------------------------------
+
+  Box<BudgetModel> get _budgetsBox {
+    return Hive.box<BudgetModel>(_budgetsBoxName);
+  }
+
+  Future<void> addBudget(BudgetModel budget) async {
+    await _budgetsBox.add(budget);
+  }
+
+  Future<void> deleteBudget(BudgetModel budget) async {
+    await budget.delete();
+  }
+
+  List<BudgetModel> getBudgets() {
+    return _budgetsBox.values.toList();
+  }
+
+  Stream<BoxEvent> watchBudgets() => _budgetsBox.watch();
+
+  Future<void> updateBudget(
+    BudgetModel budget, {
+    String? categoryTitle,
+    double? limitAmount,
+    BudgetPeriod? period,
+  }) async {
+    if (categoryTitle != null) budget.categoryTitle = categoryTitle;
+    if (limitAmount != null) budget.limitAmount = limitAmount;
+    if (period != null) budget.period = period;
+
+    await budget.save();
+  }
+
+  bool hasBudgetForCategory(String categoryTitle) {
+    return _budgetsBox.values.any(
+      (budget) => budget.categoryTitle == categoryTitle,
+    );
+  }
+
+  Future<void> _deleteBudgetsForCategory(String categoryTitle) async {
+    final matchingBudgets = _budgetsBox.values
+        .where((budget) => budget.categoryTitle == categoryTitle)
+        .toList();
+
+    for (final budget in matchingBudgets) {
+      await budget.delete();
+    }
+  }
+
+  Future<void> _renameBudgetCategory(String oldTitle, String newTitle) async {
+    final matchingBudgets = _budgetsBox.values
+        .where((budget) => budget.categoryTitle == oldTitle)
+        .toList();
+
+    for (final budget in matchingBudgets) {
+      budget.categoryTitle = newTitle;
+      await budget.save();
+    }
   }
 }

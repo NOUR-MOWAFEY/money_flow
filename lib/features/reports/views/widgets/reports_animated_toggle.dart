@@ -4,33 +4,20 @@ import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/reports/data/models/report_period.dart';
 
-class ReportsAnimatedToggle extends StatefulWidget {
+class ReportsAnimatedToggle extends StatelessWidget {
   const ReportsAnimatedToggle({
     super.key,
+    required this.selectedPeriod,
     required this.onChange,
-    this.initialPeriod,
   });
 
+  final ReportPeriod selectedPeriod;
   final void Function(ReportPeriod period) onChange;
-  final ReportPeriod? initialPeriod;
-
-  @override
-  State<ReportsAnimatedToggle> createState() => _ReportsAnimatedToggleState();
-}
-
-class _ReportsAnimatedToggleState extends State<ReportsAnimatedToggle> {
-  late ReportPeriod value;
-
-  @override
-  void initState() {
-    value = widget.initialPeriod ?? ReportPeriod.week;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedToggleSwitch<ReportPeriod>.size(
-      current: value,
+      current: selectedPeriod,
       values: ReportPeriod.values,
       iconList: ReportPeriod.values.map((period) {
         return CustomText(period.title, style: _customTextStyle(period));
@@ -38,10 +25,7 @@ class _ReportsAnimatedToggleState extends State<ReportsAnimatedToggle> {
       indicatorSize: const Size.fromWidth(140),
       borderWidth: 4.0,
       selectedIconScale: 1.15,
-      onChanged: (val) {
-        widget.onChange(val);
-        setState(() => value = val);
-      },
+      onChanged: onChange,
       style: ToggleStyle(
         borderColor: Colors.transparent,
         borderRadius: BorderRadius.circular(32),
@@ -55,7 +39,7 @@ class _ReportsAnimatedToggleState extends State<ReportsAnimatedToggle> {
   TextStyle _customTextStyle(ReportPeriod period) {
     return TextStyle(
       fontSize: 14,
-      color: value == period ? Colors.white : Colors.black54,
+      color: selectedPeriod == period ? Colors.white : Colors.black54,
     );
   }
 }
