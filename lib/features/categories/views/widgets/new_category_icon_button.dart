@@ -40,7 +40,7 @@ class NewCategoryIconButton extends StatelessWidget {
             width: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: AppColors.secondaryColor,
+              color: AppColors.black1,
             ),
             child: BlocBuilder<NewCategoryCubit, NewCategoryState>(
               builder: (context, state) => Icon(

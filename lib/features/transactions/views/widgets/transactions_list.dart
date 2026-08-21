@@ -25,9 +25,9 @@ class TransactionsList extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(
               AppDimensions.viewPadding,
-              16,
+              20,
               AppDimensions.viewPadding,
-              8,
+              12,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

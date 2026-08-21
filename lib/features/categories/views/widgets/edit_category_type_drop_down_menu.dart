@@ -34,9 +34,8 @@ class EditCategoryTypeDropDownMenu extends StatelessWidget {
             onChanged: (newValue) {
               if (newValue != null) {
                 context.read<EditCategoryCubit>().selectType(
-                      newValue.name[0].toUpperCase() +
-                          newValue.name.substring(1),
-                    );
+                  newValue.name[0].toUpperCase() + newValue.name.substring(1),
+                );
               }
             },
             hint: CustomText(state.selectedType ?? 'Category type'),
@@ -45,7 +44,7 @@ class EditCategoryTypeDropDownMenu extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: AppColors.secondaryColor,
+                color: AppColors.black1,
               ),
             ),
             iconStyleData: const IconStyleData(
@@ -57,7 +56,7 @@ class EditCategoryTypeDropDownMenu extends StatelessWidget {
               isOverButton: true,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: AppColors.secondaryColor,
+                color: AppColors.black1,
                 boxShadow: const [],
               ),
             ),

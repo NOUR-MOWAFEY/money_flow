@@ -30,7 +30,7 @@ class ReportsAnimatedToggle extends StatelessWidget {
         borderColor: Colors.transparent,
         borderRadius: BorderRadius.circular(32),
         indicatorColor: AppColors.primary,
-        backgroundColor: AppColors.secondaryColor,
+        backgroundColor: AppColors.black1,
         boxShadow: const [],
       ),
     );

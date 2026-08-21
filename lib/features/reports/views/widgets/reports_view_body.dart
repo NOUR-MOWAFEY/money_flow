@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_dimensions.dart';
+import 'package:money_flow/core/widgets/view_header.dart';
 import 'package:money_flow/features/budget/view_models/budget_cubit/budget_cubit.dart';
 import 'package:money_flow/features/reports/view_models/reports_cubit/reports_cubit.dart';
 import 'package:money_flow/features/reports/views/widgets/reports_animated_toggle.dart';
 import 'package:money_flow/features/reports/views/widgets/reports_view_budget_section.dart';
 import 'package:money_flow/features/reports/views/widgets/reports_view_charts.dart';
-import 'package:money_flow/features/reports/views/widgets/reports_view_header.dart';
 
 class ReportsViewBody extends StatelessWidget {
   const ReportsViewBody({super.key});
@@ -23,11 +23,7 @@ class ReportsViewBody extends StatelessWidget {
           ),
           child: ListView(
             children: [
-              const SizedBox(height: AppDimensions.viewTopSpace),
-
-              const ReportsViewHeader(),
-
-              const SizedBox(height: 24),
+              const ViewHeader(title: 'Reports'),
 
               Center(
                 child: ReportsAnimatedToggle(
@@ -47,7 +43,7 @@ class ReportsViewBody extends StatelessWidget {
                 selectedPeriod: reportsCubit.selectedPeriod,
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: AppDimensions.viewBottomSpace),
             ],
           ),
         );

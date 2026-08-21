@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
-import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
 class CustomLineChart extends StatefulWidget {
   const CustomLineChart({
@@ -15,7 +15,7 @@ class CustomLineChart extends StatefulWidget {
   });
 
   static const Color lineColor = AppColors.primary;
-  static const Color pointColor = AppColors.secondaryColor;
+  static const Color pointColor = AppColors.black1;
   final String title;
 
   final List<double> values;

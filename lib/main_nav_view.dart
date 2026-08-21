@@ -4,6 +4,7 @@ import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/features/budget/views/budget_view.dart';
 import 'package:money_flow/features/home/views/home_view.dart';
 import 'package:money_flow/features/reports/views/reports_view.dart';
+import 'package:money_flow/features/settings/views/settings_view.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class MainNavView extends StatelessWidget {
@@ -35,8 +36,8 @@ class MainNavView extends StatelessWidget {
       _homeTab(),
       _chartsTab(),
       _budgetTab(),
+      _transactionsHistoryTab(),
       _settingsTab(),
-      _profileTab(),
     ];
   }
 
@@ -61,17 +62,17 @@ class MainNavView extends StatelessWidget {
     );
   }
 
-  PersistentTabConfig _settingsTab() {
+  PersistentTabConfig _transactionsHistoryTab() {
     return PersistentTabConfig(
       screen: const HomeView(),
-      item: _customIconConfig(FontAwesomeIcons.gear, "Settings"),
+      item: _customIconConfig(FontAwesomeIcons.clockRotateLeft, "History"),
     );
   }
 
-  PersistentTabConfig _profileTab() {
+  PersistentTabConfig _settingsTab() {
     return PersistentTabConfig(
-      screen: const HomeView(),
-      item: _customIconConfig(FontAwesomeIcons.solidCircleUser, "Profile"),
+      screen: const SettingsView(),
+      item: _customIconConfig(FontAwesomeIcons.gear, "Settings"),
     );
   }
 

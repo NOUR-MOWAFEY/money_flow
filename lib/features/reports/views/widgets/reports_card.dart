@@ -16,7 +16,7 @@ class ReportsCard extends StatelessWidget {
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: AppColors.secondaryColor,
+        color: AppColors.black1,
         borderRadius: BorderRadius.circular(20),
       ),
       child: child,

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const primary = Color.fromARGB(255, 11, 96, 152);
   static const transparentPrimary = Color.fromARGB(160, 11, 96, 152);
-  static const secondaryColor = Color.fromARGB(255, 48, 48, 48);
+  static const black1 = Color.fromARGB(255, 48, 48, 48);
+  static const black2 = Color.fromARGB(255, 72, 72, 72);
   static const secondaryColorWithHeightOpacity = Color.fromARGB(
     255,
     238,

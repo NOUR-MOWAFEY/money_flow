@@ -20,7 +20,7 @@ class SelectableCategoryItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSelected
             ? category.color.categoryContainerColor
-            : AppColors.secondaryColor,
+            : AppColors.black1,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isSelected

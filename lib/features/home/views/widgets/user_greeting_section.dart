@@ -3,8 +3,8 @@ import 'package:money_flow/core/constants/app_dimensions.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/home/views/widgets/user_image.dart';
 
-class UserMainInfo extends StatelessWidget {
-  const UserMainInfo({super.key, this.onTap});
+class UserGreetingSection extends StatelessWidget {
+  const UserGreetingSection({super.key, this.onTap});
   final void Function()? onTap;
 
   @override

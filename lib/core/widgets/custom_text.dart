@@ -9,12 +9,14 @@ class CustomText extends StatelessWidget {
     this.textAlign,
     this.isFlexible = false,
     this.maxLines,
+    this.color = Colors.white,
   });
   final String text;
   final TextStyle? style;
   final TextAlign? textAlign;
   final bool isFlexible;
   final int? maxLines;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class CustomText extends StatelessWidget {
               text,
               maxLines: maxLines,
               style:
-                  style?.copyWith(color: AppColors.text) ??
+                  style?.copyWith(color: color) ??
                   TextStyle(color: AppColors.text),
               textAlign: textAlign,
             ),
@@ -32,7 +34,7 @@ class CustomText extends StatelessWidget {
         : Text(
             text,
             style:
-                style?.copyWith(color: AppColors.text) ??
+                style?.copyWith(color: color) ??
                 TextStyle(color: AppColors.text),
             textAlign: textAlign,
           );

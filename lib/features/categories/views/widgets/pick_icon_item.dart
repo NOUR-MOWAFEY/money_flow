@@ -17,7 +17,7 @@ class PickIconItem extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.greyTrasparent : AppColors.secondaryColor,
+        color: isSelected ? AppColors.greyTrasparent : AppColors.black1,
         border: Border.all(
           color: isSelected ? AppColors.primary : Colors.transparent,
           width: 2,

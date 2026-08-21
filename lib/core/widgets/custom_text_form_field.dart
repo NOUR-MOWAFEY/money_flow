@@ -20,7 +20,8 @@ class CustomTextFormFiled extends StatelessWidget {
     this.showCursor = false,
     this.isNormalTextField = false,
     this.formatter,
-    this.validator, this.focusNode,
+    this.validator,
+    this.focusNode,
   });
 
   final bool isEnabled;
@@ -99,7 +100,7 @@ class CustomTextFormFiled extends StatelessWidget {
               ? Container(padding: const EdgeInsets.all(20), child: Icon(icon))
               : null,
 
-          fillColor: AppColors.secondaryColor,
+          fillColor: AppColors.black1,
           filled: true,
 
           hintText: hintText,

@@ -19,7 +19,7 @@ class EditCategoryColorPickerDialogFooter extends StatelessWidget {
         children: [
           CustomButton(
             width: 90,
-            color: AppColors.secondaryColor,
+            color: AppColors.black1,
             title: 'Cancel',
             textSize: 14,
             onTap: () {

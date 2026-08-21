@@ -28,7 +28,7 @@ class DeleteCategoryDialog extends StatelessWidget {
           title: 'Cancel',
           width: 100,
           height: 42,
-          color: AppColors.secondaryColor,
+          color: AppColors.black1,
           textSize: 14,
           onTap: () => Navigator.pop(context),
         ),

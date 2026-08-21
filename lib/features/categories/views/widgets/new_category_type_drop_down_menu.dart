@@ -48,7 +48,7 @@ class NewCategoryTypeDropDownMenu extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: AppColors.secondaryColor,
+                color: AppColors.black1,
               ),
             ),
 
@@ -63,7 +63,7 @@ class NewCategoryTypeDropDownMenu extends StatelessWidget {
 
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: AppColors.secondaryColor,
+                color: AppColors.black1,
                 boxShadow: const [],
               ),
             ),

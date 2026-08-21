@@ -50,7 +50,7 @@ class _BudgetPeriodToggleState extends State<BudgetPeriodToggle> {
         borderColor: Colors.transparent,
         borderRadius: BorderRadius.circular(32),
         indicatorColor: AppColors.primary,
-        backgroundColor: AppColors.secondaryColor,
+        backgroundColor: AppColors.black1,
       ),
     );
   }
