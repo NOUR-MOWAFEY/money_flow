@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/features/settings/data/models/currency_model.dart';
-import 'package:money_flow/features/settings/views/widgets/currency_list_view_item,.dart';
+import 'package:money_flow/features/settings/views/widgets/currency_list_view_item.dart';
 
 class CurrenciesListView extends StatelessWidget {
   const CurrenciesListView({

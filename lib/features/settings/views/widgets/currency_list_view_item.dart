@@ -21,17 +21,18 @@ class CurrencyListViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: () {
-        context.read<CurrencyPickerCubit>().selectCurrency(currency);
-      },
+    return Padding(
+      padding: EdgeInsetsGeometry.only(
+        top: 12,
+        bottom: isLastItem ? AppDimensions.viewBottomSpace : 0,
+      ),
 
-      child: Padding(
-        padding: EdgeInsetsGeometry.only(
-          top: 12,
-          bottom: isLastItem ? AppDimensions.viewBottomSpace : 0,
-        ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+
+        onTap: () {
+          context.read<CurrencyPickerCubit>().selectCurrency(currency);
+        },
 
         child: Container(
           decoration: BoxDecoration(
