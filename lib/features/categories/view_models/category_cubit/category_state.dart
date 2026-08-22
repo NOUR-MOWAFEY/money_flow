@@ -1,39 +1,31 @@
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 
-enum CategoriesStatus { initial, loading, loaded, error }
+abstract class CategoriesState {}
 
-class CategoriesState {
-  const CategoriesState({
-    required this.status,
+class CategoriesInitial extends CategoriesState {}
+
+class CategoriesLoading extends CategoriesState {}
+
+class CategoriesLoaded extends CategoriesState {
+  CategoriesLoaded({
     required this.categories,
-    required this.errorMessage,
   });
 
-  factory CategoriesState.initial() => const CategoriesState(
-    status: CategoriesStatus.initial,
-    categories: [],
-    errorMessage: null,
-  );
-
-  final CategoriesStatus status;
   final List<CategoryModel> categories;
-  final String? errorMessage;
 
   List<CategoryModel> get expenseCategories =>
-      categories.where((c) => c.categoryType == CategoryType.expenses).toList();
+      categories
+          .where((category) => category.categoryType == CategoryType.expenses)
+          .toList();
 
   List<CategoryModel> get incomeCategories =>
-      categories.where((c) => c.categoryType == CategoryType.income).toList();
+      categories
+          .where((category) => category.categoryType == CategoryType.income)
+          .toList();
+}
 
-  CategoriesState copyWith({
-    CategoriesStatus? status,
-    List<CategoryModel>? categories,
-    String? errorMessage,
-  }) {
-    return CategoriesState(
-      status: status ?? this.status,
-      categories: categories ?? this.categories,
-      errorMessage: errorMessage,
-    );
-  }
+class CategoriesError extends CategoriesState {
+  CategoriesError(this.errMessage);
+
+  final String errMessage;
 }

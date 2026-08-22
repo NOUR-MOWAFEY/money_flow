@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/widgets/custom_search_bar.dart';
+import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_cubit.dart';
 import 'package:money_flow/features/categories/views/widgets/icon_picker_alert_dialog_footer.dart';
 import 'package:money_flow/features/categories/views/widgets/icon_picker_page_view.dart';
-import 'package:money_flow/features/categories/views/widgets/icon_search_field.dart';
 
 class CategoryIconPickerDialog extends StatelessWidget {
   const CategoryIconPickerDialog({super.key});
@@ -18,7 +20,7 @@ class CategoryIconPickerDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconSearchField(),
+            _IconSearchBar(),
 
             SizedBox(height: 16),
 
@@ -30,6 +32,18 @@ class CategoryIconPickerDialog extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _IconSearchBar extends StatelessWidget {
+  const _IconSearchBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomSearchBar(
+      hint: 'Search for icons',
+      onChanged: context.read<NewCategoryCubit>().searchIcons,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_flow/core/widgets/custom_loading.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/view_models/category_cubit/category_cubit.dart';
 import 'package:money_flow/features/categories/view_models/category_cubit/category_state.dart';
@@ -21,8 +22,7 @@ class CategoriesViewBody extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
       child: BlocConsumer<CategoriesCubit, CategoriesState>(
         listener: (context, state) {
-          if (state.status == CategoriesStatus.loaded &&
-              category.value != null) {
+          if (state is CategoriesLoaded && category.value != null) {
             final isAvailable = state.categories.any(
               (c) => c.title == category.value?.title,
             );
@@ -33,20 +33,18 @@ class CategoriesViewBody extends StatelessWidget {
         },
 
         builder: (context, state) {
-          if (state.status == CategoriesStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.status == CategoriesStatus.error) {
-            return Center(
-              child: Text(state.errorMessage ?? 'Something went wrong'),
+          if (state is CategoriesLoaded) {
+            return CategoriesGrid(
+              category: category,
+              categories: state.categories,
             );
           }
 
-          return CategoriesGrid(
-            category: category,
-            categories: state.categories,
-          );
+          if (state is CategoriesError) {
+            return Center(child: Text(state.errMessage));
+          }
+
+          return const CustomLoading();
         },
       ),
     );

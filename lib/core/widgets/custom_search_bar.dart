@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_cubit.dart';
 
-class IconSearchField extends StatelessWidget {
-  const IconSearchField({super.key});
+class CustomSearchBar extends StatelessWidget {
+  const CustomSearchBar({super.key, required this.hint, this.onChanged});
+  final String hint;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       cursorHeight: 20,
-      onChanged: context.read<NewCategoryCubit>().searchIcons,
+
+      onChanged: onChanged,
+
       textAlignVertical: TextAlignVertical.center,
+
       decoration: InputDecoration(
-        hintText: 'Search for icons',
+        hintText: hint,
 
         prefixIcon: const Icon(Icons.search, size: 22),
 
         prefixIconConstraints: const BoxConstraints(minWidth: 40, minHeight: 0),
+
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 12,
           vertical: 14,

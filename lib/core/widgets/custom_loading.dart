@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_flow/core/constants/app_colors.dart';
 
 class CustomLoading extends StatelessWidget {
   const CustomLoading({super.key});
@@ -7,7 +6,9 @@ class CustomLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(color: AppColors.primary),
+      child: CircularProgressIndicator(
+        color: Color.fromARGB(255, 16, 123, 195),
+      ),
     );
   }
 }

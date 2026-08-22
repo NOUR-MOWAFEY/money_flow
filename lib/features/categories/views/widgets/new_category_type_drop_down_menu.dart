@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/utils/string_utils.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_cubit.dart';
@@ -25,7 +26,7 @@ class NewCategoryTypeDropDownMenu extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
-                        type.name[0].toUpperCase() + type.name.substring(1),
+                        StringUtils.capitalizeFirstLetter(type.name),
                         style: const TextStyle(fontSize: 14),
                       ),
                     ),
@@ -36,7 +37,7 @@ class NewCategoryTypeDropDownMenu extends StatelessWidget {
             onChanged: (newValue) {
               if (newValue != null) {
                 context.read<NewCategoryCubit>().selectType(
-                  newValue.name[0].toUpperCase() + newValue.name.substring(1),
+                  StringUtils.capitalizeFirstLetter(newValue.name),
                 );
               }
             },

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/services/hive_service.dart';
-import 'package:money_flow/core/widgets/custom_back_button.dart';
-import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/core/widgets/custom_app_bar.dart';
 import 'package:money_flow/features/categories/view_models/new_category_cubit/new_category_cubit.dart';
 import 'package:money_flow/features/categories/views/widgets/add_new_category_view_body.dart';
 import 'package:money_flow/features/categories/views/widgets/create_category_button.dart';
@@ -27,10 +26,7 @@ class _AddNewCategoryViewState extends State<AddNewCategoryView> {
         child: BlocProvider(
           create: (context) => NewCategoryCubit(HiveService()),
           child: Scaffold(
-            appBar: AppBar(
-              leading: const CustomBackButton(),
-              title: const CustomText('Add New Category'),
-            ),
+            appBar: const CustomAppBar(title: 'Add New Category'),
 
             body: const AddNewCategoryViewBody(),
 

@@ -27,67 +27,114 @@ class CurrencyListViewItem extends StatelessWidget {
         bottom: isLastItem ? AppDimensions.viewBottomSpace : 0,
       ),
 
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
+      child: _CurrencyListViewItemContainer(
+        currency: currency,
+        isSelected: isSelected,
+        child: Row(
+          children: [
+            // flag
+            _CurrencyFlag(isSelected: isSelected, currency: currency),
 
-        onTap: () {
-          context.read<CurrencyPickerCubit>().selectCurrency(currency);
-        },
+            const SizedBox(width: 12),
 
-        child: Container(
-          decoration: BoxDecoration(
-            color: isSelected
-                ? AppColors.transparentPrimary.withValues(alpha: .4)
-                : AppColors.black1,
+            // name + symbol
+            _CurrencyTitles(currency: currency),
 
-            border: Border.all(
-              color: isSelected ? AppColors.primary : Colors.transparent,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(20),
-          ),
+            const Spacer(),
 
-          padding: const EdgeInsets.all(12),
+            // check icon
+            isSelected
+                ? const FaIcon(FontAwesomeIcons.check, size: 18)
+                : const SizedBox(),
 
-          child: Row(
-            children: [
-              // flag
-              CircleAvatar(
-                radius: 24,
-                backgroundColor: isSelected
-                    ? AppColors.transparentPrimary
-                    : AppColors.black2,
-                child: Text(currency.flag, style: TextStyle(fontSize: 20)),
-              ),
-
-              const SizedBox(width: 12),
-
-              // name + symbol
-              Column(
-                crossAxisAlignment: .start,
-                children: [
-                  // name
-                  CustomText(currency.name),
-
-                  const SizedBox(height: 4),
-
-                  // symbol
-                  CustomText(currency.symbol),
-                ],
-              ),
-
-              const Spacer(),
-
-              // check icon
-              isSelected
-                  ? const FaIcon(FontAwesomeIcons.check, size: 18)
-                  : const SizedBox(),
-
-              const SizedBox(width: 12),
-            ],
-          ),
+            const SizedBox(width: 12),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _CurrencyListViewItemContainer extends StatelessWidget {
+  const _CurrencyListViewItemContainer({
+    required this.currency,
+    required this.isSelected,
+    required this.child,
+  });
+
+  final CurrencyModel currency;
+  final bool isSelected;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(20),
+
+      onTap: () {
+        context.read<CurrencyPickerCubit>().selectCurrency(currency);
+      },
+
+      child: Container(
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.transparentPrimary.withValues(alpha: .4)
+              : AppColors.black1,
+
+          border: Border.all(
+            color: isSelected ? AppColors.primary : Colors.transparent,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+
+        padding: const EdgeInsets.all(12),
+
+        child: child,
+      ),
+    );
+  }
+}
+
+class _CurrencyTitles extends StatelessWidget {
+  const _CurrencyTitles({required this.currency});
+
+  final CurrencyModel currency;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        // name
+        CustomText(
+          currency.name,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+
+        const SizedBox(height: 4),
+
+        // symbol
+        CustomText(currency.symbol),
+      ],
+    );
+  }
+}
+
+class _CurrencyFlag extends StatelessWidget {
+  const _CurrencyFlag({required this.isSelected, required this.currency});
+
+  final bool isSelected;
+  final CurrencyModel currency;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 24,
+      backgroundColor: isSelected
+          ? AppColors.transparentPrimary
+          : AppColors.black2,
+      child: Text(currency.flag, style: TextStyle(fontSize: 20)),
     );
   }
 }

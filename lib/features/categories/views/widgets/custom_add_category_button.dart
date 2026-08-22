@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/features/categories/views/add_new_category_view.dart';
 
-class CustomAddButton extends StatelessWidget {
-  const CustomAddButton({super.key});
+class CustomAddCategoryButton extends StatelessWidget {
+  const CustomAddCategoryButton({super.key});
 
   @override
   Widget build(BuildContext context) {

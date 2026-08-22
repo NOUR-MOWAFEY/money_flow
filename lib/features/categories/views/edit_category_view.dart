@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/services/hive_service.dart';
-import 'package:money_flow/core/widgets/custom_back_button.dart';
-import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/core/widgets/custom_app_bar.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/view_models/edit_category_cubit/edit_category_cubit.dart';
 import 'package:money_flow/features/categories/views/widgets/edit_category_view_body.dart';
@@ -31,10 +30,7 @@ class _EditCategoryViewState extends State<EditCategoryView> {
               EditCategoryCubit(widget.category, HiveService()),
 
           child: Scaffold(
-            appBar: AppBar(
-              leading: const CustomBackButton(),
-              title: const CustomText('Edit Category'),
-            ),
+            appBar: const CustomAppBar(title: 'Edit Category'),
 
             body: const EditCategoryViewBody(),
 

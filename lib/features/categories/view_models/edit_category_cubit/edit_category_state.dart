@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_icons.dart';
+import 'package:money_flow/core/utils/string_utils.dart';
 import 'package:money_flow/features/categories/data/models/category_icon.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 
@@ -63,8 +64,9 @@ class EditCategoryInitial extends EditCategoryState {
         ? 0
         : selectedIndex ~/ EditCategoryState.iconsPerPage;
 
-    final typeName = category.categoryType.name[0].toUpperCase() +
-        category.categoryType.name.substring(1);
+    final typeName = StringUtils.capitalizeFirstLetter(
+      category.categoryType.name,
+    );
 
     return EditCategoryInitial(
       name: category.title,
