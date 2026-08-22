@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_flow/features/settings/views/currency_view.dart';
 import 'package:money_flow/features/settings/views/widgets/settings_section.dart';
 import 'package:money_flow/features/settings/views/widgets/settings_section_item.dart';
 
@@ -8,7 +9,7 @@ class PreferencesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SettingsSection(
+    return SettingsSection(
       title: 'Preferences',
 
       child: Column(
@@ -17,9 +18,12 @@ class PreferencesSection extends StatelessWidget {
             icon: FontAwesomeIcons.moneyBills,
             title: 'Default Currency',
             subtitle: 'EGP',
+            onTap: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (context) => const CurrencyView()),
+            ),
           ),
 
-          Divider(height: 28, indent: 20, endIndent: 20),
+          const Divider(height: 28, indent: 20, endIndent: 20),
 
           SettingsSectionItem(
             icon: FontAwesomeIcons.shapes,
@@ -27,11 +31,11 @@ class PreferencesSection extends StatelessWidget {
             subtitle: 'Organize your categories',
           ),
 
-          Divider(height: 28, indent: 20, endIndent: 20),
+          const Divider(height: 28, indent: 20, endIndent: 20),
 
           SettingsSectionItem(
             icon: FontAwesomeIcons.rotate,
-            title: 'Manage Recurring Transactions',
+            title: 'Recurring Transactions',
             subtitle: 'View and edit repeating items',
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/constants/app_dimensions.dart';
 import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/features/transactions/views/widgets/transactions_failure_body.dart';
 import 'package:money_flow/features/transactions/views/widgets/transactions_list.dart';
@@ -42,7 +43,7 @@ class TransactionsSection extends StatelessWidget {
         const SliverFillRemaining(
           hasScrollBody: false,
           child: SizedBox(
-            // height: AppDimensions.viewBottomSpaceWithFlaoting,
+            height: AppDimensions.viewBottomSpaceWithFlaoting,
             child: ColoredBox(color: AppColors.black1),
           ),
         ),
