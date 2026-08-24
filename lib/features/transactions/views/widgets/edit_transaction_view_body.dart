@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_categories.dart';
+import 'package:money_flow/core/widgets/custom_toggle_switch.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
-import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_data_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
@@ -45,9 +45,10 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
             // toggle switch
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: CustomAnimatedToggle(
-                transactionType: transactionDataModel.transactionType.value,
-                onChange: (CategoryType transactionType) {
+              child: CustomToggleSwitch<CategoryType>(
+                current: transactionDataModel.transactionType.value,
+                values: CategoryType.values,
+                onChanged: (CategoryType transactionType) {
                   transactionDataModel.category.value = null;
                   transactionDataModel.transactionType.value = transactionType;
                 },

@@ -20,7 +20,7 @@ class ManageCategoriesView extends StatelessWidget {
       body: BlocProvider(
         create: (context) =>
             CategoriesCubit(HiveService())..getUserCreatedCategories(),
-        child: const SafeArea(child: ManageCategoriesViewBody()),
+        child: const SafeArea(bottom: false, child: ManageCategoriesViewBody()),
       ),
     );
   }

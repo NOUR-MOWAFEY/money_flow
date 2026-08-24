@@ -14,7 +14,7 @@ class CurrencyView extends StatelessWidget {
 
       body: BlocProvider(
         create: (context) => CurrencyPickerCubit(),
-        child: const SafeArea(child: CurrencyViewBody()),
+        child: const SafeArea(bottom: false, child: CurrencyViewBody()),
       ),
     );
   }

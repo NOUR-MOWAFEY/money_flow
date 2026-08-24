@@ -6,7 +6,7 @@ import 'package:money_flow/core/widgets/custom_text_form_field.dart';
 class AmountField extends StatelessWidget {
   const AmountField({super.key, required this.amountController});
 
-  final TextEditingController amountController;
+  final TextEditingController? amountController;
 
   @override
   Widget build(BuildContext context) {

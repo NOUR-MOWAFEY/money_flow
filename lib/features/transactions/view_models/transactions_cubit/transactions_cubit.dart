@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/core/services/hive_service.dart';
+import 'package:money_flow/core/services/recurring_processor_service.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
@@ -36,9 +37,11 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   }
 
   //get all transactions
-  void getAllTransactions() {
+  Future<void> getAllTransactions() async {
     emit(TransactionsLoading());
     try {
+      await RecurringProcessorService.instance
+          .processDueRecurringTransactions(hiveService);
       final transactions = hiveService.getTransactions();
       emit(TransactionsSuccess(transactions, _buildAllCategories()));
     } catch (e) {

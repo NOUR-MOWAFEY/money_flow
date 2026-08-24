@@ -5,6 +5,7 @@ import 'package:money_flow/features/budget/views/budget_view.dart';
 import 'package:money_flow/features/home/views/home_view.dart';
 import 'package:money_flow/features/reports/views/reports_view.dart';
 import 'package:money_flow/features/settings/views/settings_view.dart';
+import 'package:money_flow/features/transactions_history/views/transactions_history_view.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class MainNavView extends StatelessWidget {
@@ -64,7 +65,7 @@ class MainNavView extends StatelessWidget {
 
   PersistentTabConfig _transactionsHistoryTab() {
     return PersistentTabConfig(
-      screen: const HomeView(),
+      screen: const TransactionsHistoryView(),
       item: _customIconConfig(FontAwesomeIcons.clockRotateLeft, "History"),
     );
   }

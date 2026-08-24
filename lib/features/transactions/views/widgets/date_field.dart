@@ -14,7 +14,7 @@ class DateField extends StatelessWidget {
       builder: (BuildContext context, value, Widget? child) =>
           CustomTextFormFiled(
             icon: Icons.calendar_month_sharp,
-            title: DateFormatter.dateFormatter(date.value),
+            title: DateFormatter.dmy(date.value),
             isEnabled: false,
             onTap: () async {
               FocusManager.instance.primaryFocus?.unfocus();

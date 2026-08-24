@@ -45,7 +45,7 @@ class TransactionTile extends StatelessWidget {
 
           // date
           subtitle: CustomText(
-            DateFormatter.dateFormatter(transactionModel.date),
+            DateFormatter.dmy(transactionModel.date),
             style: const TextStyle(fontSize: 14),
           ),
 

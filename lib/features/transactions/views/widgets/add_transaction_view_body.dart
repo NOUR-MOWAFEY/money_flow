@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:money_flow/core/constants/app_dimensions.dart';
+import 'package:money_flow/core/widgets/custom_toggle_switch.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
-import 'package:money_flow/features/home/views/widgets/custom_animated_toggle.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_data_model.dart';
 import 'package:money_flow/features/transactions/views/widgets/add_transaction_view_buttons.dart';
 import 'package:money_flow/features/transactions/views/widgets/transaction_fields.dart';
@@ -31,16 +32,21 @@ class _AddTransactionViewBodyState extends State<AddTransactionViewBody> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.viewPadding,
+        ),
         child: ListView(
           children: [
             const SizedBox(height: 18),
 
             // toggle switch
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: CustomAnimatedToggle(
-                onChange: (CategoryType transactionType) {
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: CustomToggleSwitch<CategoryType>(
+                current: addTransactionModel.transactionType.value,
+                
+                values: CategoryType.values,
+                onChanged: (CategoryType transactionType) {
                   addTransactionModel.category.value = null;
                   addTransactionModel.transactionType.value = transactionType;
                 },

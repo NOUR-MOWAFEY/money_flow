@@ -15,7 +15,7 @@ class EditCategoryViewButtons extends StatelessWidget {
         children: [
           const Expanded(child: DeleteCategoryButton()),
 
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
 
           Expanded(child: EditCategoryButton(formKey: formKey)),
         ],

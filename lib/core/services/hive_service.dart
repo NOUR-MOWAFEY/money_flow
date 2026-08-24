@@ -4,6 +4,7 @@ import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/features/budget/data/models/budget_model.dart';
 import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
+import 'package:money_flow/features/settings/data/models/recurring_transaction_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
 class HiveService {
@@ -14,6 +15,7 @@ class HiveService {
   static const String _trabsactionsBoxName = 'transactions';
   static const String _categoriesBoxName = 'categories';
   static const String _budgetsBoxName = 'budgets';
+  static const String _recurringTransactionsBoxName = 'recurring_transactions';
   static const String _userBoxName = 'user';
   static const String _isFirstTime = 'isFirstTime';
   static const String _name = 'name';
@@ -157,6 +159,18 @@ class HiveService {
       await transaction.save();
     }
 
+    final matchingRecurring = _recurringTransactionsBox.values
+        .where((r) =>
+            (r.categoryTitle == categoryTitle || r.title == categoryTitle) &&
+            r.type == (isExpense ? CategoryType.expenses : CategoryType.income))
+        .toList();
+
+    for (var recurring in matchingRecurring) {
+      recurring.categoryTitle = AppCategories.deletedCategory.title;
+      recurring.title = AppCategories.deletedCategory.title;
+      await recurring.save();
+    }
+
     await _deleteBudgetsForCategory(categoryTitle);
   }
 
@@ -218,6 +232,23 @@ class HiveService {
         transaction.title = newTitle;
         transaction.isExpense = newIsExpense;
         await transaction.save();
+      }
+
+      final matchingRecurring = _recurringTransactionsBox.values
+          .where((r) =>
+              (r.categoryTitle == oldTitle || r.title == oldTitle) &&
+              r.type ==
+                  (oldIsExpense
+                      ? CategoryType.expenses
+                      : CategoryType.income))
+          .toList();
+
+      for (var recurring in matchingRecurring) {
+        recurring.categoryTitle = newTitle;
+        recurring.title = newTitle;
+        recurring.type =
+            newIsExpense ? CategoryType.expenses : CategoryType.income;
+        await recurring.save();
       }
 
       if (oldIsExpense && oldTitle != newTitle) {
@@ -303,5 +334,77 @@ class HiveService {
       budget.categoryTitle = newTitle;
       await budget.save();
     }
+  }
+
+  // ------------------------------
+  //   recurring transactions
+  // ------------------------------
+
+  Box<RecurringTransactionModel> get _recurringTransactionsBox {
+    return Hive.box<RecurringTransactionModel>(_recurringTransactionsBoxName);
+  }
+
+  // add
+  Future<void> addRecurringTransaction(
+    RecurringTransactionModel recurringTransaction,
+  ) async {
+    await _recurringTransactionsBox.add(recurringTransaction);
+  }
+
+  // delete
+  Future<void> deleteRecurringTransaction(
+    RecurringTransactionModel recurringTransaction,
+  ) async {
+    await recurringTransaction.delete();
+  }
+
+  // get
+  List<RecurringTransactionModel> getRecurringTransactions() {
+    return _recurringTransactionsBox.values.toList()
+      ..sort((a, b) => b.startDate.compareTo(a.startDate));
+  }
+
+  // watch
+  Stream<BoxEvent> watchRecurringTransactions() =>
+      _recurringTransactionsBox.watch();
+
+  // update
+  Future<void> updateRecurringTransaction(
+    RecurringTransactionModel recurringTransaction, {
+    String? title,
+    double? amount,
+    CategoryType? type,
+    RecurrenceFrequency? frequency,
+    DateTime? startDate,
+    DateTime? endDate,
+    bool? isActive,
+    String? categoryTitle,
+    DateTime? nextOccurrence,
+    String? note,
+  }) async {
+    if (title != null) recurringTransaction.title = title;
+    if (amount != null) recurringTransaction.amount = amount;
+    if (type != null) recurringTransaction.type = type;
+    if (frequency != null) recurringTransaction.frequency = frequency;
+    if (startDate != null) recurringTransaction.startDate = startDate;
+    if (endDate != null) recurringTransaction.endDate = endDate;
+    if (isActive != null) recurringTransaction.isActive = isActive;
+    if (categoryTitle != null) {
+      recurringTransaction.categoryTitle = categoryTitle;
+    }
+    if (nextOccurrence != null) {
+      recurringTransaction.nextOccurrence = nextOccurrence;
+    }
+    if (note != null) recurringTransaction.note = note;
+
+    await recurringTransaction.save();
+  }
+
+  // toggle active
+  Future<void> toggleRecurringTransaction(
+    RecurringTransactionModel recurringTransaction,
+  ) async {
+    recurringTransaction.isActive = !recurringTransaction.isActive;
+    await recurringTransaction.save();
   }
 }

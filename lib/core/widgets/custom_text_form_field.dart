@@ -22,6 +22,7 @@ class CustomTextFormFiled extends StatelessWidget {
     this.formatter,
     this.validator,
     this.focusNode,
+    this.maxLines,
   });
 
   final bool isEnabled;
@@ -41,6 +42,7 @@ class CustomTextFormFiled extends StatelessWidget {
   final List<TextInputFormatter>? formatter;
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class CustomTextFormFiled extends StatelessWidget {
         maxLengthEnforcement: MaxLengthEnforcement.none,
 
         minLines: 1,
-        maxLines: 2,
+        maxLines: maxLines ?? 2,
 
         buildCounter:
             (
@@ -77,7 +79,11 @@ class CustomTextFormFiled extends StatelessWidget {
         autovalidateMode: .onUserInteraction,
 
         style: isNormalTextField
-            ? null
+            ? const TextStyle(
+                color: AppColors.text,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              )
             : const TextStyle(
                 color: AppColors.text,
                 fontSize: 26,
@@ -97,7 +103,10 @@ class CustomTextFormFiled extends StatelessWidget {
           alignLabelWithHint: false,
 
           prefixIcon: showPrefixIcon
-              ? Container(padding: const EdgeInsets.all(20), child: Icon(icon))
+              ? Container(
+                  padding: const EdgeInsets.only(left: 16, right: 8),
+                  child: Icon(icon),
+                )
               : null,
 
           fillColor: AppColors.black1,
@@ -107,15 +116,16 @@ class CustomTextFormFiled extends StatelessWidget {
           hintStyle: isNormalTextField
               ? const TextStyle(
                   color: AppColors.text,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 )
               : null,
 
           labelText: title,
-          labelStyle: const TextStyle(
+          labelStyle: TextStyle(
             color: AppColors.text,
-            fontWeight: FontWeight.bold,
+            fontSize: isNormalTextField ? 16 : null,
+            fontWeight: isNormalTextField ? FontWeight.w600 : FontWeight.bold,
           ),
 
           border: _borderBuilder(),
