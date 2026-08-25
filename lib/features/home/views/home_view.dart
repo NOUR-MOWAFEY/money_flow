@@ -7,10 +7,8 @@ class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      // backgroundColor: AppColors.primary,
       floatingActionButton: CustomFloatingActionButton(
         view: AddTransactionView(),
       ),

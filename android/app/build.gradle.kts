@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.money_flow.money_flow"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

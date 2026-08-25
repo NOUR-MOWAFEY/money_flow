@@ -78,7 +78,7 @@ class RecurringTransactionTile extends StatelessWidget {
 
                       const SizedBox(width: 10),
 
-                      _AmountAndToggle(
+                      _Amount(
                         recurringTransaction: recurringTransaction,
                         isExpense: _isExpense,
                       ),
@@ -97,6 +97,8 @@ class RecurringTransactionTile extends StatelessWidget {
                         height: 30,
                         width: 58,
                         toggleSize: 23,
+
+                        activeColor: AppColors.primary,
 
                         value: recurringTransaction.isActive,
                         onToggle: (_) {
@@ -129,7 +131,7 @@ class _DatesSection extends StatelessWidget {
       children: [
         _DateLabel(
           icon: Icons.event_outlined,
-          prefix: 'From:',
+          prefix: 'From: ',
           text: DateFormatter.ddmy(recurringTransaction.startDate),
         ),
 
@@ -250,11 +252,8 @@ class _DateLabel extends StatelessWidget {
   }
 }
 
-class _AmountAndToggle extends StatelessWidget {
-  const _AmountAndToggle({
-    required this.recurringTransaction,
-    required this.isExpense,
-  });
+class _Amount extends StatelessWidget {
+  const _Amount({required this.recurringTransaction, required this.isExpense});
 
   final RecurringTransactionModel recurringTransaction;
   final bool isExpense;
@@ -264,29 +263,13 @@ class _AmountAndToggle extends StatelessWidget {
     final amountPrefix = isExpense ? '-' : '+';
     final amountColor = isExpense ? AppColors.error : AppColors.primary;
 
-    return Column(
-      crossAxisAlignment: .end,
-      children: [
-        CustomText(
-          '$amountPrefix EGP ${recurringTransaction.amount.toStringAsFixed(0)}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-            color: amountColor,
-          ),
-        ),
-
-        SizedBox(height: 8),
-
-        // SizedBox(
-        //   height: 40,
-        //   child: Switch.adaptive(
-        //     value: ,
-        //     activeTrackColor: AppColors.primary,
-        //     onChanged:
-        //   ),
-        // ),
-      ],
+    return CustomText(
+      '$amountPrefix EGP ${recurringTransaction.amount.toStringAsFixed(0)}',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 15,
+        color: amountColor,
+      ),
     );
   }
 }

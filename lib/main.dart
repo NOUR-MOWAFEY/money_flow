@@ -8,6 +8,11 @@ import 'package:money_flow/features/budget/data/models/budget_model.dart';
 import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/data/models/icon_data_adapter.dart';
+import 'package:money_flow/features/security/data/services/app_lock_settings_service.dart';
+import 'package:money_flow/features/security/data/services/biometric_service.dart';
+import 'package:money_flow/features/security/data/services/pin_service.dart';
+import 'package:money_flow/features/security/view_model/app_lock_cubit/app_lock_cubit.dart';
+import 'package:money_flow/features/security/views/app_lock_gate.dart';
 import 'package:money_flow/features/settings/data/models/recurring_transaction_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
@@ -17,8 +22,9 @@ import 'package:toastification/toastification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeHive();
-  await RecurringProcessorService.instance
-      .processDueRecurringTransactions(HiveService.instance);
+  await RecurringProcessorService.instance.processDueRecurringTransactions(
+    HiveService.instance,
+  );
   runApp(const MoneyFlowApp());
 }
 
@@ -27,14 +33,25 @@ class MoneyFlowApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          TransactionsCubit(HiveService())..getAllTransactions(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              TransactionsCubit(HiveService())..getAllTransactions(),
+        ),
+        BlocProvider(
+          create: (context) => AppLockCubit(
+            pinService: PinService(),
+            biometricService: BiometricService(),
+            settingsService: AppLockSettingsService(),
+          ),
+        ),
+      ],
       child: ToastificationWrapper(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.mainTheme(),
-          home: const MainNavView(),
+          home: const AppLockGate(child: MainNavView()),
         ),
       ),
     );
@@ -52,6 +69,7 @@ Future<void> _initializeHive() async {
   Hive.registerAdapter(BudgetModelAdapter());
   Hive.registerAdapter(RecurringTransactionModelAdapter());
   Hive.registerAdapter(RecurrenceFrequencyAdapter());
+  await AppLockSettingsService.init();
   await Hive.openBox<TransactionModel>('transactions');
   await Hive.openBox<CategoryModel>('categories');
   await Hive.openBox<BudgetModel>('budgets');

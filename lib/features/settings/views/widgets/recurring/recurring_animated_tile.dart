@@ -3,10 +3,7 @@ import 'package:money_flow/features/settings/data/models/recurring_transaction_m
 import 'package:money_flow/features/settings/views/widgets/recurring/recurring_transaction_tile.dart';
 
 class RecurringAnimatedTile extends StatelessWidget {
-  const RecurringAnimatedTile({
-    super.key,
-    required this.recurringTransaction,
-  });
+  const RecurringAnimatedTile({super.key, required this.recurringTransaction});
 
   final RecurringTransactionModel recurringTransaction;
 
