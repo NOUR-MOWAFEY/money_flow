@@ -10,9 +10,9 @@ class SecurityNoticeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withAlpha(15),
+        color: AppColors.primary.withAlpha(40),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withAlpha(40), width: 1),
+        border: Border.all(color: AppColors.primary.withAlpha(40), width: 2),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

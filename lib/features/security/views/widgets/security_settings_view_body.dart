@@ -26,9 +26,13 @@ class SecuritySettingsViewBody extends StatelessWidget {
           ),
           children: [
             SecurityAuthenticationSection(state: state),
+
             const SizedBox(height: 28),
+
             SecurityPinSection(state: state),
+
             const SizedBox(height: 32),
+
             const SecurityNoticeCard(),
           ],
         );

@@ -28,67 +28,22 @@ class SecuritySettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tile = Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.black1,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isActive
-              ? AppColors.primary.withAlpha(40)
-              : Colors.white.withAlpha(10),
-          width: 1.5,
-        ),
-      ),
+    final tile = _SecuritySettingsTileContainer(
+      isActive: isActive,
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundColor: AppColors.black2,
-            radius: 22,
-            child: FaIcon(
-              icon,
-              color: AppColors.icon,
-              size: iconSize,
-            ),
-          ),
+          _SecuritySettingsTileIcon(icon: icon, iconSize: iconSize),
+
           const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                CustomText(
-                  subtitle,
-                  color: AppColors.grey,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (trailing != null) ...[
-            const SizedBox(width: 8),
-            trailing!,
-          ],
+
+          _SecuritySettingsTileTitles(title: title, subtitle: subtitle),
+
+          if (trailing != null) ...[const SizedBox(width: 8), trailing!],
         ],
       ),
     );
 
-    final content = isEnabled
-        ? tile
-        : Opacity(
-            opacity: 0.45,
-            child: tile,
-          );
+    final content = isEnabled ? tile : Opacity(opacity: 0.45, child: tile);
 
     if (onTap != null && isEnabled) {
       return Material(
@@ -102,5 +57,84 @@ class SecuritySettingsTile extends StatelessWidget {
     }
 
     return content;
+  }
+}
+
+class _SecuritySettingsTileContainer extends StatelessWidget {
+  const _SecuritySettingsTileContainer({
+    required this.isActive,
+
+    required this.child,
+  });
+
+  final bool isActive;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.black1,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isActive
+              ? AppColors.primary.withAlpha(80)
+              : Colors.white.withAlpha(10),
+          width: 2,
+        ),
+      ),
+      child: child,
+    );
+  }
+}
+
+class _SecuritySettingsTileTitles extends StatelessWidget {
+  const _SecuritySettingsTileTitles({
+    required this.title,
+    required this.subtitle,
+  });
+
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+
+          const SizedBox(height: 4),
+
+          CustomText(
+            subtitle,
+            color: AppColors.grey,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SecuritySettingsTileIcon extends StatelessWidget {
+  const _SecuritySettingsTileIcon({required this.icon, required this.iconSize});
+
+  final FaIconData icon;
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      backgroundColor: AppColors.black2,
+      radius: 22,
+      child: FaIcon(icon, color: AppColors.icon, size: iconSize),
+    );
   }
 }

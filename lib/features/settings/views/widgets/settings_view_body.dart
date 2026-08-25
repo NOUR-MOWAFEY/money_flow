@@ -15,7 +15,7 @@ class SettingsViewBody extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimensions.viewPadding,
       ),
-      
+
       child: ListView(
         children: const [
           ViewHeader(title: 'Settings'),

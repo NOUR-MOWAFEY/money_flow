@@ -16,9 +16,7 @@ class SecuritySection extends StatelessWidget {
         title: 'Fingerprint / PIN',
         subtitle: 'App lock, biometric and PIN settings',
         onTap: () => Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(
-            builder: (context) => const SecuritySettingsView(),
-          ),
+          MaterialPageRoute(builder: (context) => const SecuritySettingsView()),
         ),
       ),
     );

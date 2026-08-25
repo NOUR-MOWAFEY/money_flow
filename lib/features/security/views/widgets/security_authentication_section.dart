@@ -6,10 +6,7 @@ import 'package:money_flow/features/security/views/widgets/biometric_tile.dart';
 import 'package:money_flow/features/security/views/widgets/security_section_header.dart';
 
 class SecurityAuthenticationSection extends StatelessWidget {
-  const SecurityAuthenticationSection({
-    super.key,
-    required this.state,
-  });
+  const SecurityAuthenticationSection({super.key, required this.state});
 
   final SecuritySettingsState state;
 
@@ -19,16 +16,17 @@ class SecurityAuthenticationSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SecuritySectionHeader(title: 'Authentication'),
+
         const SizedBox(height: 12),
+
         AppLockTile(
           isAppLockEnabled: state.isAppLockEnabled,
-          onToggle: (val) => SecuritySettingsActions.handleAppLockToggle(
-            context,
-            state,
-            val,
-          ),
+          onToggle: (val) =>
+              SecuritySettingsActions.handleAppLockToggle(context, state, val),
         ),
+
         const SizedBox(height: 16),
+
         BiometricTile(
           isAppLockEnabled: state.isAppLockEnabled,
           isBiometricSupported: state.isBiometricSupported,
