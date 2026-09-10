@@ -24,6 +24,8 @@ class RecurringTransactionsListView extends StatelessWidget {
 
     return CustomScrollView(
       slivers: [
+        SliverToBoxAdapter(child: SizedBox(height: AppDimensions.topSpace)),
+
         // ── Active ──────────────────────────────────────────────
         if (active.isNotEmpty) ...[
           SliverToBoxAdapter(

@@ -5,6 +5,7 @@ import 'package:money_flow/features/budget/data/models/budget_model.dart';
 import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/settings/data/models/recurring_transaction_model.dart';
+import 'package:money_flow/features/settings/data/models/user_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
 class HiveService {
@@ -17,42 +18,73 @@ class HiveService {
   static const String _budgetsBoxName = 'budgets';
   static const String _recurringTransactionsBoxName = 'recurring_transactions';
   static const String _userBoxName = 'user';
-  static const String _isFirstTime = 'isFirstTime';
-  static const String _name = 'name';
-  static const String _image = 'image';
 
   // ------------------------------
-  //   user
+  //   user box
   // ------------------------------
 
   static Box get _userBox {
     return Hive.box(_userBoxName);
   }
 
+  // ------------------------------
+  //   isFirstTime (via UserModel)
+  // ------------------------------
+
   // get is first time
   static bool get isFirstTime {
-    return _userBox.get(_isFirstTime, defaultValue: true);
+    return getUserModel()?.isFirstTime ?? true;
   }
 
   // set is first time
   static Future<void> setNotFirstTime() async {
-    await _userBox.put(_isFirstTime, false);
+    final user = getUserModel();
+    if (user == null) return;
+    user.isFirstTime = false;
+    await user.save();
   }
 
-  // save user
-  static Future<void> saveUser(String name, String image) async {
-    await _userBox.put(_name, name);
-    await _userBox.put(_image, image);
+  // ------------------------------
+  //   user model (typed)
+  // ------------------------------
+
+  static const String _userModelKey = 'userModel';
+
+  // save UserModel
+  static Future<void> saveUserModel(UserModel user) async {
+    await _userBox.put(_userModelKey, user);
   }
 
-  // get user name
-  static String get userName {
-    return _userBox.get(_name, defaultValue: '');
+  // get UserModel (returns null if not set yet)
+  static UserModel? getUserModel() {
+    return _userBox.get(_userModelKey) as UserModel?;
   }
 
-  // get user image
-  static String get userImage {
-    return _userBox.get(_image, defaultValue: '');
+  // update UserModel fields
+  static Future<void> updateUserModel({
+    String? name,
+    String? imagePath,
+    String? defaultCurrency,
+    bool? isFirstTime,
+  }) async {
+    final existing = getUserModel();
+    if (existing == null) return;
+    final updated = existing.copyWith(
+      name: name,
+      imagePath: imagePath,
+      defaultCurrency: defaultCurrency,
+      isFirstTime: isFirstTime,
+    );
+    await saveUserModel(updated);
+  }
+
+  // watch UserModel for real-time changes
+  static Stream<BoxEvent> watchUserModel() =>
+      _userBox.watch(key: _userModelKey);
+
+  // delete UserModel
+  static Future<void> deleteUserModel() async {
+    await _userBox.delete(_userModelKey);
   }
 
   // ------------------------------
@@ -66,6 +98,11 @@ class HiveService {
   // add
   Future<void> addTransaction(TransactionModel transaction) async {
     await _transactionsBox.add(transaction);
+  }
+
+  // add all
+  Future<void> addTransactions(List<TransactionModel> transactions) async {
+    await _transactionsBox.addAll(transactions);
   }
 
   //delete
@@ -140,6 +177,11 @@ class HiveService {
     await _categoriesBox.add(category);
   }
 
+  // add all categories
+  Future<void> addCategories(List<CategoryModel> categories) async {
+    await _categoriesBox.addAll(categories);
+  }
+
   // delete category
   Future<void> deleteCategory(CategoryModel category) async {
     if (!category.isInBox) return;
@@ -160,9 +202,12 @@ class HiveService {
     }
 
     final matchingRecurring = _recurringTransactionsBox.values
-        .where((r) =>
-            (r.categoryTitle == categoryTitle || r.title == categoryTitle) &&
-            r.type == (isExpense ? CategoryType.expenses : CategoryType.income))
+        .where(
+          (r) =>
+              (r.categoryTitle == categoryTitle || r.title == categoryTitle) &&
+              r.type ==
+                  (isExpense ? CategoryType.expenses : CategoryType.income),
+        )
         .toList();
 
     for (var recurring in matchingRecurring) {
@@ -235,19 +280,22 @@ class HiveService {
       }
 
       final matchingRecurring = _recurringTransactionsBox.values
-          .where((r) =>
-              (r.categoryTitle == oldTitle || r.title == oldTitle) &&
-              r.type ==
-                  (oldIsExpense
-                      ? CategoryType.expenses
-                      : CategoryType.income))
+          .where(
+            (r) =>
+                (r.categoryTitle == oldTitle || r.title == oldTitle) &&
+                r.type ==
+                    (oldIsExpense
+                        ? CategoryType.expenses
+                        : CategoryType.income),
+          )
           .toList();
 
       for (var recurring in matchingRecurring) {
         recurring.categoryTitle = newTitle;
         recurring.title = newTitle;
-        recurring.type =
-            newIsExpense ? CategoryType.expenses : CategoryType.income;
+        recurring.type = newIsExpense
+            ? CategoryType.expenses
+            : CategoryType.income;
         await recurring.save();
       }
 
@@ -272,6 +320,14 @@ class HiveService {
 
   Future<void> addBudget(BudgetModel budget) async {
     await _budgetsBox.add(budget);
+  }
+
+  Future<void> addBudgets(List<BudgetModel> budgets) async {
+    await _budgetsBox.addAll(budgets);
+  }
+
+  Future<void> clearBudgets() async {
+    await _budgetsBox.clear();
   }
 
   Future<void> deleteBudget(BudgetModel budget) async {
@@ -349,6 +405,18 @@ class HiveService {
     RecurringTransactionModel recurringTransaction,
   ) async {
     await _recurringTransactionsBox.add(recurringTransaction);
+  }
+
+  // add all
+  Future<void> addRecurringTransactions(
+    List<RecurringTransactionModel> recurringTransactions,
+  ) async {
+    await _recurringTransactionsBox.addAll(recurringTransactions);
+  }
+
+  // clear all
+  Future<void> clearRecurringTransactions() async {
+    await _recurringTransactionsBox.clear();
   }
 
   // delete

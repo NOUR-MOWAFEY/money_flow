@@ -14,6 +14,7 @@ import 'package:money_flow/features/security/data/services/pin_service.dart';
 import 'package:money_flow/features/security/view_model/app_lock_cubit/app_lock_cubit.dart';
 import 'package:money_flow/features/security/views/app_lock_gate.dart';
 import 'package:money_flow/features/settings/data/models/recurring_transaction_model.dart';
+import 'package:money_flow/features/settings/data/models/user_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/main_nav_view.dart';
@@ -69,6 +70,7 @@ Future<void> _initializeHive() async {
   Hive.registerAdapter(BudgetModelAdapter());
   Hive.registerAdapter(RecurringTransactionModelAdapter());
   Hive.registerAdapter(RecurrenceFrequencyAdapter());
+  Hive.registerAdapter(UserModelAdapter());
   await AppLockSettingsService.init();
   await Hive.openBox<TransactionModel>('transactions');
   await Hive.openBox<CategoryModel>('categories');

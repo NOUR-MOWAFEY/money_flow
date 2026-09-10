@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_flow/core/widgets/custom_divider.dart';
 import 'package:money_flow/features/categories/views/manage_categories_view.dart';
 import 'package:money_flow/features/settings/views/currency_view.dart';
 import 'package:money_flow/features/settings/views/recurring_transactions_view.dart';
@@ -25,7 +26,7 @@ class PreferencesSection extends StatelessWidget {
             ),
           ),
 
-          const Divider(height: 28, indent: 20, endIndent: 20),
+          const CustomDivider(),
 
           SettingsSectionItem(
             icon: FontAwesomeIcons.shapes,
@@ -38,7 +39,7 @@ class PreferencesSection extends StatelessWidget {
             ),
           ),
 
-          const Divider(height: 28, indent: 20, endIndent: 20),
+          const CustomDivider(),
 
           SettingsSectionItem(
             icon: FontAwesomeIcons.rotate,

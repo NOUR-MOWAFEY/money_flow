@@ -85,7 +85,7 @@ class RecurrenceFrequencyAdapter extends TypeAdapter<RecurrenceFrequency> {
       case 2:
         return RecurrenceFrequency.monthly;
       default:
-        return RecurrenceFrequency.monthly;
+        return RecurrenceFrequency.daily;
     }
   }
 

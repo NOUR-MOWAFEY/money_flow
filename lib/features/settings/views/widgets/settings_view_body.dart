@@ -22,15 +22,15 @@ class SettingsViewBody extends StatelessWidget {
 
           UserMainInfo(name: 'Nour Mowafey'),
 
-          SizedBox(height: 28),
+          SizedBox(height: AppDimensions.sectionsSpacing),
 
           PreferencesSection(),
 
-          SizedBox(height: 28),
+          SizedBox(height: AppDimensions.sectionsSpacing),
 
           SecuritySection(),
 
-          SizedBox(height: 28),
+          SizedBox(height: AppDimensions.sectionsSpacing),
 
           DataManagementSection(),
 

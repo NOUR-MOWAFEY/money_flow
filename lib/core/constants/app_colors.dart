@@ -18,6 +18,7 @@ class AppColors {
   static const icon = Color(0xffE0E0E0);
   static const iconDark = Color.fromARGB(255, 145, 145, 145);
   static const grey = Colors.grey;
+  static const divider = Color.fromARGB(95, 127, 144, 157);
   static const greyTrasparent = Color.fromARGB(170, 78, 121, 150);
   static const black = Colors.black;
   static const error = Color.fromARGB(255, 221, 60, 49);

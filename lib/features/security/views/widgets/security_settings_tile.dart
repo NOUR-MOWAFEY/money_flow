@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 
-/// A reusable tile container used across security settings.
 class SecuritySettingsTile extends StatelessWidget {
   const SecuritySettingsTile({
     super.key,
@@ -80,9 +79,9 @@ class _SecuritySettingsTileContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isActive
-              ? AppColors.primary.withAlpha(80)
+              ? AppColors.primary.withAlpha(40)
               : Colors.white.withAlpha(10),
-          width: 2,
+          width: 1.5,
         ),
       ),
       child: child,

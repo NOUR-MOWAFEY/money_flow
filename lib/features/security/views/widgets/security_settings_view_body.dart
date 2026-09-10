@@ -22,12 +22,13 @@ class SecuritySettingsViewBody extends StatelessWidget {
         return ListView(
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimensions.viewPadding,
-            vertical: 16,
           ),
           children: [
+            SizedBox(height: AppDimensions.topSpace),
+
             SecurityAuthenticationSection(state: state),
 
-            const SizedBox(height: 28),
+            SizedBox(height: AppDimensions.sectionsSpacing),
 
             SecurityPinSection(state: state),
 

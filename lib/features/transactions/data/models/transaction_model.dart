@@ -16,10 +16,15 @@ class TransactionModel extends HiveObject {
   @HiveField(3)
   bool isExpense;
 
+  @HiveField(4)
+  String id;
+
   TransactionModel({
     required this.title,
     required this.amount,
     required this.date,
     required this.isExpense,
-  });
+    String? id,
+  }) : id = id ??
+            '${DateTime.now().microsecondsSinceEpoch}_${title.hashCode}';
 }

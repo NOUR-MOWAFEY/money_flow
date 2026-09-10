@@ -54,7 +54,7 @@ class RecurringTransactionTile extends StatelessWidget {
                 color: recurringTransaction.isActive
                     ? category.color.withAlpha(40)
                     : Colors.white.withAlpha(10),
-                width: 2,
+                width: 1.5,
               ),
             ),
             child: Opacity(

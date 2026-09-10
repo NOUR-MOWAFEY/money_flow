@@ -25,7 +25,9 @@ void main() {
   testWidgets('updates date when a new date is picked', (
     WidgetTester tester,
   ) async {
-    final date = ValueNotifier(DateTime(2024, 1, 10));
+    // Use a date in the past so we can pick a different day within the month.
+    final initialDate = DateTime(2024, 1, 10);
+    final date = ValueNotifier(initialDate);
 
     await tester.pumpWidget(
       MaterialApp(home: Scaffold(body: DateField(date: date))),
@@ -34,9 +36,15 @@ void main() {
     await tester.tap(find.byType(GestureDetector));
     await tester.pumpAndSettle();
 
+    // Tap a different day (e.g. '15') that is visible in the month view.
+    // '15' is guaranteed to be in January 2024 and ≤ today.
+    await tester.tap(find.text('15'));
+    await tester.pumpAndSettle();
+
     await tester.tap(find.text('OK'));
     await tester.pumpAndSettle();
 
-    expect(date.value, isNot(DateTime(2024, 1, 10)));
+    expect(date.value, DateTime(2024, 1, 15));
+    expect(date.value, isNot(initialDate));
   });
 }

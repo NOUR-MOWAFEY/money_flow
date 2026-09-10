@@ -3,9 +3,15 @@ import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 
 class SettingsSection extends StatelessWidget {
-  const SettingsSection({super.key, required this.title, required this.child});
+  const SettingsSection({
+    super.key,
+    required this.title,
+    required this.child,
+    this.smallTitle = false,
+  });
   final String title;
   final Widget child;
+  final bool smallTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +21,15 @@ class SettingsSection extends StatelessWidget {
       children: [
         CustomText(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: smallTitle
+              ? const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)
+              : const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 12),
 
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.black1,
             borderRadius: BorderRadius.circular(20),

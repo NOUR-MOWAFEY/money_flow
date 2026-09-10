@@ -12,7 +12,7 @@ class ViewHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        const SizedBox(height: AppDimensions.viewTopSpace),
+        const SizedBox(height: AppDimensions.mainViewsTopSpace),
 
         CustomText(
           title,

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
-import 'package:money_flow/core/services/hive_service.dart';
 
 class UserImage extends StatefulWidget {
   const UserImage({super.key});
@@ -16,8 +15,8 @@ class _UserImageState extends State<UserImage> {
 
   @override
   void initState() {
-    imagePath = HiveService.userImage;
     super.initState();
+    imagePath = '';
   }
 
   @override
