@@ -73,6 +73,7 @@ class _CurrencyListViewItemContainer extends StatelessWidget {
 
       onTap: () {
         context.read<CurrencyPickerCubit>().selectCurrency(currency);
+        Navigator.pop(context, currency.code);
       },
 
       child: Container(
@@ -115,7 +116,7 @@ class _CurrencyTitles extends StatelessWidget {
         const SizedBox(height: 4),
 
         // symbol
-        CustomText(currency.symbol),
+        CustomText(currency.code),
       ],
     );
   }

@@ -5,7 +5,7 @@ import 'package:toastification/toastification.dart';
 
 class ShowToastification {
   static void _dismissCurrent() {
-    toastification.dismissAll(delayForAnimation: false);
+    toastification.dismissAll(delayForAnimation: true);
   }
 
   static ToastificationItem failure(BuildContext context, String text) {

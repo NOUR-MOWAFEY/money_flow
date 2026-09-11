@@ -23,7 +23,10 @@ class CustomTextFormFiled extends StatelessWidget {
     this.validator,
     this.focusNode,
     this.maxLines,
+    this.onChanged,
   });
+
+  final void Function(String)? onChanged;
 
   final bool isEnabled;
   final String? title;
@@ -67,6 +70,8 @@ class CustomTextFormFiled extends StatelessWidget {
             }) => null,
 
         validator: validator,
+
+        onChanged: onChanged,
 
         showCursor: showCursor,
 

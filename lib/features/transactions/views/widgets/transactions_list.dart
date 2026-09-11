@@ -5,6 +5,7 @@ import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions/views/widgets/transaction_tile.dart';
+import 'package:money_flow/features/transactions_history/views/transactions_history_view.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class TransactionsList extends StatelessWidget {
@@ -37,7 +38,13 @@ class TransactionsList extends StatelessWidget {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => const TransactionsHistoryView(),
+                      ),
+                    );
+                  },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     minimumSize: Size.zero,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/core/widgets/custom_divider.dart';
 import 'package:money_flow/features/categories/views/manage_categories_view.dart';
 import 'package:money_flow/features/settings/views/currency_view.dart';
@@ -17,13 +18,20 @@ class PreferencesSection extends StatelessWidget {
 
       child: Column(
         children: [
-          SettingsSectionItem(
-            icon: FontAwesomeIcons.moneyBills,
-            title: 'Default Currency',
-            subtitle: 'EGP',
-            onTap: () => Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(builder: (context) => const CurrencyView()),
-            ),
+          StreamBuilder(
+            stream: HiveService.watchUserModel(),
+            builder: (context, _) {
+              final currency =
+                  HiveService.getUserModel()?.defaultCurrency ?? 'EGP';
+              return SettingsSectionItem(
+                icon: FontAwesomeIcons.moneyBills,
+                title: 'Default Currency',
+                subtitle: currency,
+                onTap: () => Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(builder: (context) => const CurrencyView()),
+                ),
+              );
+            },
           ),
 
           const CustomDivider(),

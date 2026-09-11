@@ -10,10 +10,12 @@ class HomeViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CustomScrollView(
       slivers: [
+        SliverToBoxAdapter(child: SizedBox(height: 8)),
+
         // user image + name + reset button
         SliverToBoxAdapter(child: UserGreetingSection()),
 
-        SliverToBoxAdapter(child: SizedBox(height: 10)),
+        SliverToBoxAdapter(child: SizedBox(height: 8)),
 
         // available balance
         CustomSliverAppBar(),

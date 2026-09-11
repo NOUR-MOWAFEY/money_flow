@@ -1,12 +1,29 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_currencies.dart';
+import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/features/settings/data/models/currency_model.dart';
+import 'package:money_flow/features/settings/data/models/user_model.dart';
 import 'package:money_flow/features/settings/view_model/currency_picker_cubit/currency_picker_state.dart';
 
 class CurrencyPickerCubit extends Cubit<CurrencyPickerState> {
   CurrencyPickerCubit()
-    : super(const CurrencyPickerState(currencies: AppCurrencies.currencies));
+    : super(
+        CurrencyPickerState(
+          currencies: AppCurrencies.currencies,
+          selectedCurrency: _getInitialCurrency(),
+        ),
+      );
+
+  static CurrencyModel? _getInitialCurrency() {
+    final currentCode = HiveService.getUserModel()?.defaultCurrency ?? 'EGP';
+    try {
+      return AppCurrencies.currencies.firstWhere(
+        (c) => c.code.toUpperCase() == currentCode.toUpperCase(),
+      );
+    } catch (_) {
+      return AppCurrencies.currencies.first;
+    }
+  }
 
   void searchCurrencies(String query) {
     final search = query.trim().toLowerCase();
@@ -34,14 +51,25 @@ class CurrencyPickerCubit extends Cubit<CurrencyPickerState> {
     );
   }
 
-  void selectCurrency(CurrencyModel currency) {
-    if (state.selectedCurrency == currency) return;
-
+  Future<void> selectCurrency(CurrencyModel currency) async {
     emit(
       CurrencyPickerState(
         currencies: state.currencies,
         selectedCurrency: currency,
       ),
     );
+
+    final user = HiveService.getUserModel();
+    if (user != null) {
+      await HiveService.updateUserModel(defaultCurrency: currency.code);
+    } else {
+      await HiveService.saveUserModel(
+        UserModel(
+          name: 'User',
+          defaultCurrency: currency.code,
+          isFirstTime: false,
+        ),
+      );
+    }
   }
 }

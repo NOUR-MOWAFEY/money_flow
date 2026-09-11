@@ -37,11 +37,18 @@ class HiveService {
   }
 
   // set is first time
-  static Future<void> setNotFirstTime() async {
+  static Future<void> setIsFirstTime(bool value) async {
     final user = getUserModel();
-    if (user == null) return;
-    user.isFirstTime = false;
-    await user.save();
+    if (user != null) {
+      user.isFirstTime = value;
+      await user.save();
+    } else {
+      await saveUserModel(UserModel(name: 'User', isFirstTime: value));
+    }
+  }
+
+  static Future<void> setNotFirstTime() async {
+    await setIsFirstTime(false);
   }
 
   // ------------------------------

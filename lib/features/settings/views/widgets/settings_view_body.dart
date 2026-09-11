@@ -20,7 +20,7 @@ class SettingsViewBody extends StatelessWidget {
         children: const [
           ViewHeader(title: 'Settings'),
 
-          UserMainInfo(name: 'Nour Mowafey'),
+          UserMainInfo(name: 'User'),
 
           SizedBox(height: AppDimensions.sectionsSpacing),
 

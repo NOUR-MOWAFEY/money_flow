@@ -8,7 +8,9 @@ import 'package:money_flow/features/budget/data/models/budget_model.dart';
 import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/data/models/icon_data_adapter.dart';
+import 'package:money_flow/features/onboarding/views/onboarding_view.dart';
 import 'package:money_flow/features/security/data/services/app_lock_settings_service.dart';
+
 import 'package:money_flow/features/security/data/services/biometric_service.dart';
 import 'package:money_flow/features/security/data/services/pin_service.dart';
 import 'package:money_flow/features/security/view_model/app_lock_cubit/app_lock_cubit.dart';
@@ -52,7 +54,9 @@ class MoneyFlowApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.mainTheme(),
-          home: const AppLockGate(child: MainNavView()),
+          home: HiveService.isFirstTime
+              ? const OnboardingView()
+              : const AppLockGate(child: MainNavView()),
         ),
       ),
     );
