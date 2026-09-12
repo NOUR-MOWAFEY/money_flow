@@ -97,6 +97,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                 _goToPage(next);
               },
               onBack: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 final prev = state.currentPage - 1;
                 if (prev >= 0) {
                   cubit.setPage(prev);

@@ -15,9 +15,10 @@ class OnboardingCurrencySelector extends StatelessWidget {
   final ValueChanged<String> onCurrencySelected;
 
   Future<void> _pickCurrency(BuildContext context) async {
-    final selectedCode = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const CurrencyView()),
-    );
+    FocusManager.instance.primaryFocus?.unfocus();
+    final selectedCode = await Navigator.of(
+      context,
+    ).push<String>(MaterialPageRoute(builder: (_) => const CurrencyView()));
     if (selectedCode != null) {
       onCurrencySelected(selectedCode);
     }
@@ -54,10 +55,7 @@ class OnboardingCurrencySelector extends StatelessWidget {
             ),
             child: Row(
               children: [
-                CustomText(
-                  currency.flag,
-                  style: const TextStyle(fontSize: 22),
-                ),
+                CustomText(currency.flag, style: const TextStyle(fontSize: 22)),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

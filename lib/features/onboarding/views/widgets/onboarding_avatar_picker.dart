@@ -21,6 +21,7 @@ class OnboardingAvatarPicker extends StatelessWidget {
   final VoidCallback onRemoveImage;
 
   void _showPicker(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
     ProfileImagePickerSheet.show(
       context,
       hasImage: hasImage,
@@ -41,8 +42,7 @@ class OnboardingAvatarPicker extends StatelessWidget {
               child: CircleAvatar(
                 radius: 48,
                 backgroundColor: AppColors.primary.withAlpha(40),
-                backgroundImage:
-                    hasImage ? FileImage(File(imagePath!)) : null,
+                backgroundImage: hasImage ? FileImage(File(imagePath!)) : null,
                 child: !hasImage
                     ? const Icon(
                         Icons.person_add_alt_1_rounded,

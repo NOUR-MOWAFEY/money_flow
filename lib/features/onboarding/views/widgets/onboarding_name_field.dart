@@ -27,6 +27,8 @@ class OnboardingNameField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         CustomTextFormFiled(
+          maxLines: 1,
+          textInputAction: .done,
           controller: controller,
           hintText: 'e.g. Nour Mowafey',
           icon: Icons.person_outline_rounded,

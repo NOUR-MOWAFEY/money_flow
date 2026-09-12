@@ -24,6 +24,7 @@ class CustomTextFormFiled extends StatelessWidget {
     this.focusNode,
     this.maxLines,
     this.onChanged,
+    this.textInputAction,
   });
 
   final void Function(String)? onChanged;
@@ -46,6 +47,7 @@ class CustomTextFormFiled extends StatelessWidget {
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
   final int? maxLines;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,8 @@ class CustomTextFormFiled extends StatelessWidget {
       child: TextFormField(
         focusNode: focusNode,
         maxLength: 20,
+
+        textInputAction: textInputAction,
 
         maxLengthEnforcement: MaxLengthEnforcement.none,
 
