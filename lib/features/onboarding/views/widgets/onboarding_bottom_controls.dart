@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_flow/core/constants/app_colors.dart';
-import 'package:money_flow/core/widgets/custom_button.dart';
-import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/onboarding/view_model/onboarding_cubit/onboarding_cubit.dart';
+import 'package:money_flow/features/onboarding/views/widgets/onboarding_action_button.dart';
 import 'package:money_flow/features/onboarding/views/widgets/onboarding_dots_indicator.dart';
+import 'package:money_flow/features/onboarding/views/widgets/onboarding_split_back_button.dart';
 
 class OnboardingBottomControls extends StatelessWidget {
   const OnboardingBottomControls({
@@ -22,6 +21,7 @@ class OnboardingBottomControls extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<OnboardingCubit>().state;
     final isLast = state.currentPage == state.totalPages - 1;
+    final hasBack = state.currentPage > 0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -32,61 +32,21 @@ class OnboardingBottomControls extends StatelessWidget {
             count: state.totalPages,
             currentIndex: state.currentPage,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           Row(
             children: [
-              if (state.currentPage > 0)
-                IconButton(
-                  onPressed: state.isSubmitting ? null : onBack,
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white70,
-                    size: 20,
-                  ),
-                  tooltip: 'Back',
-                )
-              else
-                const SizedBox(width: 48),
-              const SizedBox(width: 12),
-              Expanded(
-                child: isLast
-                    ? CustomButton(
-                        title: state.isSubmitting ? 'Setting Up...' : 'Get Started',
-                        onTap: state.isSubmitting ? null : onSubmit,
-                      )
-                    : ElevatedButton(
-                        onPressed: onNext,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomText(
-                              'Next',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Icon(
-                              Icons.arrow_forward_rounded,
-                              size: 18,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
+              OnboardingSplitBackButton(
+                hasBack: hasBack,
+                isSubmitting: state.isSubmitting,
+                onBack: onBack,
               ),
-              if (state.currentPage == 0) const SizedBox(width: 48),
+              Expanded(
+                child: OnboardingActionButton(
+                  isLast: isLast,
+                  isSubmitting: state.isSubmitting,
+                  onPressed: isLast ? onSubmit : onNext,
+                ),
+              ),
             ],
           ),
         ],

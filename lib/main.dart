@@ -54,9 +54,10 @@ class MoneyFlowApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.mainTheme(),
-          home: HiveService.isFirstTime
-              ? const OnboardingView()
-              : const AppLockGate(child: MainNavView()),
+          home:
+              //  HiveService.isFirstTime?
+              const OnboardingView(),
+          // : const AppLockGate(child: MainNavView()),
         ),
       ),
     );
