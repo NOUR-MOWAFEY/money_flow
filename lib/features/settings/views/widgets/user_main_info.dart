@@ -23,15 +23,17 @@ class UserMainInfo extends StatelessWidget {
             ? user.name.trim()
             : name;
         final imagePath = user?.imagePath ?? image;
-        final hasValidImage = imagePath != null &&
+        final hasValidImage =
+            imagePath != null &&
             imagePath.isNotEmpty &&
             File(imagePath).existsSync();
 
         return InkWell(
           onTap: () {
-            Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(builder: (_) => const ProfileView()),
-            );
+            Navigator.of(
+              context,
+              rootNavigator: true,
+            ).push(MaterialPageRoute(builder: (_) => const ProfileView()));
           },
           borderRadius: BorderRadius.circular(20),
           child: Container(
@@ -50,7 +52,9 @@ class UserMainInfo extends StatelessWidget {
                       : null,
                   child: !hasValidImage
                       ? CustomText(
-                          displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
+                          displayName.isNotEmpty
+                              ? displayName[0].toUpperCase()
+                              : '?',
                           color: AppColors.primary.categoryIconColor,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -74,20 +78,16 @@ class UserMainInfo extends StatelessWidget {
                       const SizedBox(height: 2),
                       const CustomText(
                         'Tap to edit profile',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white54,
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.white54),
                       ),
                     ],
                   ),
                 ),
-                const FaIcon(
-                  FontAwesomeIcons.chevronRight,
-                  size: 16,
-                  color: AppColors.icon,
-                ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 4),
+
+                const FaIcon(FontAwesomeIcons.chevronRight, size: 16),
+
+                const SizedBox(width: 16),
               ],
             ),
           ),

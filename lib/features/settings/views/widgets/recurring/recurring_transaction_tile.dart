@@ -261,10 +261,12 @@ class _Amount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final amountPrefix = isExpense ? '-' : '+';
-    final amountColor = isExpense ? AppColors.error : AppColors.primary;
+    final amountColor = isExpense ? Colors.red : Colors.green;
+    final currency = HiveService.getUserModel()?.defaultCurrency ?? 'EGP';
 
     return CustomText(
-      '$amountPrefix EGP ${recurringTransaction.amount.toStringAsFixed(0)}',
+      '$amountPrefix $currency ${recurringTransaction.amount.toStringAsFixed(0)}',
+      color: amountColor,
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 15,

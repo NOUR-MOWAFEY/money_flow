@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/services/hive_service.dart';
+import 'package:money_flow/core/widgets/custom_app_bar.dart';
 import 'package:money_flow/features/transactions/views/add_transaction_view.dart';
 import 'package:money_flow/features/transactions/views/widgets/custom_floating_action_button.dart';
 import 'package:money_flow/features/transactions_history/view_model/transactions_history_cubit/transactions_history_cubit.dart';
@@ -16,7 +17,10 @@ class TransactionsHistoryView extends StatelessWidget {
           TransactionsHistoryCubit(HiveService())..loadTransactions(),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: const Scaffold(
+        child: Scaffold(
+          appBar: Navigator.of(context).canPop()
+              ? CustomAppBar(title: 'Transactions History')
+              : null,
           floatingActionButton: CustomFloatingActionButton(
             view: AddTransactionView(),
           ),

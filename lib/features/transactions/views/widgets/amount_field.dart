@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/core/utils/text_input_formatter.dart';
 import 'package:money_flow/core/widgets/custom_text_form_field.dart';
 
@@ -10,13 +11,15 @@ class AmountField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currency = HiveService.getUserModel()?.defaultCurrency ?? 'EGP';
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 64),
       child: CustomTextFormFiled(
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         controller: amountController,
         showPrefixIcon: false,
-        hintText: 'EGP 0',
+        hintText: '$currency 0',
         border: 80,
         padding: const EdgeInsets.symmetric(vertical: 24),
         borderColor: AppColors.grey,

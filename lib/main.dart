@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/core/constants/app_theme.dart';
 import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/core/services/recurring_processor_service.dart';
+import 'package:money_flow/features/home/view_models/balance_visibility_cubit/balance_visibility_cubit.dart';
 import 'package:money_flow/features/onboarding/views/onboarding_view.dart';
 import 'package:money_flow/features/security/data/services/app_lock_settings_service.dart';
 import 'package:money_flow/features/security/data/services/biometric_service.dart';
@@ -41,15 +42,15 @@ class MoneyFlowApp extends StatelessWidget {
             settingsService: AppLockSettingsService(),
           ),
         ),
+        BlocProvider(create: (context) => BalanceVisibilityCubit()),
       ],
       child: ToastificationWrapper(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.mainTheme(),
-          home:
-              //  HiveService.isFirstTime?
-              const OnboardingView(),
-          // : const AppLockGate(child: MainNavView()),
+          home: HiveService.isFirstTime
+              ? const OnboardingView()
+              : const AppLockGate(child: MainNavView()),
         ),
       ),
     );

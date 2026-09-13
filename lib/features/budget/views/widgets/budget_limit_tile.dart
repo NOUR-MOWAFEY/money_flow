@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/budget/data/models/budget_limit_item.dart';
 import 'package:money_flow/features/budget/data/models/budget_period.dart';
@@ -82,6 +83,7 @@ class _CategoryInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currency = HiveService.getUserModel()?.defaultCurrency ?? 'EGP';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -95,7 +97,7 @@ class _CategoryInfo extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         CustomText(
-          'EGP ${spent.toStringAsFixed(0)} / ${limit.toStringAsFixed(0)} • ${period.title}',
+          '$currency ${spent.toStringAsFixed(0)} / ${limit.toStringAsFixed(0)} • ${period.title}',
           style: const TextStyle(
             fontSize: 12,
             color: Colors.white60,

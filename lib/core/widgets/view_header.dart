@@ -16,7 +16,7 @@ class ViewHeader extends StatelessWidget {
 
         CustomText(
           title,
-          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
 
         subtitle == null ? const SizedBox() : const SizedBox(height: 8),

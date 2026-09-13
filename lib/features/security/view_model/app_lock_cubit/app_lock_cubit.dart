@@ -43,6 +43,17 @@ class AppLockCubit extends Cubit<AppLockState> {
     }
   }
 
+  /// Immediately locks the app if App Lock is enabled.
+  /// Returns true if locked, or false if App Lock is not configured.
+  bool lockNow() {
+    if (state is AppLockLocked) return true;
+    if (settingsService.isAppLockEnabled()) {
+      emit(AppLockLocked());
+      return true;
+    }
+    return false;
+  }
+
   /// Attempts biometric unlock.
   Future<void> unlockWithBiometrics() async {
     if (_isAuthenticatingWithBiometrics) return;

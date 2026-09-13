@@ -67,4 +67,14 @@ class UserStorageService {
   Future<void> deleteUserModel() async {
     await _box.delete(_userModelKey);
   }
+
+  static const String _balanceHiddenKey = 'isBalanceHidden';
+
+  /// Returns true if the user chose to hide their balance.
+  bool get isBalanceHidden => (_box.get(_balanceHiddenKey) as bool?) ?? false;
+
+  /// Persists balance hidden preference.
+  Future<void> setBalanceHidden(bool hidden) async {
+    await _box.put(_balanceHiddenKey, hidden);
+  }
 }

@@ -19,11 +19,15 @@ class TransactionsCubit extends Cubit<TransactionsState> {
     _transactionsSubscription = hiveService.watchTransactions().listen((_) {
       _reload();
     });
+    _userSubscription = HiveService.watchUserModel().listen((_) {
+      _reload();
+    });
   }
 
   final HiveService hiveService;
   StreamSubscription? _categoriesSubscription;
   StreamSubscription? _transactionsSubscription;
+  StreamSubscription? _userSubscription;
 
   void _reload() {
     try {
@@ -135,6 +139,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   Future<void> close() {
     _categoriesSubscription?.cancel();
     _transactionsSubscription?.cancel();
+    _userSubscription?.cancel();
     return super.close();
   }
 }
