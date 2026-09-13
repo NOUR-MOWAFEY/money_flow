@@ -14,11 +14,14 @@ class TransactionsHistoryView extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           TransactionsHistoryCubit(HiveService())..loadTransactions(),
-      child: const Scaffold(
-        floatingActionButton: CustomFloatingActionButton(
-          view: AddTransactionView(),
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: const Scaffold(
+          floatingActionButton: CustomFloatingActionButton(
+            view: AddTransactionView(),
+          ),
+          body: SafeArea(child: TransactionsHistoryViewBody()),
         ),
-        body: SafeArea(child: TransactionsHistoryViewBody()),
       ),
     );
   }

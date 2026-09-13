@@ -1,449 +1,312 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:money_flow/core/constants/app_categories.dart';
+import 'package:money_flow/core/services/storage/budget_storage_service.dart';
+import 'package:money_flow/core/services/storage/category_storage_service.dart';
+import 'package:money_flow/core/services/storage/recurring_storage_service.dart';
+import 'package:money_flow/core/services/storage/transaction_storage_service.dart';
+import 'package:money_flow/core/services/storage/user_storage_service.dart';
 import 'package:money_flow/features/budget/data/models/budget_model.dart';
 import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
+import 'package:money_flow/features/categories/data/models/icon_data_adapter.dart';
 import 'package:money_flow/features/settings/data/models/recurring_transaction_model.dart';
 import 'package:money_flow/features/settings/data/models/user_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 
+// Re-export individual domain storage services for modular usage
+export 'package:money_flow/core/services/storage/budget_storage_service.dart';
+export 'package:money_flow/core/services/storage/category_storage_service.dart';
+export 'package:money_flow/core/services/storage/recurring_storage_service.dart';
+export 'package:money_flow/core/services/storage/transaction_storage_service.dart';
+export 'package:money_flow/core/services/storage/user_storage_service.dart';
+
+/// Central Facade coordinating Hive storage across all application domains.
+///
+/// Under the hood, operations are delegated to domain-specific services:
+/// - [UserStorageService] for user profile and onboarding settings
+/// - [TransactionStorageService] for transactions
+/// - [CategoryStorageService] for categories and cascading updates
+/// - [BudgetStorageService] for budgets
+/// - [RecurringStorageService] for recurring transaction schedules
 class HiveService {
-  // Singleton: one instance for the whole app lifetime
-  HiveService._();
+  // Domain storage services
+  final UserStorageService userStorage;
+  final TransactionStorageService transactionStorage;
+  final CategoryStorageService categoryStorage;
+  final BudgetStorageService budgetStorage;
+  final RecurringStorageService recurringStorage;
+
+  HiveService._({
+    UserStorageService? userStorage,
+    TransactionStorageService? transactionStorage,
+    BudgetStorageService? budgetStorage,
+    RecurringStorageService? recurringStorage,
+    CategoryStorageService? categoryStorage,
+  })  : userStorage = userStorage ?? const UserStorageService(),
+        transactionStorage =
+            transactionStorage ?? const TransactionStorageService(),
+        budgetStorage = budgetStorage ?? const BudgetStorageService(),
+        recurringStorage =
+            recurringStorage ?? const RecurringStorageService(),
+        categoryStorage = categoryStorage ??
+            CategoryStorageService(
+              transactionStorage:
+                  transactionStorage ?? const TransactionStorageService(),
+              recurringStorage:
+                  recurringStorage ?? const RecurringStorageService(),
+              budgetStorage: budgetStorage ?? const BudgetStorageService(),
+            );
+
   static final HiveService instance = HiveService._();
   factory HiveService() => instance;
-  static const String _trabsactionsBoxName = 'transactions';
-  static const String _categoriesBoxName = 'categories';
-  static const String _budgetsBoxName = 'budgets';
-  static const String _recurringTransactionsBoxName = 'recurring_transactions';
-  static const String _userBoxName = 'user';
+
+  static const UserStorageService _defaultUserStorage = UserStorageService();
 
   // ------------------------------
-  //   user box
+  //   Box Names
+  // ------------------------------
+  static const String transactionsBoxName = TransactionStorageService.boxName;
+  static const String categoriesBoxName = CategoryStorageService.boxName;
+  static const String budgetsBoxName = BudgetStorageService.boxName;
+  static const String recurringTransactionsBoxName =
+      RecurringStorageService.boxName;
+  static const String userBoxName = UserStorageService.boxName;
+
+  // ------------------------------
+  //   Initialization & Adapters
   // ------------------------------
 
-  static Box get _userBox {
-    return Hive.box(_userBoxName);
-  }
-
-  // ------------------------------
-  //   isFirstTime (via UserModel)
-  // ------------------------------
-
-  // get is first time
-  static bool get isFirstTime {
-    return getUserModel()?.isFirstTime ?? true;
-  }
-
-  // set is first time
-  static Future<void> setIsFirstTime(bool value) async {
-    final user = getUserModel();
-    if (user != null) {
-      user.isFirstTime = value;
-      await user.save();
-    } else {
-      await saveUserModel(UserModel(name: 'User', isFirstTime: value));
+  /// Registers all model adapters required by the application.
+  /// Safely checks [Hive.isAdapterRegistered] so calling multiple times is a no-op.
+  static void registerAdapters() {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(TransactionModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(2)) {
+      Hive.registerAdapter(CategoryModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(3)) {
+      Hive.registerAdapter(CategoryTypeAdapter());
+    }
+    if (!Hive.isAdapterRegistered(4)) {
+      Hive.registerAdapter(IconDataAdapter());
+    }
+    if (!Hive.isAdapterRegistered(5)) {
+      Hive.registerAdapter(ColorAdapter());
+    }
+    if (!Hive.isAdapterRegistered(6)) {
+      Hive.registerAdapter(BudgetModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(7)) {
+      Hive.registerAdapter(BudgetPeriodAdapter());
+    }
+    if (!Hive.isAdapterRegistered(8)) {
+      Hive.registerAdapter(RecurringTransactionModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(9)) {
+      Hive.registerAdapter(RecurrenceFrequencyAdapter());
+    }
+    if (!Hive.isAdapterRegistered(10)) {
+      Hive.registerAdapter(UserModelAdapter());
     }
   }
 
-  static Future<void> setNotFirstTime() async {
-    await setIsFirstTime(false);
+  /// Opens all application Hive boxes concurrently.
+  static Future<void> openBoxes() async {
+    await Future.wait([
+      Hive.openBox<TransactionModel>(transactionsBoxName),
+      Hive.openBox<CategoryModel>(categoriesBoxName),
+      Hive.openBox<BudgetModel>(budgetsBoxName),
+      Hive.openBox<RecurringTransactionModel>(recurringTransactionsBoxName),
+      Hive.openBox(userBoxName),
+    ]);
+  }
+
+  /// Registers all adapters and opens all boxes.
+  static Future<void> init() async {
+    registerAdapters();
+    await openBoxes();
   }
 
   // ------------------------------
-  //   user model (typed)
+  //   User Box & Profile
   // ------------------------------
 
-  static const String _userModelKey = 'userModel';
+  UserModel? get currentUser => userStorage.currentUser;
 
-  // save UserModel
-  static Future<void> saveUserModel(UserModel user) async {
-    await _userBox.put(_userModelKey, user);
-  }
+  static bool get isFirstTime => _defaultUserStorage.isFirstTime;
 
-  // get UserModel (returns null if not set yet)
-  static UserModel? getUserModel() {
-    return _userBox.get(_userModelKey) as UserModel?;
-  }
+  static Future<void> setIsFirstTime(bool value) =>
+      _defaultUserStorage.setIsFirstTime(value);
 
-  // update UserModel fields
+  static Future<void> setNotFirstTime() =>
+      _defaultUserStorage.setNotFirstTime();
+
+  static Future<void> saveUserModel(UserModel user) =>
+      _defaultUserStorage.saveUserModel(user);
+
+  static UserModel? getUserModel() => _defaultUserStorage.getUserModel();
+
   static Future<void> updateUserModel({
     String? name,
     String? imagePath,
     String? defaultCurrency,
     bool? isFirstTime,
-  }) async {
-    final existing = getUserModel();
-    if (existing == null) return;
-    final updated = existing.copyWith(
-      name: name,
-      imagePath: imagePath,
-      defaultCurrency: defaultCurrency,
-      isFirstTime: isFirstTime,
-    );
-    await saveUserModel(updated);
-  }
+  }) =>
+      _defaultUserStorage.updateUserModel(
+        name: name,
+        imagePath: imagePath,
+        defaultCurrency: defaultCurrency,
+        isFirstTime: isFirstTime,
+      );
 
-  // watch UserModel for real-time changes
   static Stream<BoxEvent> watchUserModel() =>
-      _userBox.watch(key: _userModelKey);
+      _defaultUserStorage.watchUserModel();
 
-  // delete UserModel
-  static Future<void> deleteUserModel() async {
-    await _userBox.delete(_userModelKey);
-  }
+  static Future<void> deleteUserModel() =>
+      _defaultUserStorage.deleteUserModel();
 
   // ------------------------------
-  //   transactions
+  //   Transactions
   // ------------------------------
 
-  Box<TransactionModel> get _transactionsBox {
-    return Hive.box<TransactionModel>(_trabsactionsBoxName);
-  }
+  Future<void> addTransaction(TransactionModel transaction) =>
+      transactionStorage.addTransaction(transaction);
 
-  // add
-  Future<void> addTransaction(TransactionModel transaction) async {
-    await _transactionsBox.add(transaction);
-  }
+  Future<void> addTransactions(List<TransactionModel> items) =>
+      transactionStorage.addTransactions(items);
 
-  // add all
-  Future<void> addTransactions(List<TransactionModel> transactions) async {
-    await _transactionsBox.addAll(transactions);
-  }
+  Future<void> deleteTransaction(TransactionModel transaction) =>
+      transactionStorage.deleteTransaction(transaction);
 
-  //delete
-  Future<void> deleteTransaction(TransactionModel transaction) async {
-    await transaction.delete();
-  }
+  List<TransactionModel> getTransactions() =>
+      transactionStorage.getTransactions();
 
-  // get
-  List<TransactionModel> getTransactions() {
-    return _transactionsBox.values.toList()
-      ..sort((a, b) => b.date.compareTo(a.date));
-  }
+  Stream<BoxEvent> watchTransactions() =>
+      transactionStorage.watchTransactions();
 
-  // watch transactions box for real-time changes
-  Stream<BoxEvent> watchTransactions() => _transactionsBox.watch();
-
-  // edit
   Future<void> editTransaction(
     TransactionModel transaction, {
     String? title,
     double? amount,
     bool? isExpense,
     DateTime? date,
-  }) async {
-    if (title != null) transaction.title = title;
-    if (amount != null) transaction.amount = amount;
-    if (isExpense != null) transaction.isExpense = isExpense;
-    if (date != null) transaction.date = date;
+  }) =>
+      transactionStorage.editTransaction(
+        transaction,
+        title: title,
+        amount: amount,
+        isExpense: isExpense,
+        date: date,
+      );
 
-    await transaction.save();
-  }
+  Future<void> clearTransactions() => transactionStorage.clearTransactions();
 
-  // clear
-  Future<void> reset() async {
-    await _transactionsBox.clear();
-  }
-
-  // get expenses
-  static List<TransactionModel> getExpenses(
-    List<TransactionModel> transactions,
-  ) {
-    List<TransactionModel> expenses = [];
-    for (var transaction in transactions) {
-      if (transaction.isExpense) {
-        expenses.add(transaction);
-      }
-    }
-    return expenses;
-  }
-
-  // get income
-  static List<TransactionModel> getIncome(List<TransactionModel> transactions) {
-    List<TransactionModel> income = [];
-    for (var transaction in transactions) {
-      if (!transaction.isExpense) {
-        income.add(transaction);
-      }
-    }
-    return income;
-  }
+  Future<void> reset() => transactionStorage.reset();
 
   // ------------------------------
-  //   categories
+  //   Categories
   // ------------------------------
 
-  Box<CategoryModel> get _categoriesBox {
-    return Hive.box<CategoryModel>(_categoriesBoxName);
-  }
+  Future<void> addCategory(CategoryModel category) =>
+      categoryStorage.addCategory(category);
 
-  // add category
-  Future<void> addCategory(CategoryModel category) async {
-    await _categoriesBox.add(category);
-  }
+  Future<void> addCategories(List<CategoryModel> items) =>
+      categoryStorage.addCategories(items);
 
-  // add all categories
-  Future<void> addCategories(List<CategoryModel> categories) async {
-    await _categoriesBox.addAll(categories);
-  }
+  Future<void> deleteCategory(CategoryModel category) =>
+      categoryStorage.deleteCategory(category);
 
-  // delete category
-  Future<void> deleteCategory(CategoryModel category) async {
-    if (!category.isInBox) return;
+  List<CategoryModel> getCategories() => categoryStorage.getCategories();
 
-    final categoryTitle = category.title;
-    final isExpense = category.categoryType == CategoryType.expenses;
+  Stream<BoxEvent> watchCategories() => categoryStorage.watchCategories();
 
-    await category.delete();
+  List<CategoryModel> getCategoriesByType(CategoryType type) =>
+      categoryStorage.getCategoriesByType(type);
 
-    // Reassign transactions using this category to deletedCategory
-    final matchingTransactions = _transactionsBox.values
-        .where((t) => t.title == categoryTitle && t.isExpense == isExpense)
-        .toList();
+  List<CategoryModel> getExpenseCategories() =>
+      categoryStorage.getExpenseCategories();
 
-    for (var transaction in matchingTransactions) {
-      transaction.title = AppCategories.deletedCategory.title;
-      await transaction.save();
-    }
-
-    final matchingRecurring = _recurringTransactionsBox.values
-        .where(
-          (r) =>
-              (r.categoryTitle == categoryTitle || r.title == categoryTitle) &&
-              r.type ==
-                  (isExpense ? CategoryType.expenses : CategoryType.income),
-        )
-        .toList();
-
-    for (var recurring in matchingRecurring) {
-      recurring.categoryTitle = AppCategories.deletedCategory.title;
-      recurring.title = AppCategories.deletedCategory.title;
-      await recurring.save();
-    }
-
-    await _deleteBudgetsForCategory(categoryTitle);
-  }
-
-  // get all categories
-  List<CategoryModel> getCategories() {
-    return _categoriesBox.values.toList();
-  }
-
-  // watch categories box for real-time changes
-  Stream<BoxEvent> watchCategories() => _categoriesBox.watch();
-
-  // get categories by type
-  List<CategoryModel> getCategoriesByType(CategoryType type) {
-    return _categoriesBox.values
-        .where((category) => category.categoryType == type)
-        .toList();
-  }
-
-  // get expense categories
-  List<CategoryModel> getExpenseCategories() {
-    return getCategoriesByType(CategoryType.expenses);
-  }
-
-  // get income categories
-  List<CategoryModel> getIncomeCategories() {
-    return getCategoriesByType(CategoryType.income);
-  }
-
-  // update category
   Future<void> updateCategory(
     CategoryModel category, {
     String? title,
     IconData? icon,
     Color? color,
     CategoryType? categoryType,
-  }) async {
-    if (!category.isInBox) return;
+  }) =>
+      categoryStorage.updateCategory(
+        category,
+        title: title,
+        icon: icon,
+        color: color,
+        categoryType: categoryType,
+      );
 
-    final oldTitle = category.title;
-    final oldIsExpense = category.categoryType == CategoryType.expenses;
-
-    if (title != null) category.title = title;
-    if (icon != null) category.icon = icon;
-    if (color != null) category.color = color;
-    if (categoryType != null) category.categoryType = categoryType;
-
-    await category.save();
-
-    final newTitle = category.title;
-    final newIsExpense = category.categoryType == CategoryType.expenses;
-
-    // If title or type changed, synchronize existing transactions using this category
-    if (oldTitle != newTitle || oldIsExpense != newIsExpense) {
-      final matchingTransactions = _transactionsBox.values
-          .where((t) => t.title == oldTitle && t.isExpense == oldIsExpense)
-          .toList();
-
-      for (var transaction in matchingTransactions) {
-        transaction.title = newTitle;
-        transaction.isExpense = newIsExpense;
-        await transaction.save();
-      }
-
-      final matchingRecurring = _recurringTransactionsBox.values
-          .where(
-            (r) =>
-                (r.categoryTitle == oldTitle || r.title == oldTitle) &&
-                r.type ==
-                    (oldIsExpense
-                        ? CategoryType.expenses
-                        : CategoryType.income),
-          )
-          .toList();
-
-      for (var recurring in matchingRecurring) {
-        recurring.categoryTitle = newTitle;
-        recurring.title = newTitle;
-        recurring.type = newIsExpense
-            ? CategoryType.expenses
-            : CategoryType.income;
-        await recurring.save();
-      }
-
-      if (oldIsExpense && oldTitle != newTitle) {
-        await _renameBudgetCategory(oldTitle, newTitle);
-      }
-    }
-  }
-
-  // clear all categories
-  Future<void> clearCategories() async {
-    await _categoriesBox.clear();
-  }
+  Future<void> clearCategories() => categoryStorage.clearCategories();
 
   // ------------------------------
-  //   budgets
+  //   Budgets
   // ------------------------------
 
-  Box<BudgetModel> get _budgetsBox {
-    return Hive.box<BudgetModel>(_budgetsBoxName);
-  }
+  Future<void> addBudget(BudgetModel budget) => budgetStorage.addBudget(budget);
 
-  Future<void> addBudget(BudgetModel budget) async {
-    await _budgetsBox.add(budget);
-  }
+  Future<void> addBudgets(List<BudgetModel> items) =>
+      budgetStorage.addBudgets(items);
 
-  Future<void> addBudgets(List<BudgetModel> budgets) async {
-    await _budgetsBox.addAll(budgets);
-  }
+  Future<void> clearBudgets() => budgetStorage.clearBudgets();
 
-  Future<void> clearBudgets() async {
-    await _budgetsBox.clear();
-  }
+  Future<void> deleteBudget(BudgetModel budget) =>
+      budgetStorage.deleteBudget(budget);
 
-  Future<void> deleteBudget(BudgetModel budget) async {
-    await budget.delete();
-  }
+  List<BudgetModel> getBudgets([BudgetPeriod? period]) =>
+      budgetStorage.getBudgets(period);
 
-  List<BudgetModel> getBudgets([BudgetPeriod? period]) {
-    switch (period) {
-      case BudgetPeriod.weekly:
-        return _budgetsBox.values
-            .where((budget) => budget.period == BudgetPeriod.weekly)
-            .toList();
-
-      case BudgetPeriod.monthly:
-        return _budgetsBox.values
-            .where((budget) => budget.period == BudgetPeriod.monthly)
-            .toList();
-      case null:
-        return _budgetsBox.values.toList();
-    }
-  }
-
-  Stream<BoxEvent> watchBudgets() => _budgetsBox.watch();
+  Stream<BoxEvent> watchBudgets() => budgetStorage.watchBudgets();
 
   Future<void> updateBudget(
     BudgetModel budget, {
     String? categoryTitle,
     double? limitAmount,
     BudgetPeriod? period,
-  }) async {
-    if (categoryTitle != null) budget.categoryTitle = categoryTitle;
-    if (limitAmount != null) budget.limitAmount = limitAmount;
-    if (period != null) budget.period = period;
+  }) =>
+      budgetStorage.updateBudget(
+        budget,
+        categoryTitle: categoryTitle,
+        limitAmount: limitAmount,
+        period: period,
+      );
 
-    await budget.save();
-  }
-
-  bool hasBudgetForCategory(String categoryTitle) {
-    return _budgetsBox.values.any(
-      (budget) => budget.categoryTitle == categoryTitle,
-    );
-  }
-
-  Future<void> _deleteBudgetsForCategory(String categoryTitle) async {
-    final matchingBudgets = _budgetsBox.values
-        .where((budget) => budget.categoryTitle == categoryTitle)
-        .toList();
-
-    for (final budget in matchingBudgets) {
-      await budget.delete();
-    }
-  }
-
-  Future<void> _renameBudgetCategory(String oldTitle, String newTitle) async {
-    final matchingBudgets = _budgetsBox.values
-        .where((budget) => budget.categoryTitle == oldTitle)
-        .toList();
-
-    for (final budget in matchingBudgets) {
-      budget.categoryTitle = newTitle;
-      await budget.save();
-    }
-  }
+  bool hasBudgetForCategory(String categoryTitle) =>
+      budgetStorage.hasBudgetForCategory(categoryTitle);
 
   // ------------------------------
-  //   recurring transactions
+  //   Recurring Transactions
   // ------------------------------
 
-  Box<RecurringTransactionModel> get _recurringTransactionsBox {
-    return Hive.box<RecurringTransactionModel>(_recurringTransactionsBoxName);
-  }
-
-  // add
   Future<void> addRecurringTransaction(
     RecurringTransactionModel recurringTransaction,
-  ) async {
-    await _recurringTransactionsBox.add(recurringTransaction);
-  }
+  ) =>
+      recurringStorage.addRecurringTransaction(recurringTransaction);
 
-  // add all
   Future<void> addRecurringTransactions(
-    List<RecurringTransactionModel> recurringTransactions,
-  ) async {
-    await _recurringTransactionsBox.addAll(recurringTransactions);
-  }
+    List<RecurringTransactionModel> items,
+  ) =>
+      recurringStorage.addRecurringTransactions(items);
 
-  // clear all
-  Future<void> clearRecurringTransactions() async {
-    await _recurringTransactionsBox.clear();
-  }
+  Future<void> clearRecurringTransactions() =>
+      recurringStorage.clearRecurringTransactions();
 
-  // delete
   Future<void> deleteRecurringTransaction(
     RecurringTransactionModel recurringTransaction,
-  ) async {
-    await recurringTransaction.delete();
-  }
+  ) =>
+      recurringStorage.deleteRecurringTransaction(recurringTransaction);
 
-  // get
-  List<RecurringTransactionModel> getRecurringTransactions() {
-    return _recurringTransactionsBox.values.toList()
-      ..sort((a, b) => b.startDate.compareTo(a.startDate));
-  }
+  List<RecurringTransactionModel> getRecurringTransactions() =>
+      recurringStorage.getRecurringTransactions();
 
-  // watch
   Stream<BoxEvent> watchRecurringTransactions() =>
-      _recurringTransactionsBox.watch();
+      recurringStorage.watchRecurringTransactions();
 
-  // update
   Future<void> updateRecurringTransaction(
     RecurringTransactionModel recurringTransaction, {
     String? title,
@@ -456,30 +319,23 @@ class HiveService {
     String? categoryTitle,
     DateTime? nextOccurrence,
     String? note,
-  }) async {
-    if (title != null) recurringTransaction.title = title;
-    if (amount != null) recurringTransaction.amount = amount;
-    if (type != null) recurringTransaction.type = type;
-    if (frequency != null) recurringTransaction.frequency = frequency;
-    if (startDate != null) recurringTransaction.startDate = startDate;
-    if (endDate != null) recurringTransaction.endDate = endDate;
-    if (isActive != null) recurringTransaction.isActive = isActive;
-    if (categoryTitle != null) {
-      recurringTransaction.categoryTitle = categoryTitle;
-    }
-    if (nextOccurrence != null) {
-      recurringTransaction.nextOccurrence = nextOccurrence;
-    }
-    if (note != null) recurringTransaction.note = note;
+  }) =>
+      recurringStorage.updateRecurringTransaction(
+        recurringTransaction,
+        title: title,
+        amount: amount,
+        type: type,
+        frequency: frequency,
+        startDate: startDate,
+        endDate: endDate,
+        isActive: isActive,
+        categoryTitle: categoryTitle,
+        nextOccurrence: nextOccurrence,
+        note: note,
+      );
 
-    await recurringTransaction.save();
-  }
-
-  // toggle active
   Future<void> toggleRecurringTransaction(
     RecurringTransactionModel recurringTransaction,
-  ) async {
-    recurringTransaction.isActive = !recurringTransaction.isActive;
-    await recurringTransaction.save();
-  }
+  ) =>
+      recurringStorage.toggleRecurringTransaction(recurringTransaction);
 }

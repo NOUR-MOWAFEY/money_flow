@@ -4,20 +4,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/core/constants/app_theme.dart';
 import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/core/services/recurring_processor_service.dart';
-import 'package:money_flow/features/budget/data/models/budget_model.dart';
-import 'package:money_flow/features/budget/data/models/budget_period.dart';
-import 'package:money_flow/features/categories/data/models/category_model.dart';
-import 'package:money_flow/features/categories/data/models/icon_data_adapter.dart';
 import 'package:money_flow/features/onboarding/views/onboarding_view.dart';
 import 'package:money_flow/features/security/data/services/app_lock_settings_service.dart';
-
 import 'package:money_flow/features/security/data/services/biometric_service.dart';
 import 'package:money_flow/features/security/data/services/pin_service.dart';
 import 'package:money_flow/features/security/view_model/app_lock_cubit/app_lock_cubit.dart';
 import 'package:money_flow/features/security/views/app_lock_gate.dart';
-import 'package:money_flow/features/settings/data/models/recurring_transaction_model.dart';
-import 'package:money_flow/features/settings/data/models/user_model.dart';
-import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions/view_models/transactions_cubit/transactions_cubit.dart';
 import 'package:money_flow/main_nav_view.dart';
 import 'package:toastification/toastification.dart';
@@ -66,20 +58,7 @@ class MoneyFlowApp extends StatelessWidget {
 
 Future<void> _initializeHive() async {
   await Hive.initFlutter();
-  Hive.registerAdapter(TransactionModelAdapter());
-  Hive.registerAdapter(CategoryModelAdapter());
-  Hive.registerAdapter(CategoryTypeAdapter());
-  Hive.registerAdapter(IconDataAdapter());
-  Hive.registerAdapter(ColorAdapter());
-  Hive.registerAdapter(BudgetPeriodAdapter());
-  Hive.registerAdapter(BudgetModelAdapter());
-  Hive.registerAdapter(RecurringTransactionModelAdapter());
-  Hive.registerAdapter(RecurrenceFrequencyAdapter());
-  Hive.registerAdapter(UserModelAdapter());
+  HiveService.registerAdapters();
   await AppLockSettingsService.init();
-  await Hive.openBox<TransactionModel>('transactions');
-  await Hive.openBox<CategoryModel>('categories');
-  await Hive.openBox<BudgetModel>('budgets');
-  await Hive.openBox<RecurringTransactionModel>('recurring_transactions');
-  await Hive.openBox('user');
+  await HiveService.openBoxes();
 }

@@ -18,8 +18,10 @@ class _TransactionsHistorySearchBarState
   @override
   void initState() {
     super.initState();
-    final currentQuery =
-        context.read<TransactionsHistoryCubit>().currentFilter.searchQuery;
+    final currentQuery = context
+        .read<TransactionsHistoryCubit>()
+        .currentFilter
+        .searchQuery;
     _controller = TextEditingController(text: currentQuery);
   }
 
@@ -55,7 +57,10 @@ class _TransactionsHistorySearchBarState
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               hintText: 'Search by title or amount...',
-              prefixIcon: const Icon(Icons.search, size: 22),
+              prefixIcon: const Padding(
+                padding: EdgeInsets.only(left: 12),
+                child: Icon(Icons.search, size: 22),
+              ),
               prefixIconConstraints: const BoxConstraints(
                 minWidth: 40,
                 minHeight: 0,
