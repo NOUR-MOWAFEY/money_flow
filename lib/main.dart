@@ -46,6 +46,7 @@ class MoneyFlowApp extends StatelessWidget {
       ],
       child: ToastificationWrapper(
         child: MaterialApp(
+          title: 'Money Flow',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.mainTheme(),
           home: HiveService.isFirstTime

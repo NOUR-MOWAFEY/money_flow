@@ -1,6 +1,6 @@
 {
-    "name": "money_flow",
-    "short_name": "money_flow",
+    "name": "Money Flow",
+    "short_name": "Money Flow",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
