@@ -8,10 +8,9 @@ import 'package:money_flow/features/security/views/widgets/lock_pin_dots.dart';
 import 'package:money_flow/features/security/views/widgets/pin_error_message.dart';
 
 class LockViewBody extends StatelessWidget {
-  const LockViewBody({super.key, required LockPinController controller})
-    : _controller = controller;
+  const LockViewBody({super.key, required this.controller});
 
-  final LockPinController _controller;
+  final LockPinController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class LockViewBody extends StatelessWidget {
         horizontal: AppDimensions.viewPadding,
       ),
       child: ListenableBuilder(
-        listenable: _controller,
+        listenable: controller,
         builder: (context, _) => Column(
           children: [
             const SizedBox(height: 80),
@@ -31,21 +30,21 @@ class LockViewBody extends StatelessWidget {
 
             LockPinDots(
               pinLength: LockView.pinLength,
-              filledCount: _controller.pin.length,
-              isError: _controller.errorMessage.isNotEmpty,
-              shakeAnimation: _controller.shakeAnimation,
+              filledCount: controller.pin.length,
+              isError: controller.errorMessage.isNotEmpty,
+              shakeAnimation: controller.shakeAnimation,
             ),
 
-            PinErrorMessage(message: _controller.errorMessage),
+            PinErrorMessage(message: controller.errorMessage),
 
             const Spacer(),
 
             LockKeypad(
-              biometricEnabled: _controller.biometricEnabled,
-              onDigit: _controller.onDigit,
-              onBackspace: _controller.onBackspace,
-              onClear: _controller.onClear,
-              onBiometric: _controller.tryBiometric,
+              biometricEnabled: controller.biometricEnabled,
+              onDigit: controller.onDigit,
+              onBackspace: controller.onBackspace,
+              onClear: controller.onClear,
+              onBiometric: controller.tryBiometric,
             ),
 
             const SizedBox(height: 80),

@@ -7,10 +7,9 @@ import 'package:money_flow/features/security/views/widgets/lock_pin_dots.dart';
 import 'package:money_flow/features/security/views/widgets/pin_error_message.dart';
 
 class PinScreenBody extends StatelessWidget {
-  const PinScreenBody({super.key, required PinScreenController controller})
-    : _controller = controller;
+  const PinScreenBody({super.key, required this.controller});
 
-  final PinScreenController _controller;
+  final PinScreenController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -19,35 +18,35 @@ class PinScreenBody extends StatelessWidget {
         horizontal: AppDimensions.viewPadding,
       ),
       child: ListenableBuilder(
-        listenable: _controller,
+        listenable: controller,
         builder: (context, _) => Column(
           children: [
             const SizedBox(height: 32),
 
             LockHeader(
-              icon: _controller.stepIcon,
-              title: _controller.stepTitle,
-              subtitle: _controller.stepSubtitle,
+              icon: controller.stepIcon,
+              title: controller.stepTitle,
+              subtitle: controller.stepSubtitle,
             ),
 
             const SizedBox(height: 32),
 
             LockPinDots(
-              pinLength: _controller.pinLength,
-              filledCount: _controller.enteredPin.length,
-              isError: _controller.errorMessage.isNotEmpty,
-              shakeAnimation: _controller.shakeAnimation,
+              pinLength: controller.pinLength,
+              filledCount: controller.enteredPin.length,
+              isError: controller.errorMessage.isNotEmpty,
+              shakeAnimation: controller.shakeAnimation,
             ),
 
-            PinErrorMessage(message: _controller.errorMessage),
+            PinErrorMessage(message: controller.errorMessage),
 
             const Spacer(),
 
             LockKeypad(
               biometricEnabled: false,
-              onDigit: _controller.onDigit,
-              onBackspace: _controller.onBackspace,
-              onClear: _controller.onClear,
+              onDigit: controller.onDigit,
+              onBackspace: controller.onBackspace,
+              onClear: controller.onClear,
               onBiometric: () {},
             ),
 

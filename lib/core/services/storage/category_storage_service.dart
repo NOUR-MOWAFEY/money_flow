@@ -8,19 +8,15 @@ import 'package:money_flow/features/categories/data/models/category_model.dart';
 
 /// Storage service dedicated to managing categories and cascading updates.
 class CategoryStorageService {
-  final TransactionStorageService _transactionStorage;
-  final RecurringStorageService _recurringStorage;
-  final BudgetStorageService _budgetStorage;
+  final TransactionStorageService transactionStorage;
+  final RecurringStorageService recurringStorage;
+  final BudgetStorageService budgetStorage;
 
   const CategoryStorageService({
-    TransactionStorageService transactionStorage =
-        const TransactionStorageService(),
-    RecurringStorageService recurringStorage =
-        const RecurringStorageService(),
-    BudgetStorageService budgetStorage = const BudgetStorageService(),
-  })  : _transactionStorage = transactionStorage,
-        _recurringStorage = recurringStorage,
-        _budgetStorage = budgetStorage;
+    this.transactionStorage = const TransactionStorageService(),
+    this.recurringStorage = const RecurringStorageService(),
+    this.budgetStorage = const BudgetStorageService(),
+  });
 
   static const String boxName = 'categories';
 
@@ -46,21 +42,21 @@ class CategoryStorageService {
     await category.delete();
 
     // Reassign transactions
-    await _transactionStorage.reassignDeletedCategory(
+    await transactionStorage.reassignDeletedCategory(
       categoryTitle,
       isExpense: isExpense,
       fallbackTitle: AppCategories.deletedCategory.title,
     );
 
     // Reassign recurring transactions
-    await _recurringStorage.reassignDeletedCategory(
+    await recurringStorage.reassignDeletedCategory(
       categoryTitle,
       isExpense: isExpense,
       fallbackTitle: AppCategories.deletedCategory.title,
     );
 
     // Delete budgets for deleted category
-    await _budgetStorage.deleteBudgetsForCategory(categoryTitle);
+    await budgetStorage.deleteBudgetsForCategory(categoryTitle);
   }
 
   /// Returns all custom categories.
@@ -108,14 +104,14 @@ class CategoryStorageService {
 
     // If title or type changed, synchronize existing transactions using this category
     if (oldTitle != newTitle || oldIsExpense != newIsExpense) {
-      await _transactionStorage.reassignCategory(
+      await transactionStorage.reassignCategory(
         oldTitle,
         newTitle,
         isExpense: oldIsExpense,
         newIsExpense: newIsExpense,
       );
 
-      await _recurringStorage.reassignCategory(
+      await recurringStorage.reassignCategory(
         oldTitle,
         newTitle,
         isExpense: oldIsExpense,
@@ -123,7 +119,7 @@ class CategoryStorageService {
       );
 
       if (oldIsExpense && oldTitle != newTitle) {
-        await _budgetStorage.renameBudgetCategory(oldTitle, newTitle);
+        await budgetStorage.renameBudgetCategory(oldTitle, newTitle);
       }
     }
   }

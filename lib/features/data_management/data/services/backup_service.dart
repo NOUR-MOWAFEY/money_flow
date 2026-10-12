@@ -14,10 +14,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class BackupService {
-  final RestoreService _restoreService;
+  final RestoreService restoreService;
 
-  const BackupService({RestoreService restoreService = const RestoreService()})
-      : _restoreService = restoreService;
+  const BackupService({this.restoreService = const RestoreService()});
 
   String generateBackupJson(Set<BackupType> selectedTypes) {
     if (selectedTypes.isEmpty) {
@@ -114,17 +113,17 @@ class BackupService {
 
   // Restore delegations for backwards compatibility
   Future<PickedBackupFile?> pickBackupFile() =>
-      _restoreService.pickBackupFile();
+      restoreService.pickBackupFile();
 
   BackupDataPayload parseBackupJson(String jsonString, {String? fileName}) =>
-      _restoreService.parseBackupJson(jsonString, fileName: fileName);
+      restoreService.parseBackupJson(jsonString, fileName: fileName);
 
   Future<void> restoreData({
     required BackupDataPayload payload,
     required Set<BackupType> selectedTypes,
     required RestoreMode mode,
   }) =>
-      _restoreService.restoreData(
+      restoreService.restoreData(
         payload: payload,
         selectedTypes: selectedTypes,
         mode: mode,
