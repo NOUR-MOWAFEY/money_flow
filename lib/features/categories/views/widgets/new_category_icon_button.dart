@@ -8,7 +8,14 @@ import 'package:money_flow/features/categories/view_models/new_category_cubit/ne
 import 'package:money_flow/features/categories/views/widgets/category_icon_picker_dialog.dart';
 
 class NewCategoryIconButton extends StatelessWidget {
-  const NewCategoryIconButton({super.key});
+  const NewCategoryIconButton({
+    super.key,
+    this.icon,
+    this.onTap,
+  });
+
+  final IconData? icon;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,22 +26,22 @@ class NewCategoryIconButton extends StatelessWidget {
         const SizedBox(height: 8),
         InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () async {
-            FocusManager.instance.primaryFocus?.unfocus();
+          onTap: onTap ??
+              () async {
+                FocusManager.instance.primaryFocus?.unfocus();
 
-            final cubit = context.read<NewCategoryCubit>();
+                final cubit = context.read<NewCategoryCubit>();
 
-            await showDialog(
-              context: context,
-
-              builder: (context) => BlocProvider.value(
-                value: cubit,
-                child: DialogOpenAnimation(
-                  child: const CategoryIconPickerDialog(),
-                ),
-              ),
-            );
-          },
+                await showDialog(
+                  context: context,
+                  builder: (context) => BlocProvider.value(
+                    value: cubit,
+                    child: const DialogOpenAnimation(
+                      child: CategoryIconPickerDialog(),
+                    ),
+                  ),
+                );
+              },
           child: Container(
             height: 60,
             width: 60,
@@ -42,15 +49,30 @@ class NewCategoryIconButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: AppColors.black1,
             ),
-            child: BlocBuilder<NewCategoryCubit, NewCategoryState>(
-              builder: (context, state) => Icon(
-                state.selectedIcon?.icon ?? Icons.style_rounded,
-                size: 28,
-              ),
+            child: Center(
+              child: _buildIcon(context),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildIcon(BuildContext context) {
+    if (icon != null) {
+      return Icon(
+        icon,
+        size: 28,
+        color: Colors.white,
+      );
+    }
+
+    return BlocBuilder<NewCategoryCubit, NewCategoryState>(
+      builder: (context, state) => Icon(
+        state.selectedIcon?.icon ?? Icons.style_rounded,
+        size: 28,
+        color: Colors.white,
+      ),
     );
   }
 }

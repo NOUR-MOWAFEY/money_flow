@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_flow/core/services/storage/budget_storage_service.dart';
 import 'package:money_flow/core/services/storage/category_storage_service.dart';
+import 'package:money_flow/core/services/storage/environment_storage_service.dart';
 import 'package:money_flow/core/services/storage/recurring_storage_service.dart';
 import 'package:money_flow/core/services/storage/transaction_storage_service.dart';
 import 'package:money_flow/core/services/storage/user_storage_service.dart';
@@ -9,6 +10,8 @@ import 'package:money_flow/features/budget/data/models/budget_model.dart';
 import 'package:money_flow/features/budget/data/models/budget_period.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/categories/data/models/icon_data_adapter.dart';
+import 'package:money_flow/features/environments/data/models/environment_expense_model.dart';
+import 'package:money_flow/features/environments/data/models/environment_model.dart';
 import 'package:money_flow/features/settings/data/models/recurring_transaction_model.dart';
 import 'package:money_flow/features/settings/data/models/user_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
@@ -16,6 +19,7 @@ import 'package:money_flow/features/transactions/data/models/transaction_model.d
 // Re-export individual domain storage services for modular usage
 export 'package:money_flow/core/services/storage/budget_storage_service.dart';
 export 'package:money_flow/core/services/storage/category_storage_service.dart';
+export 'package:money_flow/core/services/storage/environment_storage_service.dart';
 export 'package:money_flow/core/services/storage/recurring_storage_service.dart';
 export 'package:money_flow/core/services/storage/transaction_storage_service.dart';
 export 'package:money_flow/core/services/storage/user_storage_service.dart';
@@ -35,6 +39,7 @@ class HiveService {
   final CategoryStorageService categoryStorage;
   final BudgetStorageService budgetStorage;
   final RecurringStorageService recurringStorage;
+  final EnvironmentStorageService environmentStorage;
 
   HiveService._({
     UserStorageService? userStorage,
@@ -42,12 +47,18 @@ class HiveService {
     BudgetStorageService? budgetStorage,
     RecurringStorageService? recurringStorage,
     CategoryStorageService? categoryStorage,
+    EnvironmentStorageService? environmentStorage,
   })  : userStorage = userStorage ?? const UserStorageService(),
         transactionStorage =
             transactionStorage ?? const TransactionStorageService(),
         budgetStorage = budgetStorage ?? const BudgetStorageService(),
         recurringStorage =
             recurringStorage ?? const RecurringStorageService(),
+        environmentStorage = environmentStorage ??
+            EnvironmentStorageService(
+              transactionStorage:
+                  transactionStorage ?? const TransactionStorageService(),
+            ),
         categoryStorage = categoryStorage ??
             CategoryStorageService(
               transactionStorage:
@@ -70,6 +81,10 @@ class HiveService {
   static const String budgetsBoxName = BudgetStorageService.boxName;
   static const String recurringTransactionsBoxName =
       RecurringStorageService.boxName;
+  static const String environmentsBoxName =
+      EnvironmentStorageService.boxName;
+  static const String environmentExpensesBoxName =
+      EnvironmentStorageService.expensesBoxName;
   static const String userBoxName = UserStorageService.boxName;
 
   // ------------------------------
@@ -109,6 +124,12 @@ class HiveService {
     if (!Hive.isAdapterRegistered(10)) {
       Hive.registerAdapter(UserModelAdapter());
     }
+    if (!Hive.isAdapterRegistered(11)) {
+      Hive.registerAdapter(EnvironmentModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(12)) {
+      Hive.registerAdapter(EnvironmentExpenseModelAdapter());
+    }
   }
 
   /// Opens all application Hive boxes concurrently.
@@ -118,6 +139,8 @@ class HiveService {
       Hive.openBox<CategoryModel>(categoriesBoxName),
       Hive.openBox<BudgetModel>(budgetsBoxName),
       Hive.openBox<RecurringTransactionModel>(recurringTransactionsBoxName),
+      Hive.openBox<EnvironmentModel>(environmentsBoxName),
+      Hive.openBox<EnvironmentExpenseModel>(environmentExpensesBoxName),
       Hive.openBox(userBoxName),
     ]);
   }
@@ -338,4 +361,45 @@ class HiveService {
     RecurringTransactionModel recurringTransaction,
   ) =>
       recurringStorage.toggleRecurringTransaction(recurringTransaction);
+
+  // ------------------------------
+  //   Environments
+  // ------------------------------
+
+  List<EnvironmentModel> getEnvironments() =>
+      environmentStorage.getEnvironments();
+
+  EnvironmentModel? getEnvironment(String id) =>
+      environmentStorage.getEnvironment(id);
+
+  Stream<BoxEvent> watchEnvironments() =>
+      environmentStorage.watchEnvironments();
+
+  Stream<BoxEvent> watchEnvironmentExpenses() =>
+      environmentStorage.watchExpenses();
+
+  Future<void> addEnvironment(EnvironmentModel environment) =>
+      environmentStorage.addEnvironment(environment);
+
+  Future<void> updateEnvironment(EnvironmentModel environment) =>
+      environmentStorage.updateEnvironment(environment);
+
+  Future<void> deleteEnvironment(String id, {bool deleteTransactions = false}) =>
+      environmentStorage.deleteEnvironment(
+        id,
+        deleteTransactions: deleteTransactions,
+      );
+
+  /// Checks whether a transaction's linked environment is currently active and existing.
+  /// If the environment has been deleted, returns false.
+  bool isTransactionEnvironmentActive(TransactionModel transaction) {
+    if (!transaction.isEnvironmentLinked) return false;
+    if (!Hive.isBoxOpen(EnvironmentStorageService.boxName)) {
+      return false;
+    }
+    return environmentStorage.isEnvironmentActive(
+      environmentId: transaction.environmentId,
+      environmentName: transaction.extractedEnvironmentName,
+    );
+  }
 }

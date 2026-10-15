@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_categories.dart';
 import 'package:money_flow/core/services/hive_service.dart';
+import 'package:money_flow/core/utils/category_resolver.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_model.dart';
 import 'package:money_flow/features/transactions_history/data/models/transaction_date_filter.dart';
@@ -77,6 +78,14 @@ class TransactionsHistoryCubit extends Cubit<TransactionsHistoryState> {
   }
 
   Future<void> deleteTransaction(TransactionModel transaction) async {
+    if (hiveService.isTransactionEnvironmentActive(transaction)) {
+      emit(
+        TransactionsHistoryFailure(
+          'Environment transactions cannot be deleted directly. Settle or manage the environment instead.',
+        ),
+      );
+      return;
+    }
     try {
       await hiveService.deleteTransaction(transaction);
       _reload();

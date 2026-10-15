@@ -40,6 +40,8 @@ void main() {
       expect(Hive.isBoxOpen(HiveService.categoriesBoxName), isTrue);
       expect(Hive.isBoxOpen(HiveService.budgetsBoxName), isTrue);
       expect(Hive.isBoxOpen(HiveService.recurringTransactionsBoxName), isTrue);
+      expect(Hive.isBoxOpen(HiveService.environmentsBoxName), isTrue);
+      expect(Hive.isBoxOpen(HiveService.environmentExpensesBoxName), isTrue);
       expect(Hive.isBoxOpen(HiveService.userBoxName), isTrue);
     });
   });

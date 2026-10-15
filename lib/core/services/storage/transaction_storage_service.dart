@@ -91,4 +91,15 @@ class TransactionStorageService {
       await transaction.save();
     }
   }
+
+  /// Deletes all transactions linked to a specific environment id.
+  Future<void> deleteTransactionsForEnvironment(String environmentId) async {
+    final matching = _box.values
+        .where((t) => t.environmentId == environmentId)
+        .toList();
+
+    for (final transaction in matching) {
+      await transaction.delete();
+    }
+  }
 }

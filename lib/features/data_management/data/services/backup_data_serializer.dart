@@ -18,6 +18,7 @@ class BackupDataSerializer {
       'amount': transaction.amount,
       'date': transaction.date.toIso8601String(),
       'isExpense': transaction.isExpense,
+      'environmentId': transaction.environmentId,
     };
   }
 
@@ -28,6 +29,7 @@ class BackupDataSerializer {
       amount: (json['amount'] as num).toDouble(),
       date: DateTime.parse(json['date'] as String),
       isExpense: json['isExpense'] as bool,
+      environmentId: json['environmentId'] as String?,
     );
   }
 
@@ -93,7 +95,8 @@ class BackupDataSerializer {
     Map<String, dynamic> json,
   ) {
     return RecurringTransactionModel(
-      id: (json['id'] as String?) ??
+      id:
+          (json['id'] as String?) ??
           DateTime.now().microsecondsSinceEpoch.toString(),
       title: json['title'] as String,
       amount: (json['amount'] as num).toDouble(),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_flow/core/constants/app_categories.dart';
+import 'package:money_flow/core/constants/app_dimensions.dart';
+import 'package:money_flow/core/services/hive_service.dart';
+import 'package:money_flow/core/utils/get_category.dart';
 import 'package:money_flow/core/widgets/custom_toggle_switch.dart';
 import 'package:money_flow/features/categories/data/models/category_model.dart';
 import 'package:money_flow/features/transactions/data/models/transaction_data_model.dart';
@@ -10,8 +12,16 @@ import 'package:money_flow/features/transactions/views/widgets/edit_transaction_
 import 'package:money_flow/features/transactions/views/widgets/transaction_fields.dart';
 
 class EditTransactionViewBody extends StatefulWidget {
-  const EditTransactionViewBody({super.key, required this.transactionModel});
+  const EditTransactionViewBody({
+    super.key,
+    required this.transactionModel,
+    this.showTypeToggle = true,
+    this.onSave,
+  });
+
   final TransactionModel transactionModel;
+  final bool showTypeToggle;
+  final Future<void> Function(TransactionDataModel dataModel)? onSave;
 
   @override
   State<EditTransactionViewBody> createState() =>
@@ -37,15 +47,16 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
+        padding: EdgeInsetsGeometry.symmetric(
+          horizontal: AppDimensions.viewPadding,
+        ),
         child: ListView(
           children: [
             const SizedBox(height: 18),
 
-            // toggle switch
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: CustomToggleSwitch<CategoryType>(
+            // toggle switch (optional, hidden when editing single-type expenses like in environments)
+            if (widget.showTypeToggle) ...[
+              CustomToggleSwitch<CategoryType>(
                 current: transactionDataModel.transactionType.value,
                 values: CategoryType.values,
                 onChanged: (CategoryType transactionType) {
@@ -53,9 +64,8 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
                   transactionDataModel.transactionType.value = transactionType;
                 },
               ),
-            ),
-
-            const SizedBox(height: 32),
+              const SizedBox(height: 32),
+            ],
 
             // all fields
             TransactionFields(addTransactionModel: transactionDataModel),
@@ -66,6 +76,7 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
             EditTransactionViewButtons(
               transactionModel: widget.transactionModel,
               transactionDataModel: transactionDataModel,
+              onSave: widget.onSave,
             ),
           ],
         ),
@@ -76,23 +87,33 @@ class _EditTransactionViewBodyState extends State<EditTransactionViewBody> {
   void _initializeFieldsData(BuildContext context) {
     final transaction = widget.transactionModel;
 
-    // Look up the category from the already-loaded cubit state (no Hive read)
-    final cubitState = context.read<TransactionsCubit>().state;
-    final CategoryModel category = cubitState is TransactionsSuccess
-        ? cubitState.findCategory(transaction.title, transaction.isExpense)
-        : AppCategories.defaultCategory;
+    CategoryModel? category;
+    try {
+      final cubitState = context.read<TransactionsCubit>().state;
+      if (cubitState is TransactionsSuccess) {
+        category = cubitState.findCategory(
+          transaction.title,
+          transaction.isExpense,
+        );
+      }
+    } catch (_) {}
+
+    category ??= getCategory(
+      transaction.title,
+      transaction.isExpense,
+      HiveService.instance,
+    );
+
+    final amountText = transaction.amount % 1 == 0
+        ? transaction.amount.toInt().toString()
+        : transaction.amount.toString();
 
     transactionDataModel = TransactionDataModel(
-      amountController: TextEditingController(
-        text: transaction.amount.toString(),
-      ),
-
+      amountController: TextEditingController(text: amountText),
       date: ValueNotifier(transaction.date),
-
       transactionType: ValueNotifier(
         transaction.isExpense ? CategoryType.expenses : CategoryType.income,
       ),
-
       category: ValueNotifier(
         CategoryModel(
           title: category.title,

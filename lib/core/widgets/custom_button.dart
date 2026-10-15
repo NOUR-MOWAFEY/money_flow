@@ -12,6 +12,7 @@ class CustomButton extends StatelessWidget {
     this.color = AppColors.primary,
     this.child,
     this.textSize,
+    this.textColor,
   });
   final void Function()? onTap;
   final String title;
@@ -20,9 +21,17 @@ class CustomButton extends StatelessWidget {
   final Color color;
   final Widget? child;
   final double? textSize;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
+    final effectiveTextColor = textColor ??
+        ((color == AppColors.black1 ||
+                color == AppColors.bg ||
+                color == AppColors.black)
+            ? AppColors.text
+            : AppColors.bg);
+
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: onTap,
@@ -40,7 +49,7 @@ class CustomButton extends StatelessWidget {
               child: CustomText(
                 title,
                 style: TextStyle(
-                  color: AppColors.bg,
+                  color: effectiveTextColor,
                   fontWeight: FontWeight.bold,
                   fontSize: textSize ?? 16,
                 ),

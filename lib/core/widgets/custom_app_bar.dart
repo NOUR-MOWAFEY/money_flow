@@ -14,6 +14,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       title: CustomText(title),
 
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 4),
+
       actions: actions,
 
       centerTitle: false,

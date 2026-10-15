@@ -8,7 +8,14 @@ import 'package:money_flow/features/categories/view_models/new_category_cubit/ne
 import 'package:money_flow/features/categories/views/widgets/category_color_picker_dialog.dart';
 
 class NewCategoryColorButton extends StatelessWidget {
-  const NewCategoryColorButton({super.key});
+  const NewCategoryColorButton({
+    super.key,
+    this.color,
+    this.onTap,
+  });
+
+  final Color? color;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -16,26 +23,25 @@ class NewCategoryColorButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const CustomText('Color: '),
-
         const SizedBox(height: 8),
+        InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: onTap ??
+              () {
+                FocusManager.instance.primaryFocus?.unfocus();
 
-        GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
+                final cubit = context.read<NewCategoryCubit>();
 
-            final cubit = context.read<NewCategoryCubit>();
-
-            showDialog(
-              context: context,
-              builder: (context) => BlocProvider.value(
-                value: cubit,
-                child: const DialogOpenAnimation(
-                  child: CategoryColorPickerDialog(),
-                ),
-              ),
-            );
-          },
-
+                showDialog(
+                  context: context,
+                  builder: (context) => BlocProvider.value(
+                    value: cubit,
+                    child: const DialogOpenAnimation(
+                      child: CategoryColorPickerDialog(),
+                    ),
+                  ),
+                );
+              },
           child: Container(
             height: 60,
             width: 60,
@@ -43,23 +49,38 @@ class NewCategoryColorButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: AppColors.black1,
             ),
-
-            child: BlocBuilder<NewCategoryCubit, NewCategoryState>(
-              builder: (context, state) {
-                return Center(
-                  child: Container(
-                    height: 35,
-                    decoration: BoxDecoration(
-                      shape: .circle,
-                      color: state.selectedColor ?? Colors.white,
-                    ),
-                  ),
-                );
-              },
+            child: Center(
+              child: _buildColorCircle(context),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildColorCircle(BuildContext context) {
+    if (color != null) {
+      return Container(
+        height: 35,
+        width: 35,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+        ),
+      );
+    }
+
+    return BlocBuilder<NewCategoryCubit, NewCategoryState>(
+      builder: (context, state) {
+        return Container(
+          height: 35,
+          width: 35,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: state.selectedColor ?? Colors.white,
+          ),
+        );
+      },
     );
   }
 }

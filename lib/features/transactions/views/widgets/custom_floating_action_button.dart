@@ -17,6 +17,8 @@ class CustomFloatingActionButton extends StatelessWidget {
       closedShape: const CircleBorder(),
       closedColor: AppColors.primary,
 
+      transitionDuration: Duration(milliseconds: 450),
+
       useRootNavigator: true,
 
       closedBuilder: (context, action) => Container(

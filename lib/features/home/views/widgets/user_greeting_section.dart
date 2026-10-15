@@ -3,26 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/core/constants/app_dimensions.dart';
 import 'package:money_flow/core/services/hive_service.dart';
-import 'package:money_flow/core/utils/show_toastification.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/features/environments/views/environments_view.dart';
 import 'package:money_flow/features/home/view_models/balance_visibility_cubit/balance_visibility_cubit.dart';
 import 'package:money_flow/features/home/views/widgets/user_image.dart';
 import 'package:money_flow/features/profile/views/profile_view.dart';
-import 'package:money_flow/features/security/view_model/app_lock_cubit/app_lock_cubit.dart';
 
 class UserGreetingSection extends StatelessWidget {
   const UserGreetingSection({super.key, this.onTap});
   final void Function()? onTap;
 
-  void _handleLock(BuildContext context) {
-    final appLockCubit = context.read<AppLockCubit>();
-    final locked = appLockCubit.lockNow();
-    if (!locked) {
-      ShowToastification.warning(
-        context,
-        'App Lock is disabled. Set up a PIN in Security Settings.',
-      );
-    }
+  void _openEnvironments(BuildContext context) {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).push(MaterialPageRoute(builder: (_) => const EnvironmentsView()));
   }
 
   @override
@@ -78,7 +73,7 @@ class UserGreetingSection extends StatelessWidget {
                                   name,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   maxLines: 1,
@@ -111,11 +106,11 @@ class UserGreetingSection extends StatelessWidget {
 
                 const SizedBox(width: 8),
 
-                // Trailing Action Button: Instant App Lock
+                // Trailing Action Button: Environments
                 _HeaderActionButton(
-                  icon: Icons.lock_outline_rounded,
-                  tooltip: 'Lock app',
-                  onTap: () => _handleLock(context),
+                  icon: Icons.layers_outlined,
+                  tooltip: 'Environments',
+                  onTap: () => _openEnvironments(context),
                 ),
               ],
             ),

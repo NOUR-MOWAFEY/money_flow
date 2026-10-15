@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/widgets/animations/dialog_open_animation.dart';
+import 'package:money_flow/core/widgets/custom_button.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 import 'package:money_flow/features/data_management/data/models/restore_mode.dart';
 
@@ -24,13 +26,15 @@ class RestoreConfirmDialog extends StatelessWidget {
     return showDialog<bool>(
       context: context,
       builder: (dialogContext) {
-        return RestoreConfirmDialog(
-          mode: mode,
-          itemCount: itemCount,
-          onConfirm: () {
-            Navigator.pop(dialogContext, true);
-            onConfirm();
-          },
+        return DialogOpenAnimation(
+          child: RestoreConfirmDialog(
+            mode: mode,
+            itemCount: itemCount,
+            onConfirm: () {
+              Navigator.pop(dialogContext, true);
+              onConfirm();
+            },
+          ),
         );
       },
     );
@@ -43,29 +47,31 @@ class RestoreConfirmDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: AppColors.bg,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: Row(
+      title: Column(
         children: [
           Icon(
             isReplace
                 ? Icons.warning_amber_rounded
-                : Icons.help_outline_rounded,
+                : Icons.restore_rounded,
+            size: 70,
             color: isReplace ? AppColors.error : AppColors.primary,
           ),
-          const SizedBox(width: 10),
+          const SizedBox(height: 8),
           const CustomText(
             'Confirm Restore',
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
             isReplace
                 ? 'Warning: You selected "Replace Existing Data". Current data for the selected types will be erased and replaced with $itemCount records from this backup.'
                 : 'Selected data ($itemCount items) will be merged into your current data without deleting anything.',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
               color: AppColors.text.withAlpha(180),
@@ -80,15 +86,15 @@ class RestoreConfirmDialog extends StatelessWidget {
                 color: AppColors.error.withAlpha(20),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Row(
+              child: const Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.info_outline,
                     size: 16,
                     color: AppColors.error,
                   ),
-                  const SizedBox(width: 8),
-                  const Expanded(
+                  SizedBox(width: 8),
+                  Expanded(
                     child: CustomText(
                       'This action cannot be undone.',
                       color: AppColors.error,
@@ -104,30 +110,23 @@ class RestoreConfirmDialog extends StatelessWidget {
           ],
         ],
       ),
+      actionsAlignment: MainAxisAlignment.center,
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          child: const CustomText(
-            'Cancel',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
+        CustomButton(
+          title: 'Cancel',
+          width: 100,
+          height: 42,
+          color: AppColors.black1,
+          textSize: 14,
+          onTap: () => Navigator.pop(context, false),
         ),
-        FilledButton(
-          onPressed: onConfirm,
-          style: FilledButton.styleFrom(
-            backgroundColor:
-                isReplace ? AppColors.error : AppColors.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: const CustomText(
-            'Restore Now',
-            color: Colors.white,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        CustomButton(
+          title: 'Restore Now',
+          width: 120,
+          height: 42,
+          color: isReplace ? AppColors.error : AppColors.primary,
+          textSize: 14,
+          onTap: onConfirm,
         ),
       ],
     );

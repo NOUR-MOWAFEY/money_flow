@@ -222,6 +222,23 @@ void main() {
       expect(state.filteredTransactions.length, 1);
       expect(state.filteredTransactions.first.title, 'Bonus');
     });
+
+    test('deleteTransaction prevents deleting environment-linked transaction',
+        () async {
+      final envTx = TransactionModel(
+        title: 'Environment: Project X',
+        amount: 300,
+        isExpense: true,
+        date: DateTime.now(),
+        environmentId: 'env_x',
+      );
+      fakeHiveService.transactions.add(envTx);
+      cubit.loadTransactions();
+
+      await cubit.deleteTransaction(envTx);
+      expect(cubit.state, isA<TransactionsHistoryFailure>());
+      expect(fakeHiveService.transactions.contains(envTx), isTrue);
+    });
   });
 }
 

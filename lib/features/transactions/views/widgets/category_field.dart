@@ -23,6 +23,7 @@ class CategoryField extends StatelessWidget {
             valueListenable: transactionType,
             builder: (BuildContext context, value, Widget? child) =>
                 CustomTextFormFiled(
+                  key: ValueKey(category.value?.title),
                   icon:
                       category.value?.icon ??
                       AppCategories.defaultCategory.icon,

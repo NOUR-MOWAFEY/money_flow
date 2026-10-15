@@ -8,6 +8,8 @@ import 'package:money_flow/features/transactions/views/edit_transaction_view.dar
 import 'package:money_flow/features/transactions/views/widgets/custom_slidable.dart';
 import 'package:money_flow/features/transactions/views/widgets/transaction_tile_price.dart';
 
+import 'package:money_flow/features/transactions/views/widgets/linked_transaction_dialog.dart';
+
 class TransactionsHistoryTile extends StatelessWidget {
   const TransactionsHistoryTile({
     super.key,
@@ -26,6 +28,10 @@ class TransactionsHistoryTile extends StatelessWidget {
         transactionModel: transactionModel,
         child: InkWell(
           onTap: () {
+            if (transactionModel.isEnvironmentActive()) {
+              showLinkedTransactionDialog(context, transactionModel);
+              return;
+            }
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) =>
@@ -54,9 +60,22 @@ class TransactionsHistoryTile extends StatelessWidget {
               transactionModel.title,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-            subtitle: CustomText(
-              DateFormat('hh:mm a').format(transactionModel.date),
-              style: const TextStyle(fontSize: 12, color: Colors.white54),
+            subtitle: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomText(
+                  DateFormat('hh:mm a').format(transactionModel.date),
+                  style: const TextStyle(fontSize: 12, color: Colors.white54),
+                ),
+                if (transactionModel.isEnvironmentActive()) ...[
+                  const SizedBox(width: 6),
+                  const Icon(
+                    Icons.lock_outline_rounded,
+                    size: 13,
+                    color: Colors.white38,
+                  ),
+                ],
+              ],
             ),
             trailing: TransactionTilePrice(transactionModel: transactionModel),
           ),

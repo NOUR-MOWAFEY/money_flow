@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
+import 'package:money_flow/core/widgets/animations/dialog_open_animation.dart';
+import 'package:money_flow/core/widgets/custom_button.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
 
 class ResetConfirmDialog extends StatelessWidget {
@@ -20,12 +22,14 @@ class ResetConfirmDialog extends StatelessWidget {
     return showDialog<bool>(
       context: context,
       builder: (dialogContext) {
-        return ResetConfirmDialog(
-          itemCount: itemCount,
-          onConfirm: () {
-            Navigator.pop(dialogContext, true);
-            onConfirm();
-          },
+        return DialogOpenAnimation(
+          child: ResetConfirmDialog(
+            itemCount: itemCount,
+            onConfirm: () {
+              Navigator.pop(dialogContext, true);
+              onConfirm();
+            },
+          ),
         );
       },
     );
@@ -36,25 +40,27 @@ class ResetConfirmDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: AppColors.bg,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: const Row(
+      title: const Column(
         children: [
           Icon(
             Icons.warning_amber_rounded,
+            size: 70,
             color: AppColors.error,
           ),
-          SizedBox(width: 10),
+          SizedBox(height: 8),
           CustomText(
             'Permanently Delete?',
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
             'Are you sure you want to delete $itemCount selected records? This will permanently erase your data from this device.',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
               color: AppColors.text.withAlpha(180),
@@ -91,27 +97,23 @@ class ResetConfirmDialog extends StatelessWidget {
           ),
         ],
       ),
+      actionsAlignment: MainAxisAlignment.center,
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          child: const CustomText(
-            'Cancel',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
+        CustomButton(
+          title: 'Cancel',
+          width: 100,
+          height: 42,
+          color: AppColors.black1,
+          textSize: 14,
+          onTap: () => Navigator.pop(context, false),
         ),
-        FilledButton(
-          onPressed: onConfirm,
-          style: FilledButton.styleFrom(
-            backgroundColor: AppColors.error,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: const CustomText(
-            'Delete Permanently',
-            color: Colors.white,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+        CustomButton(
+          title: 'Delete',
+          width: 120,
+          height: 42,
+          color: AppColors.error,
+          textSize: 14,
+          onTap: onConfirm,
         ),
       ],
     );

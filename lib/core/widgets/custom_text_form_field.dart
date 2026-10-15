@@ -25,6 +25,8 @@ class CustomTextFormFiled extends StatelessWidget {
     this.maxLines,
     this.onChanged,
     this.textInputAction,
+    this.maxLength,
+    this.maxLengthEnforcement,
   });
 
   final void Function(String)? onChanged;
@@ -48,6 +50,8 @@ class CustomTextFormFiled extends StatelessWidget {
   final FocusNode? focusNode;
   final int? maxLines;
   final TextInputAction? textInputAction;
+  final int? maxLength;
+  final MaxLengthEnforcement? maxLengthEnforcement;
 
   @override
   Widget build(BuildContext context) {
@@ -56,22 +60,25 @@ class CustomTextFormFiled extends StatelessWidget {
 
       child: TextFormField(
         focusNode: focusNode,
-        maxLength: 20,
+        maxLength: maxLength,
 
         textInputAction: textInputAction,
 
-        maxLengthEnforcement: MaxLengthEnforcement.none,
+        maxLengthEnforcement:
+            maxLengthEnforcement ??
+            (maxLength != null
+                ? MaxLengthEnforcement.enforced
+                : MaxLengthEnforcement.none),
 
         minLines: 1,
         maxLines: maxLines ?? 2,
 
-        buildCounter:
-            (
-              context, {
-              required currentLength,
-              required isFocused,
-              required maxLength,
-            }) => null,
+        buildCounter: (
+          context, {
+          required currentLength,
+          required isFocused,
+          required maxLength,
+        }) => null,
 
         validator: validator,
 
@@ -133,7 +140,7 @@ class CustomTextFormFiled extends StatelessWidget {
           labelText: title,
           labelStyle: TextStyle(
             color: AppColors.text,
-            fontSize: isNormalTextField ? 16 : null,
+            fontSize: isNormalTextField ? 16 : 14,
             fontWeight: isNormalTextField ? FontWeight.w600 : FontWeight.bold,
           ),
 

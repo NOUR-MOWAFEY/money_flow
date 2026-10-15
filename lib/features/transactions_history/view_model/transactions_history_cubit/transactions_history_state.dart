@@ -38,11 +38,10 @@ class TransactionsHistorySuccess extends TransactionsHistoryState {
 
   /// Finds the matching category for a transaction by title and type.
   CategoryModel findCategory(String title, bool isExpense) {
-    final targetType =
-        isExpense ? CategoryType.expenses : CategoryType.income;
-    return allCategories.firstWhere(
-      (c) => c.title == title && c.categoryType == targetType,
-      orElse: () => AppCategories.defaultCategory,
+    return CategoryResolver.findCategory(
+      title: title,
+      isExpense: isExpense,
+      allCategories: allCategories,
     );
   }
 

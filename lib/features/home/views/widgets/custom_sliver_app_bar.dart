@@ -15,13 +15,13 @@ class CustomSliverAppBar extends StatelessWidget {
       toolbarHeight: 70,
 
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.only(top: 6, bottom: 12),
+        titlePadding: const EdgeInsets.only(bottom: 14),
         title: const Padding(
           padding: EdgeInsets.symmetric(horizontal: AppDimensions.viewPadding),
           child: HomeViewAppBar(),
         ),
 
-        expandedTitleScale: 1.44,
+        expandedTitleScale: 1.34,
 
         background: Container(
           height: 30,

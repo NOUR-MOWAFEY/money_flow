@@ -109,37 +109,51 @@ class _PieChartLegend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 16,
-      runSpacing: 10,
-      alignment: WrapAlignment.start,
-      children: items.asMap().entries.map((entry) {
-        final isSelected = entry.key == touchedIndex;
-        final item = entry.value;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxItemWidth = constraints.maxWidth;
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: item.color,
-                shape: BoxShape.circle,
+        return Wrap(
+          spacing: 16,
+          runSpacing: 10,
+          alignment: WrapAlignment.start,
+          children: items.asMap().entries.map((entry) {
+            final isSelected = entry.key == touchedIndex;
+            final item = entry.value;
+
+            return ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxItemWidth),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: item.color,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: CustomText(
+                      item.title,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.w500,
+                        color: isSelected ? Colors.white : AppColors.text,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(width: 6),
-            CustomText(
-              item.title,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                color: isSelected ? Colors.white : AppColors.text,
-              ),
-            ),
-          ],
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 }

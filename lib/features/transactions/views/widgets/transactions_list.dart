@@ -24,16 +24,22 @@ class TransactionsList extends StatelessWidget {
       children: [
         const SliverToBoxAdapter(child: TransactionsListHeader()),
 
-        SliverList.builder(
-          itemCount: displayedTransactions.length,
-          itemBuilder: (context, index) {
-            final transaction = displayedTransactions[index];
-            return TransactionTile(
-              transactionModel: transaction,
-              category: findCategory(transaction.title, transaction.isExpense),
-              index: index,
-            );
-          },
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          sliver: SliverList.builder(
+            itemCount: displayedTransactions.length,
+            itemBuilder: (context, index) {
+              final transaction = displayedTransactions[index];
+              return TransactionTile(
+                transactionModel: transaction,
+                category: findCategory(
+                  transaction.title,
+                  transaction.isExpense,
+                ),
+                index: index,
+              );
+            },
+          ),
         ),
       ],
     );
