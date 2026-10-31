@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_flow/core/constants/app_colors.dart';
 import 'package:money_flow/core/services/hive_service.dart';
 import 'package:money_flow/core/widgets/custom_text.dart';
+import 'package:money_flow/core/widgets/stat_metric_item.dart';
 
 class TransactionsHistorySummaryCard extends StatelessWidget {
   const TransactionsHistorySummaryCard({
@@ -69,20 +70,22 @@ class TransactionsHistorySummaryCard extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: _SummaryMetric(
+                    child: StatMetricItem(
                       label: 'Income',
-                      amount: '+$currency ${totalIncome.toStringAsFixed(2)}',
+                      value: '+$currency ${totalIncome.toStringAsFixed(2)}',
                       color: Colors.green,
                       icon: Icons.arrow_downward_rounded,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                     ),
                   ),
                   Container(width: 1, height: 36, color: Colors.white10),
                   Expanded(
-                    child: _SummaryMetric(
+                    child: StatMetricItem(
                       label: 'Expenses',
-                      amount: '-$currency ${totalExpense.toStringAsFixed(2)}',
+                      value: '-$currency ${totalExpense.toStringAsFixed(2)}',
                       color: Colors.red,
                       icon: Icons.arrow_upward_rounded,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                     ),
                   ),
                 ],
@@ -91,59 +94,6 @@ class TransactionsHistorySummaryCard extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _SummaryMetric extends StatelessWidget {
-  const _SummaryMetric({
-    required this.label,
-    required this.amount,
-    required this.color,
-    required this.icon,
-  });
-
-  final String label;
-  final String amount;
-  final Color color;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 14,
-            backgroundColor: color.withAlpha(40),
-            child: Icon(icon, color: color, size: 16),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  label,
-                  style: const TextStyle(fontSize: 11, color: Colors.white54),
-                ),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: CustomText(
-                    amount,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: color,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
